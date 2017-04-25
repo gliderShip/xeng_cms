@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Xeng\Cms\AdminBundle\Form\Auth\RoleCreateHandler;
 use Xeng\Cms\AdminBundle\Form\Auth\RoleEditHandler;
 use Xeng\Cms\CoreBundle\Form\ValidationResponse;
+use Xeng\Cms\CoreBundle\Services\Auth\PermissionManager;
 use Xeng\Cms\CoreBundle\Services\Auth\XRoleManager;
 
 /**
@@ -30,10 +31,16 @@ class RoleAdminController extends Controller {
         /** @var XRoleManager $xRoleManager */
         $xRoleManager = $this->get('xeng.role_manager');
 
+        $this->get('xeng.permission_config');
+
+        /** @var PermissionManager $permissionManager */
+        $permissionManager = $this->get('xeng.permission_manager');
+
         $pager=$xRoleManager->getAllRoles($currentPage,20);
 
         return $this->render('XengCmsAdminBundle::admin/role/roles.html.twig', array(
-            'pager' => $pager
+            'pager' => $pager,
+            'modules' => $permissionManager->getModules()
         ));
     }
 

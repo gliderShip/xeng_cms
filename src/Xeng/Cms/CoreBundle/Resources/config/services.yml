@@ -7,6 +7,8 @@ services:
     #service_name:
     #    class: XengCmsCoreBundle\Directory\ClassName
     #    arguments: ['@another_service_name', 'plain_value', '%parameter_name%']
+    xeng.permission_manager:
+        class: Xeng\Cms\CoreBundle\Services\Auth\PermissionManager
     xeng.user_manager:
         class: Xeng\Cms\CoreBundle\Services\Auth\XUserManager
         arguments:
