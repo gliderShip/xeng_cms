@@ -1,0 +1,31 @@
+{% extends '@XengCmsAdmin/admin/base.html.twig' %}
+
+{% block body %}
+<div class="wrapper">
+
+    {% include '@XengCmsAdmin/admin/header.html.twig' %}
+
+    {% include '@XengCmsAdmin/admin/sidebar.html.twig' %}
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+
+        <!-- Main content -->
+        <section class="content">
+
+            {% block content %}
+
+            {% endblock %}
+
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    {% include '@XengCmsAdmin/admin/footer.html.twig' %}
+
+</div>
+{% endblock %}
+
+
+

@@ -1,0 +1,15 @@
+xeng.admin:
+    menu:
+        user: 'Users'
+        role: 'Roles'
+    page:
+        title:
+            dashboard: 'Dashboard'
+            user:
+                default: 'User Manager'
+                add: 'Create New User'
+                edit: 'Edit User'
+            role:
+                default: 'Role Manager'
+                add: 'Create New Role'
+                edit: 'Edit Role'

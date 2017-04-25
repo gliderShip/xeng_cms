@@ -1,0 +1,7 @@
+
+
+- create permissions
+- assign permissions to roles
+- assign roles to users
+
+- implement csrf token, do it yourself
