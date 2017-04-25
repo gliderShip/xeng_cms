@@ -4,27 +4,27 @@ namespace Xeng\Cms\CoreBundle\Services\Auth;
 use Doctrine\Common\Collections\ArrayCollection;
 use Xeng\Cms\CoreBundle\Entity\Auth\XAppModule;
 
+/**
+ * @author Ermal Mino <ermal.mino@gmail.com>
+ *
+ */
 class PermissionManager {
 
     /** @var array $modules */
-    private $modules;
-
-    public function __construct(){
-        $this->modules=[];
-    }
+    private static $modules=[];
 
     /**
      * @param XAppModule $module
      */
-    public function addModule(XAppModule $module) {
-        $this->modules[$module->getId()]=$module;
+    public static function addModule(XAppModule $module) {
+        self::$modules[$module->getId()]=$module;
     }
 
     /**
      * @return array
      */
     public function getModules() {
-        return $this->modules;
+        return self::$modules;
     }
 
     /**
@@ -33,9 +33,9 @@ class PermissionManager {
      * @return ArrayCollection
      */
     public function getPermissions($moduleId) {
-        if(isset($this->modules[$moduleId])){
+        if(isset(self::$modules[$moduleId])){
             /** @var XAppModule $module */
-            $module=$this->modules[$moduleId];
+            $module=self::$modules[$moduleId];
             return $module->getChildren();
         } else {
             return null;

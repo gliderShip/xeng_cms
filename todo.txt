@@ -1,4 +1,3 @@
- - use compiler pass on CoreBundle to autoload all configuration services tagged to be loaded as config for permissions
 
 - create permissions
 - assign permissions to roles

@@ -31,8 +31,6 @@ class RoleAdminController extends Controller {
         /** @var XRoleManager $xRoleManager */
         $xRoleManager = $this->get('xeng.role_manager');
 
-        $this->get('xeng.permission_config');
-
         /** @var PermissionManager $permissionManager */
         $permissionManager = $this->get('xeng.permission_manager');
 
