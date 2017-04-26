@@ -151,8 +151,6 @@ class RoleAdminController extends Controller {
             );
         }
 
-        $logs=MemoryLogger::getLogs();
-
         return $this->render('XengCmsAdminBundle::admin/role/editRolePermissions.html.twig', array(
             'role' => $role,
             'permissionModules' => $permissionModules,

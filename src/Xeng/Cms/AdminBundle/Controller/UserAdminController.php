@@ -11,7 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Xeng\Cms\AdminBundle\Form\Auth\UserCreateHandler;
 use Xeng\Cms\AdminBundle\Form\Auth\UserEditHandler;
+use Xeng\Cms\AdminBundle\Form\Auth\UserRolesEditHandler;
 use Xeng\Cms\CoreBundle\Form\ValidationResponse;
+use Xeng\Cms\CoreBundle\Services\Auth\XRoleManager;
 use Xeng\Cms\CoreBundle\Services\Auth\XUserManager;
 
 /**
@@ -117,6 +119,45 @@ class UserAdminController extends Controller {
 
         return $this->render('XengCmsAdminBundle::admin/user/editUserGeneral.html.twig', array(
             'user' => $user,
+            'validationResponse' => $validationResponse
+        ));
+    }
+
+    /**
+     * @Route("/user/edit/roles/{userId}", name="xeng.admin.user.edit.roles")
+     *
+     * @param Request $request
+     * @param $userId
+     * @return Response
+     */
+    public function editRolePermissionsAction(Request $request,$userId) {
+
+        /** @var XUserManager $xUserManager */
+        $xUserManager = $this->get('xeng.user_manager');
+        $user=$xUserManager->getUser($userId);
+
+        /** @var XRoleManager $xRoleManager */
+        $xRoleManager = $this->get('xeng.role_manager');
+        $roles=$xRoleManager->getAllRoles()->getResults();
+
+        /** @var UserRolesEditHandler $formHandler */
+        $formHandler = new UserRolesEditHandler($this->container,$request,$user,$roles);
+        $formHandler->handle();
+
+        /** @var ValidationResponse $validationResponse */
+        $validationResponse=$formHandler->getValidationResponse();
+
+        if($formHandler->isSubmitted() && $formHandler->isValid()){
+
+            $this->addFlash(
+                'notice',
+                'Role permissions updated successfully!'
+            );
+        }
+
+        return $this->render('XengCmsAdminBundle::admin/user/editUserRoles.html.twig', array(
+            'user' => $user,
+            'roles' => $roles,
             'validationResponse' => $validationResponse
         ));
     }

@@ -7,11 +7,12 @@
     <div class="nav-tabs-custom">
         <ul class="nav nav-tabs">
             <li class="{{ currentTab=='general'?'active':'' }}">
-                <a href="{{ path('xeng.admin.user.edit',{'userId': 1}) }}"
+                <a href="{{ path('xeng.admin.user.edit',{'userId': user.id}) }}"
                    aria-expanded="false">General</a>
             </li>
-            <li class="">
-                <a href="#" aria-expanded="false">TODO</a>
+            <li class="{{ currentTab=='roles'?'active':'' }}">
+                <a href="{{ path('xeng.admin.user.edit.roles',{'userId': user.id}) }}"
+                   aria-expanded="false">Roles</a>
             </li>
         </ul>
         <div class="tab-content">

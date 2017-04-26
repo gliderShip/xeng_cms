@@ -50,18 +50,16 @@ class RolePermissionsEditHandler extends FormHandler {
     public function handle(){
         parent::handle();
 
-        /** @var PermissionManager $permissionManager */
-        $permissionManager = $this->container->get('xeng.permission_manager');
-        /** @var array $permissionModules */
-        $permissionModules = $permissionManager->getModules();
-
         /** @var XRoleManager $xRoleManager */
         $xRoleManager = $this->container->get('xeng.role_manager');
         /** @var array $permissionMap */
         $permissionMap = $xRoleManager->getRolePermissionsMap($this->role->getId());
 
         if($this->isSubmitted()){
-
+            /** @var PermissionManager $permissionManager */
+            $permissionManager = $this->container->get('xeng.permission_manager');
+            /** @var array $permissionModules */
+            $permissionModules = $permissionManager->getModules();
             /** @var XAppModule $permissionModuleConfig */
             foreach($permissionModules as $permissionModuleConfig){
                 /** @var XPermission $permissionConfig */
