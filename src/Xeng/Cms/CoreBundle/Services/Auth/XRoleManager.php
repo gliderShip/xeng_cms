@@ -8,6 +8,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Xeng\Cms\CoreBundle\Doctrine\PaginatedResult;
 use Xeng\Cms\CoreBundle\Doctrine\PaginatorUtil;
 use Xeng\Cms\CoreBundle\Entity\Auth\XRole;
+use Xeng\Cms\CoreBundle\Entity\Auth\XRolePermission;
+use Xeng\Cms\CoreBundle\Repository\Auth\XRolePermissionRepository;
 use Xeng\Cms\CoreBundle\Repository\Auth\XRoleRepository;
 
 /**
@@ -93,6 +95,60 @@ class XRoleManager {
         $role->setEnabled($enabled);
 
         $this->manager->persist($role);
+        $this->manager->flush();
+    }
+
+    /**
+     * @param integer $roleId
+     * @return array permission map
+     */
+    public function getRolePermissionsMap($roleId){
+        /** @var XRolePermissionRepository $repository */
+        $repository = $this->manager->getRepository('XengCmsCoreBundle:Auth\XRolePermission');
+        /** @var array $map */
+        $map=array();
+
+        $rolePermissions = $repository->getRolePermissions($roleId);
+        /** @var XRolePermission $rp */
+        foreach($rolePermissions as $rp){
+            $map[$rp->getModule().'.'.$rp->getPermission()]=$rp;
+        }
+
+        return $map;
+    }
+
+    /**
+     * @param array $rolePermissions
+     */
+    public function deleteRolePermissions($rolePermissions){
+        /** @var XRolePermission $rp */
+
+        foreach($rolePermissions as $rp){
+            $this->manager->remove($rp);
+        }
+
+        $this->manager->flush();
+    }
+
+    /**
+     * @param XRole $role
+     * @param array $rolePermissionKeys
+     */
+    public function addRolePermissions(XRole $role,$rolePermissionKeys){
+        /** @var string $rpk */
+        foreach($rolePermissionKeys as $rpk){
+            /** @var array $exploded */
+            $exploded=explode('.',$rpk,2);
+            $moduleId=$exploded[0];
+            $permissionId=$exploded[1];
+            /** @var XRolePermission $rp */
+            $rp=new XRolePermission();
+            $rp->setRole($role);
+            $rp->setModule($moduleId);
+            $rp->setPermission($permissionId);
+            $this->manager->persist($rp);
+        }
+
         $this->manager->flush();
     }
 

@@ -50,6 +50,7 @@ class ParamValidationResult {
         $this->value=$value;
         $this->valid=true;
         $this->errors = array();
+        $this->empty=true;
     }
 
     /**
@@ -96,9 +97,11 @@ class ParamValidationResult {
 
     /**
      * @param mixed $value
+     * @return $this
      */
     public function setValue($value) {
         $this->value = $value;
+        return $this;
     }
 
     /**

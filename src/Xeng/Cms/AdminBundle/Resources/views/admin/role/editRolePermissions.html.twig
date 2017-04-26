@@ -2,30 +2,31 @@
 {% trans_default_domain 'admin' %}
 {% set currentTab = 'permissions' %}
 
-{% macro renderModulePermissions(module) %}
+{% macro renderModulePermissions(vr,module) %}
     <h4>{{ module.name }}</h4>
 
     {% if module.children.count > 0 %}
         <ul>
             {% for child in module.children %}
-                <li>{{ _self.recursivePermission(module,child) }}</li>
+                <li>{{ _self.recursivePermission(vr,module,child) }}</li>
             {% endfor %}
         </ul>
     {% endif %}
 {% endmacro %}
 
 
-{% macro recursivePermission(module,permission) %}
+{% macro recursivePermission(vr,module,permission) %}
     <span class="{{ permission.enabled?'text-bold':'' }}">
         {% if not permission.abstract %}
-            <input type="checkbox" name="{{ module.id }}.{{ permission.fullId }}">
+            <input type="checkbox" name="{{ module.id }}.{{ permission.fullId }}"
+                    {{ vr.isEmpty(module.id ~ '.' ~ permission.fullId)?'':'checked'}}>
         {% endif %}
         {{permission.name}}
     </span>
     {% if permission.children.count > 0 %}
         <ul>
             {% for child in permission.children %}
-                <li>{{ _self.recursivePermission(module,child) }}</li>
+                <li>{{ _self.recursivePermission(vr,module,child) }}</li>
             {% endfor %}
         </ul>
     {% endif %}
@@ -41,12 +42,13 @@
                 <div class="alert alert-danger" role="alert">{{ error_message }}</div>
             {% endfor %}
         {% endif %}
+        {{ dump(logs) }}
         <form role="form" method="post">
             <input type="hidden" name="submit" value="submit">
             <div class="box-body">
                 <ul>
                 {% for module in permissionModules %}
-                    <li>{{ _self.renderModulePermissions(module) }}</li>
+                    <li>{{ _self.renderModulePermissions(validationResponse,module) }}</li>
                 {% endfor %}
                 </ul>
             </div>

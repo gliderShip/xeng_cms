@@ -15,6 +15,7 @@ use Xeng\Cms\AdminBundle\Form\Auth\RolePermissionsEditHandler;
 use Xeng\Cms\CoreBundle\Form\ValidationResponse;
 use Xeng\Cms\CoreBundle\Services\Auth\PermissionManager;
 use Xeng\Cms\CoreBundle\Services\Auth\XRoleManager;
+use Xeng\Cms\CoreBundle\Util\MemoryLogger;
 
 /**
  * @author Ermal Mino <ermal.mino@gmail.com>
@@ -128,6 +129,7 @@ class RoleAdminController extends Controller {
         /** @var PermissionManager $permissionManager */
         $permissionManager = $this->get('xeng.permission_manager');
 
+        $permissionModules = $permissionManager->getModules();
         /** @var XRoleManager $xRoleManager */
         $xRoleManager = $this->get('xeng.role_manager');
 
@@ -141,17 +143,21 @@ class RoleAdminController extends Controller {
         $validationResponse=$formHandler->getValidationResponse();
 
         if($formHandler->isSubmitted() && $formHandler->isValid()){
-            //todo
+            $xRoleManager->deleteRolePermissions($formHandler->getToBeDeleted());
+            $xRoleManager->addRolePermissions($role,$formHandler->getToBeAdded());
             $this->addFlash(
                 'notice',
-                'The role was updated succesfully!'
+                'Role permissions updated successfully!'
             );
         }
 
+        $logs=MemoryLogger::getLogs();
+
         return $this->render('XengCmsAdminBundle::admin/role/editRolePermissions.html.twig', array(
             'role' => $role,
-            'permissionModules' => $permissionManager->getModules(),
-            'validationResponse' => $validationResponse
+            'permissionModules' => $permissionModules,
+            'validationResponse' => $validationResponse,
+            'logs' =>$logs
         ));
     }
 

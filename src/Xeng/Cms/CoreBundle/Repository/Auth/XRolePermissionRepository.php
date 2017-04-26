@@ -14,16 +14,13 @@ class XRolePermissionRepository extends EntityRepository {
 
     /**
      * @param int $roleId
-     * @param string $moduleId
      * @return array
      */
-    public function getRolePermissions($roleId, $moduleId){
+    public function getRolePermissions($roleId){
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('rp');
         $qb->from('XengCmsCoreBundle:Auth\XRolePermission', 'rp');
-        $qb->where('rp.module = :moduleId');
         $qb->andWhere('rp.role = :roleId');
-        $qb->setParameter('moduleId',$moduleId);
         $qb->setParameter('roleId',$roleId);
 
         $query = $qb->getQuery();

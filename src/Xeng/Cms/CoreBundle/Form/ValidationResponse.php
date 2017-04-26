@@ -147,9 +147,9 @@ class ValidationResponse {
     public function isEmpty($name) {
         $param=$this->getParam($name);
         if($param!==null){
-            return $this->getParam($name)->getStringValue();
+            return $this->getParam($name)->isEmpty();
         } else {
-            return '';
+            return true;
         }
     }
 

@@ -10,7 +10,7 @@ class CorePermissionConfig {
      * adds permission configuration for core module
      */
     public static function configure() {
-        $module = new XAppModule('xeng.core', 'Core Module');
+        $module = new XAppModule('x_core', 'Core Module');
         $module
             ->createChild('user', 'User', true)
                 ->createChild('list', 'List')->end()
@@ -26,8 +26,8 @@ class CorePermissionConfig {
                 ->createChild('create', 'Create')->end()
                 ->createChild('update', 'Update')->end()
                 ->createChild('delete', 'Delete')->end()
-                ->createChild('permissions.list', 'Permissions List')->end()
-                ->createChild('permissions.update', 'Permissions Update')->end()
+                ->createChild('permissions_list', 'Permissions List')->end()
+                ->createChild('permissions_update', 'Permissions Update')->end()
             ->end(); //end role permission node
         PermissionManager::addModule($module);
     }

@@ -10,7 +10,7 @@ class AdminPermissionConfig {
      * adds permission configuration for core module
      */
     public static function configure() {
-        $module = new XAppModule('xeng.admin', 'Admin Module');
+        $module = new XAppModule('x_admin', 'Admin Module');
         $module
             ->createChild('admin', 'Admin Area Access')->end();
         PermissionManager::addModule($module);
