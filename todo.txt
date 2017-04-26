@@ -1,5 +1,5 @@
 
-- assign roles to users
-
 - check role/user exists on edit controllers
 - implement csrf token, do it yourself
+
+- implement voter authorization check based on permissions

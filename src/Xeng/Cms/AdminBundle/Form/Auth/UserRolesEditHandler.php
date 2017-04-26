@@ -6,8 +6,11 @@ namespace Xeng\Cms\AdminBundle\Form\Auth;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Xeng\Cms\CoreBundle\Entity\Auth\XRole;
 use Xeng\Cms\CoreBundle\Entity\Auth\XUser;
 use Xeng\Cms\CoreBundle\Form\FormHandler;
+use Xeng\Cms\CoreBundle\Form\ParamValidationResult;
+use Xeng\Cms\CoreBundle\Services\Auth\XUserManager;
 
 /**
  * @author Ermal Mino <ermal.mino@gmail.com>
@@ -48,12 +51,35 @@ class UserRolesEditHandler extends FormHandler {
     public function handle(){
         parent::handle();
 
+        /** @var XUserManager $userManager */
+        $userManager = $this->container->get('xeng.user_manager');
+        /** @var array $userRolesMap */
+        $userRolesMap=$userManager->getUserRolesMap($this->user->getId());
+
         if($this->isSubmitted()){
+            /** @var XRole $role */
+            foreach($this->roles as $role){
+                $key='role_'.$role->getId();
 
+                /** @var ParamValidationResult $param */
+                $param=$this->createParamValidationResult($key);
 
-
+                $alreadyExists=array_key_exists($key,$userRolesMap);
+                $isEmpty=$param->isEmpty();
+                //if it is empty but it exists on db, delete it
+                if($isEmpty && $alreadyExists){
+                    $this->toBeDeleted[]=$userRolesMap[$key];
+                }
+                //else if it is not empty but not exists on db, add it
+                elseif(!$isEmpty && !$alreadyExists){
+                    $this->toBeAdded[]=$role;
+                }
+            }
         } else {
-
+            //it is not submitted yet, just fill in the values according to the existing saved values
+            foreach($userRolesMap as $urKey=>$ur){
+                $this->createParamValidationResult($urKey)->setValue('on')->setEmpty(false);
+            }
         }
 
     }

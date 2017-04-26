@@ -15,7 +15,17 @@
         <form role="form" method="post">
             <input type="hidden" name="submit" value="submit">
             <div class="box-body">
-
+                <ul>
+                    {% for role in roles %}
+                        {% set isEmpty = validationResponse.isEmpty('role_' ~ role.id) %}
+                        <li>
+                            <span class="{{ isEmpty?'':'text-bold' }}">
+                                <input type="checkbox" name="role_{{ role.id }}" {{ isEmpty?'':'checked'}}>
+                                {{role.name}}
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
             <!-- /.box-body -->
             <div class="text-center">

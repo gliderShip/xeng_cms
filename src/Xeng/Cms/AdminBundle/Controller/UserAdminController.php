@@ -148,10 +148,11 @@ class UserAdminController extends Controller {
         $validationResponse=$formHandler->getValidationResponse();
 
         if($formHandler->isSubmitted() && $formHandler->isValid()){
-
+            $xUserManager->deleteRolePermissions($formHandler->getToBeDeleted());
+            $xUserManager->addUserRoles($user,$formHandler->getToBeAdded());
             $this->addFlash(
                 'notice',
-                'Role permissions updated successfully!'
+                'User roles updated successfully!'
             );
         }
 

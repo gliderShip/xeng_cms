@@ -8,8 +8,11 @@ use Doctrine\Common\Persistence\ObjectManager;
 use FOS\UserBundle\Model\UserManagerInterface;
 use Xeng\Cms\CoreBundle\Doctrine\PaginatedResult;
 use Xeng\Cms\CoreBundle\Doctrine\PaginatorUtil;
+use Xeng\Cms\CoreBundle\Entity\Auth\XRole;
 use Xeng\Cms\CoreBundle\Entity\Auth\XUser;
+use Xeng\Cms\CoreBundle\Entity\Auth\XUserRole;
 use Xeng\Cms\CoreBundle\Repository\Auth\XUserRepository;
+use Xeng\Cms\CoreBundle\Repository\Auth\XUserRoleRepository;
 
 /**
  * @author Ermal Mino <ermal.mino@gmail.com>
@@ -113,4 +116,53 @@ class XUserManager {
         $this->userManager->updateUser($user);
     }
 
+    /**
+     * @param integer $userId
+     * @return array user role map
+     */
+    public function getUserRolesMap($userId){
+        /** @var XUserRoleRepository $repository */
+        $repository = $this->manager->getRepository('XengCmsCoreBundle:Auth\XUserRole');
+        /** @var array $map */
+        $map=array();
+
+        $useRoles = $repository->getUserRoles($userId);
+        /** @var XUserRole $ur */
+        foreach($useRoles as $ur){
+            $map['role_'.$ur->getRole()->getId()]=$ur;
+        }
+
+        return $map;
+    }
+
+    /**
+     * @param array $userRoles
+     */
+    public function deleteRolePermissions($userRoles){
+        /** @var XUserRole $ur */
+
+        foreach($userRoles as $ur){
+            $this->manager->remove($ur);
+        }
+
+        $this->manager->flush();
+    }
+
+    /**
+     * @param XUser $user
+     * @param array $roles
+     */
+    public function addUserRoles(XUser $user,$roles){
+        /** @var XRole $role */
+        foreach($roles as $role){
+
+            /** @var XUserRole $ur */
+            $ur=new XUserRole();
+            $ur->setUser($user);
+            $ur->setRole($role);
+            $this->manager->persist($ur);
+        }
+
+        $this->manager->flush();
+    }
 }
