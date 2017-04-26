@@ -116,6 +116,7 @@ class UserAdminController extends Controller {
         }
 
         return $this->render('XengCmsAdminBundle::admin/user/editUserGeneral.html.twig', array(
+            'user' => $user,
             'validationResponse' => $validationResponse
         ));
     }

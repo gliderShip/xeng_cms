@@ -25,8 +25,14 @@ class XRolePermission {
     private $id;
 
     /**
+     * @var string
+     * @ORM\Column(name="module", type="string", length=255)
+     */
+    private $module;
+
+    /**
      * @var XRole
-     * @ORM\ManyToOne(targetEntity="XRole")
+     * @ORM\ManyToOne(targetEntity="XRole", inversedBy="permissions")
      */
     private $role;
 
@@ -76,6 +82,22 @@ class XRolePermission {
      */
     public function setId($id){
         $this->id = $id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getModule()
+    {
+        return $this->module;
+    }
+
+    /**
+     * @param string $module
+     */
+    public function setModule($module)
+    {
+        $this->module = $module;
     }
 
 }

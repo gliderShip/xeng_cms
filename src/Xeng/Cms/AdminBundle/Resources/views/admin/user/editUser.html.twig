@@ -1,6 +1,6 @@
 {% extends '@XengCmsAdmin/admin/layout.html.twig' %}
 {% trans_default_domain 'admin' %}
-{% set page_title = 'xeng.admin.page.title.user.edit' | trans %}
+{% set page_title = 'xeng.admin.page.title.user.edit' | trans ~ ': ' ~ user.username %}
 
 {% block content %}
 

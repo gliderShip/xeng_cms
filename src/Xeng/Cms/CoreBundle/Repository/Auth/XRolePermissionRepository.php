@@ -10,20 +10,20 @@ use Doctrine\ORM\EntityRepository;
  * @author Ermal Mino <ermal.mino@gmail.com>
  *
  */
-class RolePermissionRepository extends EntityRepository {
+class XRolePermissionRepository extends EntityRepository {
 
     /**
      * @param int $roleId
-     * @param string $appId
+     * @param string $moduleId
      * @return array
      */
-    public function getRolePermissions($roleId, $appId){
+    public function getRolePermissions($roleId, $moduleId){
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('rp');
-        $qb->from('AppBundle:Authorization\RolePermission', 'rp');
-        $qb->where('rp.application = :appId');
+        $qb->from('XengCmsCoreBundle:Auth\XRolePermission', 'rp');
+        $qb->where('rp.module = :moduleId');
         $qb->andWhere('rp.role = :roleId');
-        $qb->setParameter('appId',$appId);
+        $qb->setParameter('moduleId',$moduleId);
         $qb->setParameter('roleId',$roleId);
 
         $query = $qb->getQuery();

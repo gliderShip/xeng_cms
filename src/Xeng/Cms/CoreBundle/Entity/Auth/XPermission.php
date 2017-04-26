@@ -59,7 +59,7 @@ class XPermission {
      * @return string
      */
     public function getFullId() {
-        if($this->parent!==null){
+        if($this->parent!==null && !($this->parent instanceof XAppModule)){
             return $this->parent->getFullId().'.'.$this->id;
         } else {
             return $this->id;

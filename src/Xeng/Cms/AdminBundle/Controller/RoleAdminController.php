@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Xeng\Cms\AdminBundle\Form\Auth\RoleCreateHandler;
 use Xeng\Cms\AdminBundle\Form\Auth\RoleEditHandler;
+use Xeng\Cms\AdminBundle\Form\Auth\RolePermissionsEditHandler;
 use Xeng\Cms\CoreBundle\Form\ValidationResponse;
 use Xeng\Cms\CoreBundle\Services\Auth\PermissionManager;
 use Xeng\Cms\CoreBundle\Services\Auth\XRoleManager;
@@ -31,14 +32,10 @@ class RoleAdminController extends Controller {
         /** @var XRoleManager $xRoleManager */
         $xRoleManager = $this->get('xeng.role_manager');
 
-        /** @var PermissionManager $permissionManager */
-        $permissionManager = $this->get('xeng.permission_manager');
-
         $pager=$xRoleManager->getAllRoles($currentPage,20);
 
         return $this->render('XengCmsAdminBundle::admin/role/roles.html.twig', array(
-            'pager' => $pager,
-            'modules' => $permissionManager->getModules()
+            'pager' => $pager
         ));
     }
 
@@ -86,7 +83,7 @@ class RoleAdminController extends Controller {
      * @param $roleId
      * @return Response
      */
-    public function editUserAction(Request $request,$roleId) {
+    public function editRoleAction(Request $request,$roleId) {
 
         /** @var XRoleManager $xRoleManager */
         $xRoleManager = $this->get('xeng.role_manager');
@@ -114,6 +111,46 @@ class RoleAdminController extends Controller {
         }
 
         return $this->render('XengCmsAdminBundle::admin/role/editRoleGeneral.html.twig', array(
+            'role' => $role,
+            'validationResponse' => $validationResponse
+        ));
+    }
+
+    /**
+     * @Route("/role/edit/permissions/{roleId}", name="xeng.admin.role.edit.permissions")
+     *
+     * @param Request $request
+     * @param $roleId
+     * @return Response
+     */
+    public function editRolePermissionsAction(Request $request,$roleId) {
+
+        /** @var PermissionManager $permissionManager */
+        $permissionManager = $this->get('xeng.permission_manager');
+
+        /** @var XRoleManager $xRoleManager */
+        $xRoleManager = $this->get('xeng.role_manager');
+
+        $role=$xRoleManager->getRole($roleId);
+
+        /** @var RolePermissionsEditHandler $formHandler */
+        $formHandler = new RolePermissionsEditHandler($this->container,$request,$role);
+        $formHandler->handle();
+
+        /** @var ValidationResponse $validationResponse */
+        $validationResponse=$formHandler->getValidationResponse();
+
+        if($formHandler->isSubmitted() && $formHandler->isValid()){
+            //todo
+            $this->addFlash(
+                'notice',
+                'The role was updated succesfully!'
+            );
+        }
+
+        return $this->render('XengCmsAdminBundle::admin/role/editRolePermissions.html.twig', array(
+            'role' => $role,
+            'permissionModules' => $permissionManager->getModules(),
             'validationResponse' => $validationResponse
         ));
     }

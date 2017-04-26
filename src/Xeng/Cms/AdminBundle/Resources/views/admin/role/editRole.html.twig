@@ -1,17 +1,18 @@
 {% extends '@XengCmsAdmin/admin/layout.html.twig' %}
 {% trans_default_domain 'admin' %}
-{% set page_title = 'xeng.admin.page.title.role.edit' | trans %}
+{% set page_title = 'xeng.admin.page.title.role.edit' | trans ~ ': ' ~ role.name %}
 
 {% block content %}
 
     <div class="nav-tabs-custom">
         <ul class="nav nav-tabs">
             <li class="{{ currentTab=='general'?'active':'' }}">
-                <a href="{{ path('xeng.admin.role.edit',{'roleId': 1}) }}"
+                <a href="{{ path('xeng.admin.role.edit',{'roleId': role.id}) }}"
                    aria-expanded="false">General</a>
             </li>
-            <li class="">
-                <a href="#" aria-expanded="false">TODO</a>
+            <li class="{{ currentTab=='permissions'?'active':'' }}">
+                <a href="{{ path('xeng.admin.role.edit.permissions',{'roleId': role.id}) }}"
+                   aria-expanded="false">Permissions</a>
             </li>
         </ul>
         <div class="tab-content">
