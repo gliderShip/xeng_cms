@@ -14,6 +14,7 @@ use Xeng\Cms\CoreBundle\Form\ParamValidationResult;
 use Xeng\Cms\CoreBundle\Services\Auth\PermissionManager;
 use Xeng\Cms\CoreBundle\Services\Auth\XRoleManager;
 use Xeng\Cms\CoreBundle\Util\MemoryLogger;
+use Xeng\Cms\CoreBundle\Util\ParameterUtils;
 
 /**
  * @author Ermal Mino <ermal.mino@gmail.com>
@@ -58,32 +59,14 @@ class RolePermissionsEditHandler extends FormHandler {
         $xRoleManager = $this->container->get('xeng.role_manager');
         /** @var array $permissionMap */
         $permissionMap = $xRoleManager->getRolePermissionsMap($this->role->getId());
-        MemoryLogger::log($permissionMap);
+
         if($this->isSubmitted()){
 
             /** @var XAppModule $permissionModuleConfig */
             foreach($permissionModules as $permissionModuleConfig){
                 /** @var XPermission $permissionConfig */
                 foreach($permissionModuleConfig->getChildren() as $permissionConfig){
-                    if(!$permissionConfig->isAbstract()){
-                        $key=$permissionModuleConfig->getId().'.'.$permissionConfig->getFullId();
-                        /** @var ParamValidationResult $param */
-                        $param=$this->createParamValidationResult($key);
-                        MemoryLogger::log($param);
-                        $isEmpty=$param->isEmpty();
-                        $isSet=(!!isset($permissionMap[$key]));
-                        MemoryLogger::log($key.'->isEmpty: '.$isEmpty);
-                        MemoryLogger::log($key.'->isSet: '.$isSet);
-
-                        //if it is empty but it exists on db, delete it
-                        if($param->isEmpty() && isset($permissionMap[$key])){
-                            $this->toBeDeleted[]=$permissionMap[$key];
-                        }
-                        //else if it is not empty but not exists on db, add it
-                        elseif(!$param->isEmpty() && !isset($permissionMap[$key])){
-                            $this->toBeAdded[]=$key;
-                        }
-                    }
+                    $this->recursivePermissionConfigHandle($permissionModuleConfig,$permissionConfig,$permissionMap);
                 }
             }
 
@@ -94,6 +77,35 @@ class RolePermissionsEditHandler extends FormHandler {
             }
         }
 
+    }
+
+    /**
+     * @param XAppModule $permissionModuleConfig
+     * @param XPermission $permissionConfig
+     */
+    private function recursivePermissionConfigHandle(XAppModule $permissionModuleConfig,XPermission $permissionConfig,$permissionMap){
+        if(!$permissionConfig->isAbstract()){
+            $key=ParameterUtils::encodePeriods($permissionModuleConfig->getId().'.'.$permissionConfig->getFullId());
+            /** @var ParamValidationResult $param */
+            $param=$this->createParamValidationResult($key);
+            MemoryLogger::log($param);
+
+            $alreadyExists=array_key_exists($key,$permissionMap);
+            $isEmpty=$param->isEmpty();
+            //if it is empty but it exists on db, delete it
+            if($isEmpty && $alreadyExists){
+                $this->toBeDeleted[]=$permissionMap[$key];
+            }
+            //else if it is not empty but not exists on db, add it
+            elseif(!$isEmpty && !$alreadyExists){
+                $this->toBeAdded[]=$key;
+            }
+        }
+
+        /** @var XPermission $child */
+        foreach($permissionConfig->getChildren() as $child){
+            $this->recursivePermissionConfigHandle($permissionModuleConfig,$child,$permissionMap);
+        }
     }
 
     /**

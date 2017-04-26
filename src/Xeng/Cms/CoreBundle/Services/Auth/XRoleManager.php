@@ -11,6 +11,7 @@ use Xeng\Cms\CoreBundle\Entity\Auth\XRole;
 use Xeng\Cms\CoreBundle\Entity\Auth\XRolePermission;
 use Xeng\Cms\CoreBundle\Repository\Auth\XRolePermissionRepository;
 use Xeng\Cms\CoreBundle\Repository\Auth\XRoleRepository;
+use Xeng\Cms\CoreBundle\Util\ParameterUtils;
 
 /**
  * @author Ermal Mino <ermal.mino@gmail.com>
@@ -111,7 +112,7 @@ class XRoleManager {
         $rolePermissions = $repository->getRolePermissions($roleId);
         /** @var XRolePermission $rp */
         foreach($rolePermissions as $rp){
-            $map[$rp->getModule().'.'.$rp->getPermission()]=$rp;
+            $map[ParameterUtils::encodePeriods($rp->getModule().'.'.$rp->getPermission())]=$rp;
         }
 
         return $map;
@@ -135,8 +136,10 @@ class XRoleManager {
      * @param array $rolePermissionKeys
      */
     public function addRolePermissions(XRole $role,$rolePermissionKeys){
-        /** @var string $rpk */
-        foreach($rolePermissionKeys as $rpk){
+        /** @var string $rpke */
+        foreach($rolePermissionKeys as $rpke){
+            /** @var string $rpk */
+            $rpk=ParameterUtils::decodePeriods($rpke);
             /** @var array $exploded */
             $exploded=explode('.',$rpk,2);
             $moduleId=$exploded[0];

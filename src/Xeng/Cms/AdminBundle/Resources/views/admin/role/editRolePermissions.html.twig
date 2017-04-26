@@ -16,10 +16,11 @@
 
 
 {% macro recursivePermission(vr,module,permission) %}
-    <span class="{{ permission.enabled?'text-bold':'' }}">
+    {% set isEmpty = vr.isEmpty(module.id ~ '%' ~ permission.fullIdEncoded) %}
+    <span class="{{ isEmpty?'':'text-bold' }}">
         {% if not permission.abstract %}
-            <input type="checkbox" name="{{ module.id }}.{{ permission.fullId }}"
-                    {{ vr.isEmpty(module.id ~ '.' ~ permission.fullId)?'':'checked'}}>
+            <input type="checkbox" name="{{ module.id }}%{{ permission.fullIdEncoded }}"
+                    {{ isEmpty?'':'checked'}}>
         {% endif %}
         {{permission.name}}
     </span>
@@ -42,7 +43,6 @@
                 <div class="alert alert-danger" role="alert">{{ error_message }}</div>
             {% endfor %}
         {% endif %}
-        {{ dump(logs) }}
         <form role="form" method="post">
             <input type="hidden" name="submit" value="submit">
             <div class="box-body">

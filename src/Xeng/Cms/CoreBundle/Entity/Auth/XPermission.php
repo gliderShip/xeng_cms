@@ -5,6 +5,7 @@
 namespace Xeng\Cms\CoreBundle\Entity\Auth;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Xeng\Cms\CoreBundle\Util\ParameterUtils;
 
 class XPermission {
     /**
@@ -64,6 +65,13 @@ class XPermission {
         } else {
             return $this->id;
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullIdEncoded() {
+        return ParameterUtils::encodePeriods($this->getFullId());
     }
 
     /**

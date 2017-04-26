@@ -1,6 +1,4 @@
 
-- create permissions
-- assign permissions to roles
 - assign roles to users
 
 - check role/user exists on edit controllers

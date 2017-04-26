@@ -156,8 +156,7 @@ class RoleAdminController extends Controller {
         return $this->render('XengCmsAdminBundle::admin/role/editRolePermissions.html.twig', array(
             'role' => $role,
             'permissionModules' => $permissionModules,
-            'validationResponse' => $validationResponse,
-            'logs' =>$logs
+            'validationResponse' => $validationResponse
         ));
     }
 
