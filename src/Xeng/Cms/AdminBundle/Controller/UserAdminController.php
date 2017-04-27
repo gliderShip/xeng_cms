@@ -6,6 +6,7 @@ namespace Xeng\Cms\AdminBundle\Controller;
 
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,12 +20,13 @@ use Xeng\Cms\CoreBundle\Services\Auth\XUserManager;
 
 /**
  * @author Ermal Mino <ermal.mino@gmail.com>
- *
+ * @Security("is_granted('p[x_admin.admin]')")
  */
 class UserAdminController extends Controller {
     /**
      * @Route("/users", name="xeng.admin.users")
      * @Route("/users/{currentPage}", name="xeng.admin.users.page")
+     * @Security("is_granted('p[x_core.user.list]')")
      *
      * @param int $currentPage
      * @return Response
@@ -42,6 +44,7 @@ class UserAdminController extends Controller {
 
     /**
      * @Route("/user/create", name="xeng.admin.user.create")
+     * @Security("is_granted('p[x_core.user.create]')")
      *
      * @param Request $request
      * @return Response
@@ -81,6 +84,7 @@ class UserAdminController extends Controller {
 
     /**
      * @Route("/user/edit/{userId}", name="xeng.admin.user.edit")
+     * @Security("is_granted('p[x_core.user.update]')")
      *
      * @param Request $request
      * @param $userId
@@ -129,6 +133,7 @@ class UserAdminController extends Controller {
 
     /**
      * @Route("/user/edit/roles/{userId}", name="xeng.admin.user.edit.roles")
+     * @Security("is_granted('p[x_core.user.roles_update]')")
      *
      * @param Request $request
      * @param $userId

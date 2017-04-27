@@ -22,4 +22,6 @@ services:
         class: Xeng\Cms\CoreBundle\Security\Voter\PermissionVoter
         arguments:
             - "@xeng.user_manager"
+        tags:
+            - { name: security.voter }
         public: false

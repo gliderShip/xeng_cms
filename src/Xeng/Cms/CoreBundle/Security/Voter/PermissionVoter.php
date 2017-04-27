@@ -68,7 +68,7 @@ class PermissionVoter implements VoterInterface {
             }
 
             $permission=substr($attribute, 2, -1);
-            if ($userPermissionMap[$permission]) {
+            if (isset($userPermissionMap[$permission])) {
                 return self::ACCESS_GRANTED;
             }
 

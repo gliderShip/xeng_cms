@@ -19,6 +19,8 @@ class CorePermissionConfig {
                 ->createChild('update', 'Update')->end()
                 ->createChild('delete', 'Delete')->end()
                 ->createChild('profile', 'Profile')->end()
+                ->createChild('roles_list', 'Role List')->end()
+                ->createChild('roles_update', 'Roles Update')->end()
             ->end()//end user permission node
             ->createChild('role', 'Role', true)
                 ->createChild('list', 'List')->end()

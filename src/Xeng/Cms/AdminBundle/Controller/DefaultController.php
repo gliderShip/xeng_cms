@@ -5,12 +5,12 @@
 namespace Xeng\Cms\AdminBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-
 /**
  * @author Ermal Mino <ermal.mino@gmail.com>
- *
+ * @Security("is_granted('p[x_admin.admin]')")
  */
 class DefaultController extends Controller {
     /**
