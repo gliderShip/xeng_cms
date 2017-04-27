@@ -1,1 +1,5 @@
 
+- implement site admin funcitonality
+    - user profile
+        - image entity uploader/handler
+        
