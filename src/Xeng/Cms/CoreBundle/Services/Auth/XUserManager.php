@@ -183,10 +183,12 @@ class XUserManager {
         $useRoles = $urRep->getUserRoles($userId);
         /** @var XUserRole $ur */
         foreach($useRoles as $ur){
-            $rolePermissions=$rpRep->getRolePermissions($ur->getRole()->getId());
-            /** @var XRolePermission $rp */
-            foreach($rolePermissions as $rp){
-                $map[$rp->getModule().'.'.$rp->getPermission()]=true;
+            if($ur->getRole()->isEnabled()) {
+                $rolePermissions = $rpRep->getRolePermissions($ur->getRole()->getId());
+                /** @var XRolePermission $rp */
+                foreach ($rolePermissions as $rp) {
+                    $map[$rp->getModule() . '.' . $rp->getPermission()] = true;
+                }
             }
         }
 
