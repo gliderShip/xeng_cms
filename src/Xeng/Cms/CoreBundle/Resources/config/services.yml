@@ -18,3 +18,8 @@ services:
         class: Xeng\Cms\CoreBundle\Services\Auth\XRoleManager
         arguments:
             - "@doctrine.orm.entity_manager"
+    xeng.security.permission_voter:
+        class: Xeng\Cms\CoreBundle\Security\Voter\PermissionVoter
+        arguments:
+            - "@xeng.user_manager"
+        public: false

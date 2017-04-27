@@ -9,8 +9,10 @@ use FOS\UserBundle\Model\UserManagerInterface;
 use Xeng\Cms\CoreBundle\Doctrine\PaginatedResult;
 use Xeng\Cms\CoreBundle\Doctrine\PaginatorUtil;
 use Xeng\Cms\CoreBundle\Entity\Auth\XRole;
+use Xeng\Cms\CoreBundle\Entity\Auth\XRolePermission;
 use Xeng\Cms\CoreBundle\Entity\Auth\XUser;
 use Xeng\Cms\CoreBundle\Entity\Auth\XUserRole;
+use Xeng\Cms\CoreBundle\Repository\Auth\XRolePermissionRepository;
 use Xeng\Cms\CoreBundle\Repository\Auth\XUserRepository;
 use Xeng\Cms\CoreBundle\Repository\Auth\XUserRoleRepository;
 
@@ -164,5 +166,30 @@ class XUserManager {
         }
 
         $this->manager->flush();
+    }
+
+    /**
+     * @param integer $userId
+     * @return array user role map
+     */
+    public function getUserPermissionMap($userId){
+        /** @var XUserRoleRepository $urRep */
+        $urRep = $this->manager->getRepository('XengCmsCoreBundle:Auth\XUserRole');
+        /** @var XRolePermissionRepository $rpRep */
+        $rpRep = $this->manager->getRepository('XengCmsCoreBundle:Auth\XRolePermission');
+        /** @var array $map */
+        $map=array();
+
+        $useRoles = $urRep->getUserRoles($userId);
+        /** @var XUserRole $ur */
+        foreach($useRoles as $ur){
+            $rolePermissions=$rpRep->getRolePermissions($ur->getRole()->getId());
+            /** @var XRolePermission $rp */
+            foreach($rolePermissions as $rp){
+                $map[$rp->getModule().'.'.$rp->getPermission()]=true;
+            }
+        }
+
+        return $map;
     }
 }
