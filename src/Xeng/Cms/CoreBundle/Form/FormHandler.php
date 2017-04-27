@@ -8,6 +8,9 @@ use Respect\Validation\Validator;
 use Respect\Validation\Validator as v;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManager;
+use Xeng\Cms\CoreBundle\Entity\Auth\XUser;
 
 /**
  * @author Ermal Mino <ermal.mino@gmail.com>
@@ -25,8 +28,15 @@ class FormHandler {
     /** @var ValidationResponse $validationResponse */
     protected $validationResponse;
 
-    /** @var $notEmptyValidator Validator */
+    /** @var Validator $notEmptyValidator  */
     protected $notEmpty;
+
+    /** @var boolean $csrfEnabled */
+    protected $csrfEnabled;
+
+    /** @var string $csrfTokenId */
+    protected $csrfTokenId;
+
     /**
      * @param ContainerInterface $container
      * @param Request $request
@@ -36,6 +46,7 @@ class FormHandler {
         $this->container=$container;
         $this->request=$request;
         $this->validationResponse=new ValidationResponse();
+        $this->csrfEnabled=true;
     }
 
     /**
@@ -43,13 +54,50 @@ class FormHandler {
      */
     public function handle(){
         $this->createParamValidationResult('submit');
+        $this->handleCsrf();
+    }
+
+    public function handleCsrf(){
+        if($this->csrfEnabled){
+            $user=$this->container->get('security.token_storage')->getToken()->getUser();
+            if($user instanceof XUser){
+                $this->csrfTokenId='user_'.$user->getId();
+            } else {
+                $this->csrfTokenId='anon';
+            }
+
+            $tokenParam=$this->createParamValidationResult('_token');
+            /** @var CsrfTokenManager $tokenManager */
+            $tokenManager=$this->container->get('security.csrf.token_manager');
+            if($this->isSubmitted()){
+                if($tokenParam->isEmpty()){
+                    $this->addError($tokenParam,'CSRF invalid, empty');
+                } else {
+                    $submittedToken=new CsrfToken($this->csrfTokenId,$tokenParam->getStringValue());
+                    if(!$tokenManager->isTokenValid($submittedToken)){
+                        $this->addError($tokenParam,'CSRF invalid');
+                    }
+
+                }
+            } else {
+                $tokenParam->setValue($tokenManager->getToken($this->csrfTokenId)->getValue());
+            }
+
+        }
     }
 
     /**
-     * @return mixed
+     * @return boolean
      */
     public function isSubmitted(){
         return !$this->validationResponse->getParam('submit')->isEmpty();
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isCsrfValid(){
+        return true;
     }
 
     /**
@@ -102,6 +150,27 @@ class FormHandler {
      */
     public function getValidationResponse(){
         return $this->validationResponse;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isCsrfEnabled(){
+        return $this->csrfEnabled;
+    }
+
+    /**
+     * @param boolean $csrfEnabled
+     */
+    public function setCsrfEnabled($csrfEnabled) {
+        $this->csrfEnabled = $csrfEnabled;
+    }
+
+    /**
+     * @param string $csrfTokenId
+     */
+    public function setCsrfTokenId($csrfTokenId){
+        $this->csrfTokenId = $csrfTokenId;
     }
 
 

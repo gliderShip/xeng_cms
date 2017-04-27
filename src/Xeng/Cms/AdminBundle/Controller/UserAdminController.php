@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Xeng\Cms\AdminBundle\Form\Auth\UserCreateHandler;
 use Xeng\Cms\AdminBundle\Form\Auth\UserEditHandler;
 use Xeng\Cms\AdminBundle\Form\Auth\UserRolesEditHandler;
@@ -91,6 +92,9 @@ class UserAdminController extends Controller {
         $xUserManager = $this->get('xeng.user_manager');
 
         $user=$xUserManager->getUser($userId);
+        if(!$user){
+            throw new NotFoundHttpException();
+        }
 
         /** @var UserEditHandler $formHandler */
         $formHandler = new UserEditHandler($this->container,$request,$user);
@@ -130,12 +134,14 @@ class UserAdminController extends Controller {
      * @param $userId
      * @return Response
      */
-    public function editRolePermissionsAction(Request $request,$userId) {
+    public function editUserRolesAction(Request $request,$userId) {
 
         /** @var XUserManager $xUserManager */
         $xUserManager = $this->get('xeng.user_manager');
         $user=$xUserManager->getUser($userId);
-
+        if(!$user){
+            throw new NotFoundHttpException();
+        }
         /** @var XRoleManager $xRoleManager */
         $xRoleManager = $this->get('xeng.role_manager');
         $roles=$xRoleManager->getAllRoles()->getResults();

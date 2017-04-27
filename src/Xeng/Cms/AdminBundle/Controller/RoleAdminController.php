@@ -9,13 +9,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Xeng\Cms\AdminBundle\Form\Auth\RoleCreateHandler;
 use Xeng\Cms\AdminBundle\Form\Auth\RoleEditHandler;
 use Xeng\Cms\AdminBundle\Form\Auth\RolePermissionsEditHandler;
 use Xeng\Cms\CoreBundle\Form\ValidationResponse;
 use Xeng\Cms\CoreBundle\Services\Auth\PermissionManager;
 use Xeng\Cms\CoreBundle\Services\Auth\XRoleManager;
-use Xeng\Cms\CoreBundle\Util\MemoryLogger;
 
 /**
  * @author Ermal Mino <ermal.mino@gmail.com>
@@ -90,6 +90,9 @@ class RoleAdminController extends Controller {
         $xRoleManager = $this->get('xeng.role_manager');
 
         $role=$xRoleManager->getRole($roleId);
+        if(!$role){
+            throw new NotFoundHttpException();
+        }
 
         /** @var RoleEditHandler $formHandler */
         $formHandler = new RoleEditHandler($this->container,$request,$role);
@@ -125,15 +128,19 @@ class RoleAdminController extends Controller {
      * @return Response
      */
     public function editRolePermissionsAction(Request $request,$roleId) {
+        /** @var XRoleManager $xRoleManager */
+        $xRoleManager = $this->get('xeng.role_manager');
+
+        $role=$xRoleManager->getRole($roleId);
+        if(!$role){
+            throw new NotFoundHttpException();
+        }
 
         /** @var PermissionManager $permissionManager */
         $permissionManager = $this->get('xeng.permission_manager');
 
         $permissionModules = $permissionManager->getModules();
-        /** @var XRoleManager $xRoleManager */
-        $xRoleManager = $this->get('xeng.role_manager');
 
-        $role=$xRoleManager->getRole($roleId);
 
         /** @var RolePermissionsEditHandler $formHandler */
         $formHandler = new RolePermissionsEditHandler($this->container,$request,$role);
