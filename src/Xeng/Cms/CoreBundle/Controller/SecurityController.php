@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class SecurityController extends Controller {
     /**
-     * @Route("/logintest", name="logintest")
+     * @Route("/login", name="login")
      * @return Response
      */
     public function loginAction() {
@@ -26,9 +26,17 @@ class SecurityController extends Controller {
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig', array(
+        return $this->render('XengCmsCoreBundle::security/login.html.twig', array(
             'last_username' => $lastUsername,
             'error'         => $error,
         ));
+    }
+
+    /**
+     * @Route("/logout", name="logout")
+     * @return Response
+     */
+    public function logoutAction() {
+        //this is fake since the symfony security system does all the work, we just need to provide the route
     }
 }
