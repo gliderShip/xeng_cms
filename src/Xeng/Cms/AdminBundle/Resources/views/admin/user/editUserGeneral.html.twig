@@ -13,6 +13,7 @@
             {% endfor %}
         {% endif %}
         <form role="form" method="post">
+            <input type="hidden" name="_token" value="{{ validationResponse.getStringValue('_token') }}">
             <input type="hidden" name="submit" value="submit">
             <div class="box-body">
                 <div class="form-group {{ validationResponse.hasError('username')?'has-error':'' }}">
