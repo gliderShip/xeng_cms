@@ -1,4 +1,4 @@
-{% extends '@XengCmsAdmin/admin/layout.html.twig' %}
+{% extends '@XengCmsAdmin/layout.html.twig' %}
 {% trans_default_domain 'admin' %}
 {% set page_title = 'xeng.admin.page.title.role.default' | trans %}
 
@@ -33,10 +33,12 @@
                     <td>{{ role.description }}</td>
                     <td>{{ role.enabled?'Yes':'No'}}</td>
                     <td>
+                        {% if is_granted('p[x_core.role.update]') %}
                         <a href="{{ path('xeng.admin.role.edit',{'roleId': role.id}) }}"
                            class="btn btn-primary btn-sm">
                             <i class="fa fa-edit"></i>&nbsp;&nbsp;Edit
                         </a>
+                        {% endif %}
                     </td>
                 </tr>
                 {% endfor %}

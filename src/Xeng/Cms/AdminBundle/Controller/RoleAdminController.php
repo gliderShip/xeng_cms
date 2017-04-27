@@ -37,7 +37,7 @@ class RoleAdminController extends Controller {
 
         $pager=$xRoleManager->getAllRoles($currentPage,20);
 
-        return $this->render('XengCmsAdminBundle::admin/role/roles.html.twig', array(
+        return $this->render('XengCmsAdminBundle::role/roles.html.twig', array(
             'pager' => $pager
         ));
     }
@@ -75,7 +75,7 @@ class RoleAdminController extends Controller {
             return $this->redirectToRoute('xeng.admin.roles');
         }
 
-        return $this->render('XengCmsAdminBundle::admin/role/addRole.html.twig', array(
+        return $this->render('XengCmsAdminBundle::role/addRole.html.twig', array(
             'validationResponse' => $validationResponse
         ));
     }
@@ -118,7 +118,7 @@ class RoleAdminController extends Controller {
             );
         }
 
-        return $this->render('XengCmsAdminBundle::admin/role/editRoleGeneral.html.twig', array(
+        return $this->render('XengCmsAdminBundle::role/editRoleGeneral.html.twig', array(
             'role' => $role,
             'validationResponse' => $validationResponse
         ));
@@ -163,7 +163,7 @@ class RoleAdminController extends Controller {
             );
         }
 
-        return $this->render('XengCmsAdminBundle::admin/role/editRolePermissions.html.twig', array(
+        return $this->render('XengCmsAdminBundle::role/editRolePermissions.html.twig', array(
             'role' => $role,
             'permissionModules' => $permissionModules,
             'validationResponse' => $validationResponse

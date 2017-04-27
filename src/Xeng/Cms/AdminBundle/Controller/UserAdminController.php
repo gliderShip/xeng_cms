@@ -37,7 +37,7 @@ class UserAdminController extends Controller {
 
         $pager=$xUserManager->getAllUsers($currentPage,20);
 
-        return $this->render('XengCmsAdminBundle::admin/user/users.html.twig', array(
+        return $this->render('XengCmsAdminBundle::user/users.html.twig', array(
             'pager' => $pager
         ));
     }
@@ -77,7 +77,7 @@ class UserAdminController extends Controller {
             return $this->redirectToRoute('xeng.admin.users');
         }
 
-        return $this->render('XengCmsAdminBundle::admin/user/addUser.html.twig', array(
+        return $this->render('XengCmsAdminBundle::user/addUser.html.twig', array(
             'validationResponse' => $validationResponse
         ));
     }
@@ -125,7 +125,7 @@ class UserAdminController extends Controller {
             );
         }
 
-        return $this->render('XengCmsAdminBundle::admin/user/editUserGeneral.html.twig', array(
+        return $this->render('XengCmsAdminBundle::user/editUserGeneral.html.twig', array(
             'user' => $user,
             'validationResponse' => $validationResponse
         ));
@@ -167,7 +167,7 @@ class UserAdminController extends Controller {
             );
         }
 
-        return $this->render('XengCmsAdminBundle::admin/user/editUserRoles.html.twig', array(
+        return $this->render('XengCmsAdminBundle::user/editUserRoles.html.twig', array(
             'user' => $user,
             'roles' => $roles,
             'validationResponse' => $validationResponse

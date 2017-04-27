@@ -7,17 +7,20 @@
         <section class="sidebar">
                 <!-- Sidebar Menu -->
                 <ul class="sidebar-menu">
-
+                    {% if is_granted('p[x_core.user.list]') %}
                     <li><a href="{{ path('xeng.admin.users') }}">
                             <i class="fa fa-users"></i>
                             <span>{{ 'xeng.admin.menu.user' | trans }}</span>
                         </a>
                     </li>
+                    {% endif %}
+                    {% if is_granted('p[x_core.role.list]') %}
                     <li><a href="{{ path('xeng.admin.roles') }}">
                             <i class="fa fa-link"></i>
                             <span>{{ 'xeng.admin.menu.role' | trans }}</span>
                         </a>
                     </li>
+                    {% endif %}
                 </ul>
 
             <!-- /.sidebar-menu -->

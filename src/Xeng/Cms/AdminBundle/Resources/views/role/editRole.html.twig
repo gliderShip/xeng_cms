@@ -1,4 +1,4 @@
-{% extends '@XengCmsAdmin/admin/layout.html.twig' %}
+{% extends '@XengCmsAdmin/layout.html.twig' %}
 {% trans_default_domain 'admin' %}
 {% set page_title = 'xeng.admin.page.title.role.edit' | trans ~ ': ' ~ role.name %}
 
@@ -10,10 +10,12 @@
                 <a href="{{ path('xeng.admin.role.edit',{'roleId': role.id}) }}"
                    aria-expanded="false">General</a>
             </li>
+            {% if is_granted('p[x_core.role.permissions_update]') %}
             <li class="{{ currentTab=='permissions'?'active':'' }}">
                 <a href="{{ path('xeng.admin.role.edit.permissions',{'roleId': role.id}) }}"
                    aria-expanded="false">Permissions</a>
             </li>
+            {% endif %}
         </ul>
         <div class="tab-content">
             {% block tabcontent %}
