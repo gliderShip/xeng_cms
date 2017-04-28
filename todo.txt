@@ -1,6 +1,4 @@
 
-- implement site admin funcitonality
-    - user profile
-        - image entity uploader/handler
+- image entity uploader/handler for profile
 
 - try putting current version live on cpanel

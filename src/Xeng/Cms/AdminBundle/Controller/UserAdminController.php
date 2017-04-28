@@ -11,10 +11,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Xeng\Cms\AdminBundle\Form\Account\UserProfileEditHandler;
 use Xeng\Cms\AdminBundle\Form\Auth\UserCreateHandler;
 use Xeng\Cms\AdminBundle\Form\Auth\UserEditHandler;
 use Xeng\Cms\AdminBundle\Form\Auth\UserRolesEditHandler;
+use Xeng\Cms\CoreBundle\Entity\Account\Profile;
 use Xeng\Cms\CoreBundle\Form\ValidationResponse;
+use Xeng\Cms\CoreBundle\Services\Account\ProfileManager;
 use Xeng\Cms\CoreBundle\Services\Auth\XRoleManager;
 use Xeng\Cms\CoreBundle\Services\Auth\XUserManager;
 
@@ -170,6 +173,75 @@ class UserAdminController extends Controller {
         return $this->render('XengCmsAdminBundle::user/editUserRoles.html.twig', array(
             'user' => $user,
             'roles' => $roles,
+            'validationResponse' => $validationResponse
+        ));
+    }
+
+    /**
+     * @Route("/user/edit/profile/{userId}", name="xeng.admin.user.edit.profile")
+     * @Security("is_granted('p[x_core.user.profile.update]')")
+     *
+     * @param Request $request
+     * @param int $userId
+     * @return Response
+     */
+    public function editUserProfileAction(Request $request,$userId) {
+
+        /** @var XUserManager $xUserManager */
+        $xUserManager = $this->get('xeng.user_manager');
+        $user=$xUserManager->getUser($userId);
+        if(!$user){
+            throw new NotFoundHttpException();
+        }
+
+
+        /** @var ProfileManager $profileManager */
+        $profileManager = $this->get('xeng.account.profile_manager');
+        /** @var Profile $profile */
+        $profile=$profileManager->getProfileByUser($userId);
+        $newProfile=false;
+        if(!$profile){
+            $profile=new Profile();
+            $newProfile=true;
+        }
+
+        /** @var UserProfileEditHandler $formHandler */
+        $formHandler = new UserProfileEditHandler($this->container,$request,$profile);
+        $formHandler->handle();
+
+        /** @var ValidationResponse $validationResponse */
+        $validationResponse=$formHandler->getValidationResponse();
+
+        if($formHandler->isSubmitted() && $formHandler->isValid()){
+
+            if($newProfile){
+                $profileManager->createProfile(
+                    $user,
+                    $validationResponse->getValue('firstName'),
+                    $validationResponse->getValue('lastName')
+                );
+                $newProfile=false;
+                $this->addFlash(
+                    'notice',
+                    'Profile created successfully!'
+                );
+            } else {
+                $profileManager->updateProfile(
+                    $profile->getId(),
+                    $validationResponse->getValue('firstName'),
+                    $validationResponse->getValue('lastName')
+                );
+                $this->addFlash(
+                    'notice',
+                    'Profile updated successfully!'
+                );
+            }
+
+        }
+
+        return $this->render('XengCmsAdminBundle::user/editUserProfile.html.twig', array(
+            'user' => $user,
+            'newProfile' => $newProfile,
             'validationResponse' => $validationResponse
         ));
     }

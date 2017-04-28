@@ -10,6 +10,12 @@
                 <a href="{{ path('xeng.admin.user.edit',{'userId': user.id}) }}"
                    aria-expanded="false">General</a>
             </li>
+            {% if is_granted('p[x_core.user.profile.update]') %}
+                <li class="{{ currentTab=='profile'?'active':'' }}">
+                    <a href="{{ path('xeng.admin.user.edit.profile',{'userId': user.id}) }}"
+                       aria-expanded="false">Profile</a>
+                </li>
+            {% endif %}
             {% if is_granted('p[x_core.user.roles_update]') %}
             <li class="{{ currentTab=='roles'?'active':'' }}">
                 <a href="{{ path('xeng.admin.user.edit.roles',{'userId': user.id}) }}"

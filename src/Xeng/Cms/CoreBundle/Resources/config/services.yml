@@ -25,3 +25,7 @@ services:
         tags:
             - { name: security.voter }
         public: false
+    xeng.account.profile_manager:
+        class: Xeng\Cms\CoreBundle\Services\Account\ProfileManager
+        arguments:
+            - "@doctrine.orm.entity_manager"
