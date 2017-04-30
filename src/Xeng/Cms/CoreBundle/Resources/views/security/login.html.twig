@@ -1,9 +1,10 @@
 {% extends '@XengCmsCore/base.html.twig' %}
+{% trans_default_domain 'core' %}
 
 {% block bodycontent %}
     <div class="login-box">
         <div class="login-logo">
-            <a href="#"><b>Xeng</b>CMS</a>
+            <a href="#">{{ 'x.site.name.long' | trans | raw}}</a>
         </div>
         <!-- /.login-logo -->
         <div class="login-box-body">

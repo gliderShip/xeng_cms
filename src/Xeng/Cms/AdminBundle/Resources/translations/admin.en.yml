@@ -1,3 +1,8 @@
+x.site:
+  name:
+    default: 'Newsetika.al'
+    short: '<b>NE</b>.al'
+    long: '<b>Newsetika</b>.al'
 xeng.admin:
     menu:
         user: 'Users'
