@@ -1,4 +1,5 @@
 
-- image entity uploader/handler for profile
+- include profile image on admin page
+- add file param validator and validate profile image mime type and extensions to a short whitelist
 
 - try putting current version live on cpanel

@@ -4,7 +4,7 @@
 
 {% block tabcontent %}
     <div class="tab-pane active">
-        {{ dump(logs) }}
+
         {% for flash_message in app.session.flashBag.get('notice') %}
             <div class="alert alert-success" role="alert">{{ flash_message }}</div>
         {% endfor %}
@@ -30,6 +30,11 @@
                 <div class="form-group">
                     <label for="profileImage">Profile Image</label>
                     <input id="profileImage" name="profileImage" type="file" class="form-control">
+                    {% if profile.hasImage() %}
+                    <div style="max-width: 400px">
+                        <img src="/media/profile/images/{{ profile.image.path }}" class="img-responsive"/>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
             <!-- /.box-body -->

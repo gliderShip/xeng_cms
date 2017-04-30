@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 class BaseImage {
 
     /**
-     * @var int
+     * @var int $id
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -24,10 +24,29 @@ class BaseImage {
     protected $id;
 
     /**
-     * @var string
+     * @var string $path
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     protected $path;
+
+    /**
+     * @var string $originalName
+     * @ORM\Column(type="string", length=255, nullable=false)
+     */
+    protected $originalName;
+
+    /**
+     * @var string $mimeType
+     * @ORM\Column(type="string", length=100, nullable=false)
+     */
+    protected $mimeType;
+
+    /**
+     * @var int $size
+     *
+     * @ORM\Column(name="size", type="integer")
+     */
+    protected $size;
 
     /**
      * @var DateTime $lastUpdated
@@ -74,6 +93,48 @@ class BaseImage {
      */
     public function setLastUpdated($lastUpdated){
         $this->lastUpdated = $lastUpdated;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOriginalName(){
+        return $this->originalName;
+    }
+
+    /**
+     * @param string $originalName
+     */
+    public function setOriginalName($originalName){
+        $this->originalName = $originalName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMimeType(){
+        return $this->mimeType;
+    }
+
+    /**
+     * @param string $mimeType
+     */
+    public function setMimeType($mimeType){
+        $this->mimeType = $mimeType;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSize() {
+        return $this->size;
+    }
+
+    /**
+     * @param int $size
+     */
+    public function setSize($size) {
+        $this->size = $size;
     }
 
 

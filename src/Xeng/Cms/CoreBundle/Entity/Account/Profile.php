@@ -47,6 +47,13 @@ class Profile {
     private $image=null;
 
     /**
+     * @return boolean
+     */
+    public function hasImage() {
+        return $this->image!==null;
+    }
+
+    /**
      * @return int
      */
     public function getId() {

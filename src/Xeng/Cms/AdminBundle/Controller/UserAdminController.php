@@ -188,8 +188,6 @@ class UserAdminController extends Controller {
      */
     public function editUserProfileAction(Request $request,$userId) {
 
-        MemoryLogger::log($request->files->get('profileImage'));
-
         /** @var XUserManager $xUserManager */
         $xUserManager = $this->get('xeng.user_manager');
         $user=$xUserManager->getUser($userId);
@@ -216,9 +214,10 @@ class UserAdminController extends Controller {
         $validationResponse=$formHandler->getValidationResponse();
 
         if($formHandler->isSubmitted() && $formHandler->isValid()){
-
+            $uploadedFile=$request->files->get('profileImage');
+            $p=null;
             if($newProfile){
-                $profileManager->createProfile(
+                $p=$profileManager->createProfile(
                     $user,
                     $validationResponse->getValue('firstName'),
                     $validationResponse->getValue('lastName')
@@ -229,7 +228,7 @@ class UserAdminController extends Controller {
                     'Profile created successfully!'
                 );
             } else {
-                $profileManager->updateProfile(
+                $p=$profileManager->updateProfile(
                     $profile->getId(),
                     $validationResponse->getValue('firstName'),
                     $validationResponse->getValue('lastName')
@@ -240,6 +239,11 @@ class UserAdminController extends Controller {
                 );
             }
 
+            if($p && $uploadedFile){
+                $profile=$p;
+                $profileManager->updateProfileImage($p,$uploadedFile);
+            }
+
         }
 
         $logs=MemoryLogger::getLogs();
@@ -247,6 +251,7 @@ class UserAdminController extends Controller {
         return $this->render('XengCmsAdminBundle::user/editUserProfile.html.twig', array(
             'user' => $user,
             'newProfile' => $newProfile,
+            'profile' => $profile,
             'logs' => $logs,
             'validationResponse' => $validationResponse
         ));
