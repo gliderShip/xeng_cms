@@ -5,6 +5,8 @@
 namespace Xeng\Cms\CoreBundle\Services\Account;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Gaufrette\Filesystem;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Xeng\Cms\CoreBundle\Entity\Account\Profile;
 use Xeng\Cms\CoreBundle\Entity\Auth\XUser;
 use Xeng\Cms\CoreBundle\Repository\Account\ProfileRepository;
@@ -18,11 +20,16 @@ class ProfileManager {
     /** @var ObjectManager */
     private $manager;
 
+    /** @var Filesystem */
+    private $filesystem;
+
     /**
      * @param ObjectManager $manager
+     * @param Filesystem $filesystem
      */
-    public function __construct(ObjectManager $manager) {
+    public function __construct(ObjectManager $manager, Filesystem $filesystem) {
         $this->manager = $manager;
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -78,6 +85,26 @@ class ProfileManager {
         $profile->setLastName($lastName);
 
         $this->manager->persist($profile);
+        $this->manager->flush();
+    }
+
+    public function updateProfileImage(Profile $profile, UploadedFile $uploadedFile){
+
+        $storeItem=$storeItemImage->getStoreItem();
+
+        $now=new \DateTime();
+        $imageFile = $storeItemImage->getImageFile();
+        $imagePath = $storeItem->getId().'_'.$now->getTimestamp().'_'.$imageFile->getClientOriginalName();
+        $storeItemImage->setPath($imagePath);
+
+        $this->filesystem->write($imagePath,file_get_contents($imageFile->getRealPath()),true);
+
+        if($storeItem->getDefaultImage()==null){
+            $storeItem->setDefaultImage($storeItemImage);
+            $this->manager->persist($storeItem);
+        }
+
+        $this->manager->persist($storeItemImage);
         $this->manager->flush();
     }
 

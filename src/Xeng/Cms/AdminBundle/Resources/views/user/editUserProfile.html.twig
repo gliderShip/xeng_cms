@@ -27,10 +27,9 @@
                     <input id="lastName" name="lastName" type="text" class="form-control"
                            value="{{ validationResponse.getStringValue('lastName') }}">
                 </div>
-                <div class="form-group {{ validationResponse.hasError('profileImage')?'has-error':'' }}">
+                <div class="form-group">
                     <label for="profileImage">Profile Image</label>
                     <input id="profileImage" name="profileImage" type="file" class="form-control">
-
                 </div>
             </div>
             <!-- /.box-body -->

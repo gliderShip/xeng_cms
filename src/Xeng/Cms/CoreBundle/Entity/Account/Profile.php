@@ -39,6 +39,12 @@ class Profile {
      */
     private $lastName='';
 
+    /**
+     * @var ProfileImage $image
+     * @ORM\OneToOne(targetEntity="ProfileImage")
+     * @ORM\JoinColumn(name="image_id", referencedColumnName="id", nullable=true)
+     */
+    private $image=null;
 
     /**
      * @return int
@@ -94,6 +100,20 @@ class Profile {
      */
     public function setUser($user) {
         $this->user = $user;
+    }
+
+    /**
+     * @return ProfileImage
+     */
+    public function getImage(){
+        return $this->image;
+    }
+
+    /**
+     * @param ProfileImage $image
+     */
+    public function setImage($image){
+        $this->image = $image;
     }
 
 }

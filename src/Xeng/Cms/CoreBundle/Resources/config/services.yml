@@ -29,3 +29,4 @@ services:
         class: Xeng\Cms\CoreBundle\Services\Account\ProfileManager
         arguments:
             - "@doctrine.orm.entity_manager"
+            - "@gaufrette.profile_image_filesystem"
