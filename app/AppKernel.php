@@ -19,7 +19,8 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
             new Xeng\Cms\CoreBundle\XengCmsCoreBundle(),
             new Xeng\Cms\AdminBundle\XengCmsAdminBundle(),
-            new AppBundle\AppBundle()
+            new AppBundle\AppBundle(),
+            new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle()
 
         );
 

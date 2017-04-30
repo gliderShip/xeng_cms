@@ -73,3 +73,13 @@ fos_user:
     from_email:
         address: 'ermal.mino@gmail.com'
         sender_name: 'ermal.mino@gmail.com'
+
+knp_gaufrette:
+    adapters:
+        profile_image:
+            local:
+                directory: "%kernel.root_dir%/../web/media/profile/images"
+                create: true
+    filesystems:
+        profile_image:
+            adapter: profile_image

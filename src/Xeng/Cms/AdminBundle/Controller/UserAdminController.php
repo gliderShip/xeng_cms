@@ -20,6 +20,7 @@ use Xeng\Cms\CoreBundle\Form\ValidationResponse;
 use Xeng\Cms\CoreBundle\Services\Account\ProfileManager;
 use Xeng\Cms\CoreBundle\Services\Auth\XRoleManager;
 use Xeng\Cms\CoreBundle\Services\Auth\XUserManager;
+use Xeng\Cms\CoreBundle\Util\MemoryLogger;
 
 /**
  * @author Ermal Mino <ermal.mino@gmail.com>
@@ -187,6 +188,8 @@ class UserAdminController extends Controller {
      */
     public function editUserProfileAction(Request $request,$userId) {
 
+        MemoryLogger::log($request->files->get('profileImage'));
+
         /** @var XUserManager $xUserManager */
         $xUserManager = $this->get('xeng.user_manager');
         $user=$xUserManager->getUser($userId);
@@ -239,9 +242,12 @@ class UserAdminController extends Controller {
 
         }
 
+        $logs=MemoryLogger::getLogs();
+
         return $this->render('XengCmsAdminBundle::user/editUserProfile.html.twig', array(
             'user' => $user,
             'newProfile' => $newProfile,
+            'logs' => $logs,
             'validationResponse' => $validationResponse
         ));
     }
