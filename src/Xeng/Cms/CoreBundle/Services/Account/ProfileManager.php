@@ -71,7 +71,10 @@ class ProfileManager {
         $profile->setFirstName($firstName);
         $profile->setLastName($lastName);
 
+        $user->setProfile($profile);
+
         $this->manager->persist($profile);
+        $this->manager->persist($user);
         $this->manager->flush();
         return $profile;
     }
