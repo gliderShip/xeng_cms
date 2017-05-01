@@ -12,19 +12,19 @@ namespace Xeng\Cms\CoreBundle\Form;
 class ParamValidationResult {
 
     /** @var string */
-    private $name;
+    protected $name;
 
     /** @var mixed */
-    private $value;
+    protected $value;
 
     /** @var boolean */
-    private $valid;
+    protected $valid;
 
     /** @var boolean */
-    private $empty;
+    protected $empty;
 
     /** @var array */
-    private $errors;
+    protected $errors;
 
     /**
      * @return array

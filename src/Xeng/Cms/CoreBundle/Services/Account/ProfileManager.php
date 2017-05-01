@@ -125,8 +125,8 @@ class ProfileManager {
         if(!$originalName){
             $originalName=''.$now->getTimestamp();
         }
-        $imageExtension = pathinfo($originalName, PATHINFO_EXTENSION);
 
+        $imageExtension = $uploadedFile->getClientOriginalExtension();
         $imagePath = $now->getTimestamp().'_'.md5($uploadedFile->getClientOriginalName()).'.'.$imageExtension;
 
         $profileImage->setPath($imagePath);

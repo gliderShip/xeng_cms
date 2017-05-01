@@ -7,6 +7,7 @@ namespace Xeng\Cms\CoreBundle\Form;
 use Respect\Validation\Validator;
 use Respect\Validation\Validator as v;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManager;
@@ -117,6 +118,21 @@ class FormHandler {
             return $this->request->request->get($paramName);
         } else if($this->request->query->has($paramName)){
             return $this->request->query->get($paramName);
+        } else if($this->request->files->has($paramName)){
+            return $this->request->files->get($paramName);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     *
+     * @param $paramName string
+     * @return UploadedFile
+     */
+    public function getFile($paramName){
+        if($this->request->files->has($paramName)){
+            return $this->request->files->get($paramName);
         } else {
             return null;
         }
@@ -131,6 +147,19 @@ class FormHandler {
         /** @var ParamValidationResult $param */
         $param = new ParamValidationResult($paramName,$this->get($paramName));
         $param->setEmpty(!$this->notEmpty->validate($param->getValue()));
+        $this->validationResponse->addParam($param);
+        return $param;
+    }
+
+    /**
+     *
+     * @param $paramName string
+     * @return FileParamValidationResult
+     */
+    public function createFileParamValidationResult($paramName){
+        /** @var FileParamValidationResult $param */
+        $param = new FileParamValidationResult($paramName,$this->getFile($paramName));
+        $param->setEmpty($param->getValue() === null );
         $this->validationResponse->addParam($param);
         return $param;
     }

@@ -8,6 +8,7 @@ namespace Xeng\Cms\AdminBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -214,7 +215,6 @@ class UserAdminController extends Controller {
         $validationResponse=$formHandler->getValidationResponse();
 
         if($formHandler->isSubmitted() && $formHandler->isValid()){
-            $uploadedFile=$request->files->get('profileImage');
             $p=null;
             if($newProfile){
                 $p=$profileManager->createProfile(
@@ -239,6 +239,8 @@ class UserAdminController extends Controller {
                 );
             }
 
+            /** @var UploadedFile $uploadedFile */
+            $uploadedFile=$validationResponse->getValue('profileImage');
             if($p && $uploadedFile){
                 $profile=$p;
                 $profileManager->updateProfileImage($p,$uploadedFile);

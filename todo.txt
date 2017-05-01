@@ -1,4 +1,3 @@
 
-- add file param validator and validate profile image mime type and extensions to a short whitelist
-
+- rename web folder to public_html (document what it takes to rename it)
 - try putting current version live on cpanel
