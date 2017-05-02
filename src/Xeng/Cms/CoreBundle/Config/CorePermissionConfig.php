@@ -1,9 +1,15 @@
 <?php
+// src/Xeng/Cms/CoreBundle/Config/CorePermissionConfig.php
+
 namespace Xeng\Cms\CoreBundle\Config;
 
 use Xeng\Cms\CoreBundle\Entity\Auth\XAppModule;
 use Xeng\Cms\CoreBundle\Services\Auth\PermissionManager;
 
+/**
+ * @author Ermal Mino <ermal.mino@gmail.com>
+ *
+ */
 class CorePermissionConfig {
 
     /**
