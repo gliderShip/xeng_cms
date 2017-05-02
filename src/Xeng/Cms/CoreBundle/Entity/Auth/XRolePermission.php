@@ -26,7 +26,7 @@ class XRolePermission {
 
     /**
      * @var string
-     * @ORM\Column(name="module", type="string", length=255)
+     * @ORM\Column(name="module", type="string", length=50)
      */
     private $module;
 
@@ -38,7 +38,7 @@ class XRolePermission {
 
     /**
      * @var string
-     * @ORM\Column(name="permission", type="string", length=512)
+     * @ORM\Column(name="permission", type="string", length=255)
      */
     private $permission;
 

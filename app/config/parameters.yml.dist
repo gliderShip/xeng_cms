@@ -2,9 +2,9 @@ parameters:
     web_dir: public_html
     database_host: 127.0.0.1
     database_port: ~
-    database_name: xeng_cms
-    database_user: root
-    database_password: ~
+    database_name: newsetik_xeng_cms
+    database_user: newsetik_adminu
+    database_password: xFp46[T4@KI1
 
     mailer_transport: smtp
     mailer_host: 127.0.0.1
