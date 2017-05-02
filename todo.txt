@@ -1,2 +1,2 @@
 
-- try putting current version live on cpanel
+- automate archive zipping to deploy live excluding files like parameters and web media 
