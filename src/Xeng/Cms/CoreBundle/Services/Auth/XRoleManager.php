@@ -1,6 +1,6 @@
 <?php
 
-// src/Xeng/Cms/CoreBundle/Services/Auth/XUserManager.php
+// src/Xeng/Cms/CoreBundle/Services/Auth/XRoleManager.php
 
 namespace Xeng\Cms\CoreBundle\Services\Auth;
 

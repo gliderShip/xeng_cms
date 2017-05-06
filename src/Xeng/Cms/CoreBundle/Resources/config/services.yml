@@ -30,3 +30,7 @@ services:
         arguments:
             - "@doctrine.orm.entity_manager"
             - "@gaufrette.profile_image_filesystem"
+    xeng.category_manager:
+        class: Xeng\Cms\CoreBundle\Services\Content\CategoryManager
+        arguments:
+            - "@doctrine.orm.entity_manager"

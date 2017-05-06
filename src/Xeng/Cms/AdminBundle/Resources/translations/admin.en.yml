@@ -7,6 +7,7 @@ xeng.admin:
     menu:
         user: 'Users'
         role: 'Roles'
+        category: 'Categories'
     page:
         title:
             dashboard: 'Dashboard'
@@ -18,3 +19,7 @@ xeng.admin:
                 default: 'Role Manager'
                 add: 'Create New Role'
                 edit: 'Edit Role'
+            category:
+                default: 'Category Manager'
+                add: 'Create New Category'
+                edit: 'Edit Category'

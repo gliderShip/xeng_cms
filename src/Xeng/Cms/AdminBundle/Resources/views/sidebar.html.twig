@@ -21,6 +21,13 @@
                         </a>
                     </li>
                     {% endif %}
+                    {% if is_granted('p[x_core.category.list]') %}
+                        <li><a href="{{ path('xeng.admin.categories') }}">
+                                <i class="fa fa-link"></i>
+                                <span>{{ 'xeng.admin.menu.category' | trans }}</span>
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
 
             <!-- /.sidebar-menu -->

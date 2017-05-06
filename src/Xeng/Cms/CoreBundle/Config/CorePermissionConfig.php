@@ -37,6 +37,13 @@ class CorePermissionConfig {
                 ->createChild('update', 'Update')->end()
                 ->createChild('delete', 'Delete')->end()
                 ->createChild('permissions_update', 'Permissions Update')->end()
+            ->end() //end role permission node
+            ->createChild('category', 'Category', true)
+                ->createChild('list', 'List')->end()
+                ->createChild('detail', 'Detail')->end()
+                ->createChild('create', 'Create')->end()
+                ->createChild('update', 'Update')->end()
+                ->createChild('delete', 'Delete')->end()
             ->end(); //end role permission node
         PermissionManager::addModule($module);
     }
