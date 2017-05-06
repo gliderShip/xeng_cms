@@ -7,6 +7,11 @@
         <section class="sidebar">
                 <!-- Sidebar Menu -->
                 <ul class="sidebar-menu">
+                    <li><a href="{{ path('xeng.admin.account') }}">
+                            <i class="fa fa-link"></i>
+                            <span>{{ 'xeng.admin.menu.account' | trans }}</span>
+                        </a>
+                    </li>
                     {% if is_granted('p[x_core.user.list]') %}
                     <li><a href="{{ path('xeng.admin.users') }}">
                             <i class="fa fa-users"></i>

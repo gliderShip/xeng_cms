@@ -1,0 +1,30 @@
+{% extends '@XengCmsAdmin/layout.html.twig' %}
+{% trans_default_domain 'admin' %}
+{% set page_title = 'xeng.admin.page.title.account.default' | trans %}
+{% set currentTab = 'user' %}
+
+{% block content %}
+
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+            <li class="{{ currentTab=='user'?'active':'' }}">
+                <a href="#"
+                   aria-expanded="false">User</a>
+            </li>
+            <li class="{{ currentTab=='profile'?'active':'' }}">
+                <a href="#"
+                   aria-expanded="false">Profile</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            {% block tabcontent %}
+            {% endblock %}
+        </div>
+        <!-- /.tab-content -->
+    </div>
+
+{% endblock %}
+
+
+
+
