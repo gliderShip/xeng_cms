@@ -1,6 +1,6 @@
 <?php
 
-// src/Xeng/Cms/CoreBundle/Entity/BaseImage.php
+// src/Xeng/Cms/CoreBundle/Entity/BaseFile.php
 
 namespace Xeng\Cms\CoreBundle\Entity;
 
@@ -10,9 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @author Ermal Mino <ermal.mino@gmail.com>
  *
- * This serves as the base class for all image assets
+ * This serves as the base class for all file assets, including images
  */
-class BaseImage {
+class BaseFile {
 
     /**
      * @var int $id

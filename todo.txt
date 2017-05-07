@@ -1,4 +1,7 @@
 
-- krijo content
+- krijo content entity model bashke me imazhet
+
 - lidhje many to many mes content dhe kategorise
 
+- integro angular ne frontend te adminit per komponente ajax,
+  psh kur kerkon userat per autorin e nje shkrimi.

@@ -5,7 +5,7 @@
 namespace Xeng\Cms\CoreBundle\Entity\Account;
 
 use Doctrine\ORM\Mapping as ORM;
-use Xeng\Cms\CoreBundle\Entity\BaseImage;
+use Xeng\Cms\CoreBundle\Entity\BaseFile;
 
 /**
  * @author Ermal Mino <ermal.mino@gmail.com>
@@ -13,7 +13,7 @@ use Xeng\Cms\CoreBundle\Entity\BaseImage;
  * @ORM\Table(name="x_profile_image")
  * @ORM\Entity(repositoryClass="Xeng\Cms\CoreBundle\Repository\Account\ProfileImageRepository")
  */
-class ProfileImage extends BaseImage {
+class ProfileImage extends BaseFile {
 
     /**
      * @var Profile $profile
