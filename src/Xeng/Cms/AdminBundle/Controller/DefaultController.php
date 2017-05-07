@@ -10,7 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 /**
  * @author Ermal Mino <ermal.mino@gmail.com>
- * @Security("is_granted('p[x_admin.admin]')")
+ *
+ * @Security("is_authenticated()")
  */
 class DefaultController extends Controller {
     /**

@@ -248,13 +248,10 @@ class UserAdminController extends Controller {
 
         }
 
-        $logs=MemoryLogger::getLogs();
-
         return $this->render('XengCmsAdminBundle::user/editUserProfile.html.twig', array(
             'user' => $user,
             'newProfile' => $newProfile,
             'profile' => $profile,
-            'logs' => $logs,
             'validationResponse' => $validationResponse
         ));
     }

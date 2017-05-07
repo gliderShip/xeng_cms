@@ -1,5 +1,4 @@
 
-- personal account management tek admin per te gjithe userat regardless of permissions
 - krijo content
 - lidhje many to many mes content dhe kategorise
 

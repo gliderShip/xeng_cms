@@ -6,6 +6,8 @@ namespace Xeng\Cms\CoreBundle\Services\Auth;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use FOS\UserBundle\Model\UserManagerInterface;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Xeng\Cms\CoreBundle\Doctrine\PaginatedResult;
 use Xeng\Cms\CoreBundle\Doctrine\PaginatorUtil;
 use Xeng\Cms\CoreBundle\Entity\Auth\XRole;
@@ -21,19 +23,24 @@ use Xeng\Cms\CoreBundle\Repository\Auth\XUserRoleRepository;
  *
  */
 class XUserManager {
-    /** @var UserManagerInterface */
+    /** @var UserManagerInterface $userManager*/
     private $userManager;
 
-    /** @var ObjectManager */
+    /** @var ObjectManager $manager */
     private $manager;
+
+    /** @var EncoderFactoryInterface $encoderFactory*/
+    private $encoderFactory;
+
 
     /**
      * @param ObjectManager $manager
      * @param UserManagerInterface $userManager
      */
-    public function __construct(ObjectManager $manager, UserManagerInterface $userManager) {
+    public function __construct(ObjectManager $manager, UserManagerInterface $userManager,$encoderFactory) {
         $this->manager = $manager;
         $this->userManager = $userManager;
+        $this->encoderFactory = $encoderFactory;
     }
 
     /**
@@ -193,5 +200,21 @@ class XUserManager {
         }
 
         return $map;
+    }
+
+    /**
+     * @param XUser $user
+     * @param string $password
+     * @return boolean
+     */
+    public function isPasswordValid(XUser $user,$password){
+        /** @var PasswordEncoderInterface $encoder */
+        $encoder=$this->encoderFactory->getEncoder($user);
+        return $encoder->isPasswordValid(
+            $user->getPassword(),
+            $password,
+            $user->getSalt()
+        );
+
     }
 }
