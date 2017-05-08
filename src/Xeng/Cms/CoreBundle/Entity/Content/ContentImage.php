@@ -17,7 +17,7 @@ class ContentImage extends BaseFile {
 
     /**
      * @var BaseContent $content
-     * @ORM\ManyToOne(targetEntity="BaseContent", inversedBy="images")
+     * @ORM\ManyToOne(targetEntity="BaseContent")
      * @ORM\JoinColumn(name="owner", referencedColumnName="id")
      */
     protected $owner;

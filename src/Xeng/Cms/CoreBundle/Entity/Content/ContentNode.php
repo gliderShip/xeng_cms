@@ -16,11 +16,12 @@ use Xeng\Cms\CoreBundle\Entity\Auth\XUser;
  * @ORM\Entity(repositoryClass="Xeng\Cms\CoreBundle\Repository\Content\ContentNodeRepository")
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="contentType", type="string")
- * @ORM\DiscriminatorMap({"node" = "ContentNode", "base" = "BaseContent"})
+ * @ORM\DiscriminatorMap({"node" = "ContentNode", "base" = "BaseContent", "article" = "NewsArticle"})
  */
 class ContentNode {
     const TYPE_NODE = 'node';
     const TYPE_BASE = 'base';
+    const TYPE_ARTICLE = 'article';
 
     /**
      * @var int $id

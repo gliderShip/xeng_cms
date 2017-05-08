@@ -4,7 +4,6 @@
 namespace Xeng\Cms\CoreBundle\Entity\Content;
 
 use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Xeng\Cms\CoreBundle\Entity\Auth\XUser;
 
@@ -19,8 +18,7 @@ use Xeng\Cms\CoreBundle\Entity\Auth\XUser;
 class BaseContent extends ContentNode {
     const S_DRAFT = 0;
     const S_PENDING = 1;
-    const S_REDACTING = 2;
-    const S_PUBLISHED = 3;
+    const S_PUBLISHED = 2;
 
 
     /**
@@ -43,16 +41,9 @@ class BaseContent extends ContentNode {
     protected $image=null;
 
     /**
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="ContentImage", mappedBy="owner")
-     */
-    protected $images;
-
-    /**
      * @var XUser $author
      * @ORM\ManyToOne(targetEntity="Xeng\Cms\CoreBundle\Entity\Auth\XUser")
-     * @ORM\JoinColumn(name="author", referencedColumnName="id")
+     * @ORM\JoinColumn(name="author", referencedColumnName="id", nullable=true)
      */
     protected $author;
 
@@ -103,20 +94,6 @@ class BaseContent extends ContentNode {
      */
     public function setImage($image){
         $this->image = $image;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getImages(){
-        return $this->images;
-    }
-
-    /**
-     * @param ArrayCollection $images
-     */
-    public function setImages($images){
-        $this->images = $images;
     }
 
     /**

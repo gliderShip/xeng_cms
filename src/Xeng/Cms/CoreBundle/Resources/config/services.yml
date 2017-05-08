@@ -35,3 +35,8 @@ services:
         class: Xeng\Cms\CoreBundle\Services\Content\CategoryManager
         arguments:
             - "@doctrine.orm.entity_manager"
+    xeng.content_image_manager:
+        class: Xeng\Cms\CoreBundle\Services\Content\ContentImageManager
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@gaufrette.content_image_filesystem"
