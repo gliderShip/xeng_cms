@@ -40,11 +40,11 @@ class ContentNode {
     protected $createdAt;
 
     /**
-     * @var XUser $createdBy
+     * @var XUser $owner
      * @ORM\ManyToOne(targetEntity="Xeng\Cms\CoreBundle\Entity\Auth\XUser")
-     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
+     * @ORM\JoinColumn(name="owner", referencedColumnName="id")
      */
-    protected $createdBy;
+    protected $owner;
 
     /**
      * @var DateTime $modifiedAt
@@ -83,20 +83,6 @@ class ContentNode {
     }
 
     /**
-     * @return XUser
-     */
-    public function getCreatedBy(){
-        return $this->createdBy;
-    }
-
-    /**
-     * @param XUser $createdBy
-     */
-    public function setCreatedBy($createdBy){
-        $this->createdBy = $createdBy;
-    }
-
-    /**
      * @return DateTime
      */
     public function getModifiedAt(){
@@ -115,6 +101,20 @@ class ContentNode {
      */
     public function getType(){
         return self::TYPE_NODE;
+    }
+
+    /**
+     * @return XUser
+     */
+    public function getOwner(){
+        return $this->owner;
+    }
+
+    /**
+     * @param XUser $owner
+     */
+    public function setOwner($owner) {
+        $this->owner = $owner;
     }
 
 }

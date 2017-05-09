@@ -44,7 +44,16 @@ class CorePermissionConfig {
                 ->createChild('create', 'Create')->end()
                 ->createChild('update', 'Update')->end()
                 ->createChild('delete', 'Delete')->end()
-            ->end(); //end role permission node
+            ->end() //end category permission node
+            ->createChild('content', 'Content', true)
+                ->createChild('article', 'News Article',true)
+                    ->createChild('list', 'List')->end()
+                    ->createChild('detail', 'Detail')->end()
+                    ->createChild('create', 'Create')->end()
+                    ->createChild('update', 'Update')->end()
+                    ->createChild('delete', 'Delete')->end()
+                ->end() //end article permission node
+            ->end(); //end content permission node
         PermissionManager::addModule($module);
     }
 

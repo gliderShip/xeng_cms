@@ -4,27 +4,34 @@ x.site:
     short: '<b>NE</b>.al'
     long: '<b>Newsetika</b>.al'
 xeng.admin:
-    menu:
-        user: 'Users'
-        role: 'Roles'
-        category: 'Categories'
-        account: 'Account'
-    page:
-        title:
-            dashboard: 'Dashboard'
-            account:
-                default: 'Manage Account'
-                edit_user: 'Edit User'
-                edit_profile: 'Edit Profile'
-            user:
-                default: 'User Manager'
-                add: 'Create New User'
-                edit: 'Edit User'
-            role:
-                default: 'Role Manager'
-                add: 'Create New Role'
-                edit: 'Edit Role'
-            category:
-                default: 'Category Manager'
-                add: 'Create New Category'
-                edit: 'Edit Category'
+  menu:
+    user: 'Users'
+    role: 'Roles'
+    category: 'Categories'
+    account: 'Account'
+    content:
+      article: 'News Articles'
+  page:
+    title:
+      dashboard: 'Dashboard'
+      account:
+        default: 'Manage Account'
+        edit_user: 'Edit User'
+        edit_profile: 'Edit Profile'
+      user:
+        default: 'User Manager'
+        add: 'Create New User'
+        edit: 'Edit User'
+      role:
+        default: 'Role Manager'
+        add: 'Create New Role'
+        edit: 'Edit Role'
+      category:
+        default: 'Category Manager'
+        add: 'Create New Category'
+        edit: 'Edit Category'
+      content:
+        article:
+          default: 'News Article Manager'
+          add: 'Create News Article'
+          edit: 'Edit News Article'
