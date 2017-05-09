@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Xeng\Cms\AdminBundle\Form\Content\NewsArticleCreateHandler;
 use Xeng\Cms\CoreBundle\Form\ValidationResponse;
 use Xeng\Cms\CoreBundle\Services\Content\NewsArticleManager;
 
@@ -48,8 +48,34 @@ class NewsArticleAdminController extends Controller {
      * @return Response
      */
     public function createArticleAction(Request $request) {
+        /** @var NewsArticleManager $articleManager */
+        $articleManager = $this->get('xeng.news_article_manager');
 
+        /** @var NewsArticleCreateHandler $formHandler */
+        $formHandler = new NewsArticleCreateHandler($this->container,$request);
+        $formHandler->handle();
+
+        /** @var ValidationResponse $validationResponse */
+        $validationResponse=$formHandler->getValidationResponse();
+
+        if($formHandler->isSubmitted() && $formHandler->isValid()){
+            //todo create news article
+
+            $validationResponse->getValue('title');
+
+            $this->addFlash(
+                'notice',
+                'News Article created successfully!'
+            );
+
+            return $this->redirectToRoute('xeng.admin.content.article.list');
+        }
+
+        return $this->render('XengCmsAdminBundle::content/article/articleCreate.html.twig', array(
+            'validationResponse' => $validationResponse
+        ));
     }
+
 
     /**
      * @Route("/article/edit/{nodeId}", name="xeng.admin.content.article.edit")

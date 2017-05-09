@@ -20,18 +20,11 @@ class BaseContent extends ContentNode {
     const S_PENDING = 1;
     const S_PUBLISHED = 2;
 
-
     /**
      * @var string $title
      * @ORM\Column(type="string", length=150, nullable=false)
      */
     protected $title;
-
-    /**
-     * @var string $description
-     * @ORM\Column(type="string", length=150)
-     */
-    protected $description;
 
     /**
      * @var ContentImage $image
@@ -41,16 +34,21 @@ class BaseContent extends ContentNode {
     protected $image=null;
 
     /**
+     * @var int $status
+     * @ORM\Column(type="integer")
+     */
+    protected $status=0;
+
+    /**
      * @var XUser $author
      * @ORM\ManyToOne(targetEntity="Xeng\Cms\CoreBundle\Entity\Auth\XUser")
-     * @ORM\JoinColumn(name="author", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="author", referencedColumnName="id")
      */
     protected $author;
 
     /**
      * @var DateTime $publishedAt
-     *
-     * @ORM\Column(name="published_at", type="datetime")
+     * @ORM\Column(name="published_at", type="datetime", nullable=true)
      */
     protected $publishedAt;
 
@@ -66,20 +64,6 @@ class BaseContent extends ContentNode {
      */
     public function setTitle($title){
         $this->title = $title;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription(){
-        return $this->description;
-    }
-
-    /**
-     * @param string $description
-     */
-    public function setDescription($description){
-        $this->description = $description;
     }
 
     /**
@@ -129,6 +113,20 @@ class BaseContent extends ContentNode {
      */
     public function getType(){
         return self::TYPE_BASE;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatus(){
+        return $this->status;
+    }
+
+    /**
+     * @param int $status
+     */
+    public function setStatus($status){
+        $this->status = $status;
     }
 
 }

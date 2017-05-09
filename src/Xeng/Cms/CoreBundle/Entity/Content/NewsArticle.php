@@ -18,6 +18,12 @@ use Xeng\Cms\CoreBundle\Entity\Auth\XUser;
 class NewsArticle extends BaseContent {
 
     /**
+     * @var string $summary
+     * @ORM\Column(type="string", length=255)
+     */
+    protected $summary='';
+
+    /**
      * @var string $body
      * @ORM\Column(type="text")
      */
@@ -26,17 +32,29 @@ class NewsArticle extends BaseContent {
     /**
      * @return string
      */
-    public function getBody()
-    {
+    public function getBody(){
         return $this->body;
     }
 
     /**
      * @param string $body
      */
-    public function setBody($body)
-    {
+    public function setBody($body){
         $this->body = $body;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSummary(){
+        return $this->summary;
+    }
+
+    /**
+     * @param string $summary
+     */
+    public function setSummary($summary){
+        $this->summary = $summary;
     }
 
     /**
