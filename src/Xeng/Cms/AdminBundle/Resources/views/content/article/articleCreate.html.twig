@@ -45,6 +45,16 @@
     </div>
 
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <!-- CKEditor -->
+    <script src="/ckeditor/ckeditor.js"></script>
+    <script>
+        $( document ).ready(function() {
+            CKEDITOR.replace( 'body' );
+        });
+    </script>
+{% endblock %}
 
 
 
