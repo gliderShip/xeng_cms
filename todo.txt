@@ -1,4 +1,4 @@
-- bej body e news article me rich text editor, zgjidh nje te mire
+- bej body e news article me ckeditor
 - lidhje many to many mes content dhe kategorise
 
 - integro angular ne frontend te adminit per komponente ajax,
