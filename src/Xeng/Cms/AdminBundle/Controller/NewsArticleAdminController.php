@@ -51,6 +51,7 @@ class NewsArticleAdminController extends Controller {
         /** @var NewsArticleManager $articleManager */
         $articleManager = $this->get('xeng.news_article_manager');
 
+
         /** @var NewsArticleCreateHandler $formHandler */
         $formHandler = new NewsArticleCreateHandler($this->container,$request);
         $formHandler->handle();
@@ -59,9 +60,13 @@ class NewsArticleAdminController extends Controller {
         $validationResponse=$formHandler->getValidationResponse();
 
         if($formHandler->isSubmitted() && $formHandler->isValid()){
-            //todo create news article
 
-            $validationResponse->getValue('title');
+            $article=$articleManager->createArticle(
+                $this->getUser(),
+                $validationResponse->getStringValue('title'),
+                $validationResponse->getStringValue('summary'),
+                $validationResponse->getStringValue('body')
+            );
 
             $this->addFlash(
                 'notice',

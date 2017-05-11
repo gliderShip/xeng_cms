@@ -50,7 +50,7 @@ class BaseContent extends ContentNode {
      * @var DateTime $publishedAt
      * @ORM\Column(name="published_at", type="datetime", nullable=true)
      */
-    protected $publishedAt;
+    protected $publishedAt=null;
 
     /**
      * @return string

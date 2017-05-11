@@ -23,17 +23,17 @@
                     <th>Updated</th>
                     <th>Created</th>
                     <th>Title</th>
-                    <th>Description</th>
+                    <th>Summary</th>
                     <th>Status</th>
                     <th>Owner</th>
                     <th>Actions</th>
                 </tr>
                 {% for article in pager.results %}
                 <tr>
-                    <td>{{ article.updatedAt | date }}</td>
+                    <td>{{ article.modifiedAt | date }}</td>
                     <td>{{ article.createdAt | date }}</td>
                     <td>{{ article.title }}</td>
-                    <td>{{ article.description }}</td>
+                    <td>{{ article.summary }}</td>
                     <td>{{ article.status }}</td>
                     <td>{{ article.owner.fullName }}</td>
                     <td>

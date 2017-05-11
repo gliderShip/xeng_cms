@@ -4,9 +4,11 @@
 
 namespace Xeng\Cms\CoreBundle\Services\Content;
 
+use DateTime;
 use Doctrine\Common\Persistence\ObjectManager;
 use Xeng\Cms\CoreBundle\Doctrine\PaginatedResult;
 use Xeng\Cms\CoreBundle\Doctrine\PaginatorUtil;
+use Xeng\Cms\CoreBundle\Entity\Auth\XUser;
 use Xeng\Cms\CoreBundle\Entity\Content\NewsArticle;
 use Xeng\Cms\CoreBundle\Repository\Content\NewsArticleRepository;
 
@@ -52,6 +54,42 @@ class NewsArticleManager {
         /** @var PaginatorUtil $paginator */
         $paginator = new PaginatorUtil($repository->getAllNewsArticlesQuery(),$currentPage,$pageSize);
         return $paginator->getPaginatedResult();
+    }
+
+    /**
+     * @param XUser $owner
+     * @param string $title
+     * @param string $summary
+     * @param string $body
+     * @return NewsArticle
+     */
+    public function createArticle(XUser $owner,$title,$summary,$body){
+        /** @var NewsArticle $article */
+        $article = new NewsArticle();
+
+        $now=new DateTime('now');
+
+        $article->setCreatedAt($now);
+        $article->setModifiedAt($now);
+        $article->setOwner($owner);
+        $article->setTitle($title);
+
+        if($summary!==null){
+            $article->setSummary($summary);
+        } else {
+            $article->setSummary('');
+        }
+
+        if($body!==null){
+            $article->setBody($body);
+        } else {
+            $article->setBody('');
+        }
+
+        $this->manager->persist($article);
+        $this->manager->flush();
+
+        return $article;
     }
 
 }
