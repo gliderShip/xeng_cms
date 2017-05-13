@@ -1,0 +1,43 @@
+{% extends '@XengCmsAdmin/user/editUser.html.twig' %}
+{% trans_default_domain 'admin' %}
+{% set currentTab = 'roles' %}
+
+{% block tabcontent %}
+    <div class="tab-pane active">
+        {% for flash_message in app.session.flashBag.get('notice') %}
+            <div class="alert alert-success" role="alert">{{ flash_message }}</div>
+        {% endfor %}
+        {% if not validationResponse.isValid %}
+            {% for error_message in validationResponse.getErrors() %}
+                <div class="alert alert-danger" role="alert">{{ error_message }}</div>
+            {% endfor %}
+        {% endif %}
+        <form role="form" method="post">
+            <input type="hidden" name="_token" value="{{ validationResponse.getStringValue('_token') }}">
+            <input type="hidden" name="submit" value="submit">
+            <div class="box-body">
+                <ul>
+                    {% for role in roles %}
+                        {% set isEmpty = validationResponse.isEmpty('role_' ~ role.id) %}
+                        <li>
+                            <span class="{{ isEmpty?'':'text-bold' }}">
+                                <input type="checkbox" name="role_{{ role.id }}" {{ isEmpty?'':'checked'}}>
+                                {{role.name}}
+                            </span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <!-- /.box-body -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Save Roles</button>
+            </div>
+        </form>
+
+    </div>
+
+{% endblock %}
+
+
+
+

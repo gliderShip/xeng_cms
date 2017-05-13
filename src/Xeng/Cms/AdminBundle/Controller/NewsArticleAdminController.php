@@ -10,7 +10,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Xeng\Cms\AdminBundle\Form\Content\NewsArticleCreateHandler;
+use Xeng\Cms\AdminBundle\Form\Content\NewsArticleEditHandler;
 use Xeng\Cms\CoreBundle\Form\ValidationResponse;
 use Xeng\Cms\CoreBundle\Services\Content\NewsArticleManager;
 
@@ -61,7 +63,7 @@ class NewsArticleAdminController extends Controller {
 
         if($formHandler->isSubmitted() && $formHandler->isValid()){
 
-            $article=$articleManager->createArticle(
+            $articleManager->createArticle(
                 $this->getUser(),
                 $validationResponse->getStringValue('title'),
                 $validationResponse->getStringValue('summary'),
@@ -90,8 +92,36 @@ class NewsArticleAdminController extends Controller {
      * @param $nodeId
      * @return Response
      */
-    public function editArticleAction(Request $request,$nodeId) {
+    public function editArticleGeneralAction(Request $request,$nodeId) {
+        /** @var NewsArticleManager $articleManager */
+        $articleManager = $this->get('xeng.news_article_manager');
+        $article=$articleManager->getNewsArticle($nodeId);
+        if(!$article){
+            throw new NotFoundHttpException();
+        }
 
+        /** @var NewsArticleEditHandler $formHandler */
+        $formHandler = new NewsArticleEditHandler($this->container,$request,$article);
+        $formHandler->handle();
+
+        /** @var ValidationResponse $validationResponse */
+        $validationResponse=$formHandler->getValidationResponse();
+
+        if($formHandler->isSubmitted() && $formHandler->isValid()){
+
+            //TODO update
+
+            $this->addFlash(
+                'notice',
+                'News Article updated successfully!'
+            );
+
+        }
+
+        return $this->render('XengCmsAdminBundle::content/article/articleEditGeneral.html.twig', array(
+            'article' => $article,
+            'validationResponse' => $validationResponse
+        ));
     }
 
 }

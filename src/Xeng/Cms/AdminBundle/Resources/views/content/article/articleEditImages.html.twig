@@ -1,0 +1,52 @@
+{% extends '@XengCmsAdmin/user/editUser.html.twig' %}
+{% trans_default_domain 'admin' %}
+{% set currentTab = 'profile' %}
+
+{% block tabcontent %}
+    <div class="tab-pane active">
+
+        {% for flash_message in app.session.flashBag.get('notice') %}
+            <div class="alert alert-success" role="alert">{{ flash_message }}</div>
+        {% endfor %}
+        {% if not validationResponse.isValid %}
+            {% for error_message in validationResponse.getErrors() %}
+                <div class="alert alert-danger" role="alert">{{ error_message }}</div>
+            {% endfor %}
+        {% endif %}
+        <form role="form" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="_token" value="{{ validationResponse.getStringValue('_token') }}">
+            <input type="hidden" name="submit" value="submit">
+            <div class="box-body">
+                <div class="form-group {{ validationResponse.hasError('firstName')?'has-error':'' }}">
+                    <label for="firstName">First Name</label>
+                    <input id="firstName" name="firstName" type="text" class="form-control"
+                           value="{{ validationResponse.getStringValue('firstName') }}">
+                </div>
+                <div class="form-group {{ validationResponse.hasError('lastName')?'has-error':'' }}">
+                    <label for="lastName">Last Name</label>
+                    <input id="lastName" name="lastName" type="text" class="form-control"
+                           value="{{ validationResponse.getStringValue('lastName') }}">
+                </div>
+                <div class="form-group">
+                    <label for="profileImage">Profile Image</label>
+                    <input id="profileImage" name="profileImage" type="file" class="form-control">
+                    {% if profile.hasImage() %}
+                    <div style="max-width: 400px">
+                        <img src="/media/profile/images/{{ profile.image.path }}" class="img-responsive"/>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">{{ newProfile?'Create Profile':'Update Profile' }}</button>
+            </div>
+        </form>
+
+    </div>
+
+{% endblock %}
+
+
+
+

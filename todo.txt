@@ -1,4 +1,6 @@
-- edit article
+- add image upload on edit article, if the image already exists
+    just replace, the existing image will be just part of the image list
+- image list management for article
 - lidhje many to many mes content dhe kategorise
 
 - integro angular ne frontend te adminit per komponente ajax,
