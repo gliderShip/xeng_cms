@@ -9,6 +9,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Xeng\Cms\CoreBundle\Doctrine\PaginatedResult;
 use Xeng\Cms\CoreBundle\Doctrine\PaginatorUtil;
 use Xeng\Cms\CoreBundle\Entity\Auth\XUser;
+use Xeng\Cms\CoreBundle\Entity\Content\ContentImage;
 use Xeng\Cms\CoreBundle\Entity\Content\NewsArticle;
 use Xeng\Cms\CoreBundle\Repository\Content\NewsArticleRepository;
 
@@ -90,6 +91,51 @@ class NewsArticleManager {
         $this->manager->flush();
 
         return $article;
+    }
+
+    /**
+     * @param NewsArticle $article
+     * @param string $title
+     * @param string $summary
+     * @param string $body
+     * @return NewsArticle
+     */
+    public function updateArticle(NewsArticle $article,$title,$summary,$body){
+        $now=new DateTime('now');
+
+        $article->setModifiedAt($now);
+        $article->setTitle($title);
+
+        if($summary!==null){
+            $article->setSummary($summary);
+        } else {
+            $article->setSummary('');
+        }
+
+        if($body!==null){
+            $article->setBody($body);
+        } else {
+            $article->setBody('');
+        }
+
+        $this->manager->persist($article);
+        $this->manager->flush();
+
+        return $article;
+    }
+
+    /**
+     * @param NewsArticle $article
+     * @param ContentImage $image
+     * @param bool $flush
+     */
+    public function setArticleImage(NewsArticle $article,ContentImage $image,$flush=false){
+        $article->setImage($image);
+
+        $this->manager->persist($article);
+        if($flush){
+            $this->manager->flush();
+        }
     }
 
 }

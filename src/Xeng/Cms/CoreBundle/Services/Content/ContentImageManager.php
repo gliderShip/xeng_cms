@@ -4,8 +4,11 @@
 
 namespace Xeng\Cms\CoreBundle\Services\Content;
 
+use DateTime;
 use Doctrine\Common\Persistence\ObjectManager;
 use Gaufrette\Filesystem;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Xeng\Cms\CoreBundle\Entity\Content\BaseContent;
 use Xeng\Cms\CoreBundle\Entity\Content\ContentImage;
 use Xeng\Cms\CoreBundle\Repository\Content\ContentImageRepository;
 
@@ -49,5 +52,38 @@ class ContentImageManager {
         $repository = $this->manager->getRepository('XengCmsCoreBundle:Content\ContentImage');
         return $repository->getContentImages($contentId);
     }
+
+    /**
+     * @param BaseContent $content
+     * @param UploadedFile $uploadedFile
+     * @return ContentImage
+     */
+    public function addContentImage(BaseContent $content, UploadedFile $uploadedFile){
+        $now=new DateTime();
+
+        $image=new ContentImage();
+        $image->setOwner($content);
+
+        $originalName=$uploadedFile->getClientOriginalName();
+        if(!$originalName){
+            $originalName=''.$now->getTimestamp();
+        }
+
+        $imageExtension = $uploadedFile->getClientOriginalExtension();
+        $imagePath = $now->getTimestamp().'_'.md5($uploadedFile->getClientOriginalName()).'.'.$imageExtension;
+
+        $image->setPath($imagePath);
+        $image->setOriginalName($originalName);
+        $image->setMimeType($uploadedFile->getMimeType());
+        $image->setSize($uploadedFile->getSize());
+
+        $this->filesystem->write($imagePath,file_get_contents($uploadedFile->getRealPath()),true);
+
+        $this->manager->persist($image);
+        $this->manager->flush();
+
+        return $image;
+    }
+
 
 }

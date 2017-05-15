@@ -26,7 +26,7 @@ class ContentImage extends BaseFile {
      * @var string $caption
      * @ORM\Column(type="string", length=255)
      */
-    protected $caption;
+    protected $caption='';
 
     /**
      * @return BaseContent

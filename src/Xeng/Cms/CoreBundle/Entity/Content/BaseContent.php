@@ -53,6 +53,13 @@ class BaseContent extends ContentNode {
     protected $publishedAt=null;
 
     /**
+     * @return boolean
+     */
+    public function hasImage() {
+        return $this->image!==null;
+    }
+
+    /**
      * @return string
      */
     public function getTitle(){
