@@ -147,7 +147,7 @@ class XUserManager {
     /**
      * @param array $userRoles
      */
-    public function deleteRolePermissions($userRoles){
+    public function deleteUserRoles($userRoles){
         /** @var XUserRole $ur */
 
         foreach($userRoles as $ur){

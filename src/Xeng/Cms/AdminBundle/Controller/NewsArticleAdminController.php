@@ -12,11 +12,14 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Xeng\Cms\AdminBundle\Form\Content\ContentCategoryEditHandler;
 use Xeng\Cms\AdminBundle\Form\Content\ContentImageUploadHandler;
 use Xeng\Cms\AdminBundle\Form\Content\NewsArticleCreateHandler;
 use Xeng\Cms\AdminBundle\Form\Content\NewsArticleEditHandler;
 use Xeng\Cms\CoreBundle\Form\ValidationResponse;
+use Xeng\Cms\CoreBundle\Services\Content\CategoryManager;
 use Xeng\Cms\CoreBundle\Services\Content\ContentImageManager;
+use Xeng\Cms\CoreBundle\Services\Content\ContentManager;
 use Xeng\Cms\CoreBundle\Services\Content\NewsArticleManager;
 
 /**
@@ -263,7 +266,7 @@ class NewsArticleAdminController extends Controller {
     }
 
     /**
-     * @Route("/article/edit/{nodeId}/category", name="xeng.admin.content.article.edit.category")
+     * @Route("/article/edit/category/{nodeId}", name="xeng.admin.content.article.edit.category")
      * @Security("is_granted('p[x_core.content.article.update]')")
      *
      * @param Request $request
@@ -278,11 +281,34 @@ class NewsArticleAdminController extends Controller {
             throw new NotFoundHttpException();
         }
 
+        /** @var CategoryManager $categoryManager */
+        $categoryManager = $this->get('xeng.category_manager');
+        $categories=$categoryManager->getAllCategories()->getResults();
+
+        /** @var ContentCategoryEditHandler $formHandler */
+        $formHandler = new ContentCategoryEditHandler($this->container,$request,$article,$categories);
+        $formHandler->handle();
+
+        /** @var ValidationResponse $validationResponse */
+        $validationResponse=$formHandler->getValidationResponse();
+
+        /** @var ContentManager $contentManager */
+        $contentManager = $this->get('xeng.content_manager');
+
+        if($formHandler->isSubmitted() && $formHandler->isValid()){
+            $contentManager->deleteContentCategories($formHandler->getToBeDeleted());
+            $contentManager->addContentCategories($article,$formHandler->getToBeAdded());
+            $this->addFlash(
+                'notice',
+                'Article categories updated successfully!'
+            );
+        }
 
 
         return $this->render('XengCmsAdminBundle::content/article/articleEditCategories.html.twig', array(
             'article' => $article,
-            'validationResponse' => new ValidationResponse()
+            'categories' => $categories,
+            'validationResponse' => $validationResponse
         ));
     }
 }

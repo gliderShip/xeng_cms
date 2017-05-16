@@ -40,6 +40,11 @@ services:
     arguments:
       - "@doctrine.orm.entity_manager"
       - "@gaufrette.content_image_filesystem"
+  xeng.content_manager:
+    class: Xeng\Cms\CoreBundle\Services\Content\ContentManager
+    arguments:
+      - "@doctrine.orm.entity_manager"
+      - "@xeng.content_image_manager"
   xeng.news_article_manager:
     class: Xeng\Cms\CoreBundle\Services\Content\NewsArticleManager
     arguments:

@@ -21,7 +21,6 @@ use Xeng\Cms\CoreBundle\Form\ValidationResponse;
 use Xeng\Cms\CoreBundle\Services\Account\ProfileManager;
 use Xeng\Cms\CoreBundle\Services\Auth\XRoleManager;
 use Xeng\Cms\CoreBundle\Services\Auth\XUserManager;
-use Xeng\Cms\CoreBundle\Util\MemoryLogger;
 
 /**
  * @author Ermal Mino <ermal.mino@gmail.com>
@@ -164,7 +163,7 @@ class UserAdminController extends Controller {
         $validationResponse=$formHandler->getValidationResponse();
 
         if($formHandler->isSubmitted() && $formHandler->isValid()){
-            $xUserManager->deleteRolePermissions($formHandler->getToBeDeleted());
+            $xUserManager->deleteUserRoles($formHandler->getToBeDeleted());
             $xUserManager->addUserRoles($user,$formHandler->getToBeAdded());
             $this->addFlash(
                 'notice',

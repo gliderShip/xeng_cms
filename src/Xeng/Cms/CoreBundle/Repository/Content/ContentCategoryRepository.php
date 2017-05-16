@@ -20,7 +20,7 @@ class ContentCategoryRepository extends EntityRepository {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('cc');
         $qb->from('XengCmsCoreBundle:Content\ContentCategory', 'cc');
-        $qb->andWhere('cc.content = :nodeId');
+        $qb->andWhere('cc.node = :nodeId');
         $qb->setParameter('nodeId',$nodeId);
 
         $query = $qb->getQuery();
