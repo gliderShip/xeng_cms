@@ -103,6 +103,9 @@ class NewsArticleAdminController extends Controller {
             throw new NotFoundHttpException();
         }
 
+        /** @var ContentImageManager $imageManager */
+        $imageManager = $this->get('xeng.content_image_manager');
+
         /** @var NewsArticleEditHandler $formHandler */
         $formHandler = new NewsArticleEditHandler($this->container,$request,$article);
         $formHandler->handle();
@@ -122,8 +125,7 @@ class NewsArticleAdminController extends Controller {
             /** @var UploadedFile $uploadedFile */
             $uploadedFile=$validationResponse->getValue('image');
             if($uploadedFile){
-                /** @var ContentImageManager $imageManager */
-                $imageManager = $this->get('xeng.content_image_manager');
+
                 $image=$imageManager->addContentImage($article,$uploadedFile);
                 if($image){
                     $articleManager->setArticleImage($article,$image,true);
@@ -138,8 +140,11 @@ class NewsArticleAdminController extends Controller {
 
         }
 
+        $images=$imageManager->getContentImages($nodeId);
+
         return $this->render('XengCmsAdminBundle::content/article/articleEditGeneral.html.twig', array(
             'article' => $article,
+            'images' => $images,
             'validationResponse' => $validationResponse
         ));
     }
@@ -254,6 +259,30 @@ class NewsArticleAdminController extends Controller {
 
         return $this->redirectToRoute('xeng.admin.content.article.edit.images', array(
             'nodeId' => $article->getId()
+        ));
+    }
+
+    /**
+     * @Route("/article/edit/{nodeId}/category", name="xeng.admin.content.article.edit.category")
+     * @Security("is_granted('p[x_core.content.article.update]')")
+     *
+     * @param Request $request
+     * @param $nodeId
+     * @return Response
+     */
+    public function editArticleCategoryAction(Request $request,$nodeId) {
+        /** @var NewsArticleManager $articleManager */
+        $articleManager = $this->get('xeng.news_article_manager');
+        $article=$articleManager->getNewsArticle($nodeId);
+        if(!$article){
+            throw new NotFoundHttpException();
+        }
+
+
+
+        return $this->render('XengCmsAdminBundle::content/article/articleEditCategories.html.twig', array(
+            'article' => $article,
+            'validationResponse' => new ValidationResponse()
         ));
     }
 }

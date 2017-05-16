@@ -6,6 +6,7 @@ namespace Xeng\Cms\CoreBundle\Services\Content;
 
 use DateTime;
 use Doctrine\Common\Persistence\ObjectManager;
+use utilphp\util;
 use Xeng\Cms\CoreBundle\Doctrine\PaginatedResult;
 use Xeng\Cms\CoreBundle\Doctrine\PaginatorUtil;
 use Xeng\Cms\CoreBundle\Entity\Auth\XUser;
@@ -74,6 +75,7 @@ class NewsArticleManager {
         $article->setModifiedAt($now);
         $article->setOwner($owner);
         $article->setTitle($title);
+        $article->setSlug(util::slugify($title));
 
         if($summary!==null){
             $article->setSummary($summary);
@@ -105,6 +107,7 @@ class NewsArticleManager {
 
         $article->setModifiedAt($now);
         $article->setTitle($title);
+        $article->setSlug(util::slugify($title));
 
         if($summary!==null){
             $article->setSummary($summary);
@@ -130,6 +133,9 @@ class NewsArticleManager {
      * @param bool $flush
      */
     public function setArticleImage(NewsArticle $article,$image,$flush=false){
+        $now=new DateTime('now');
+        $article->setModifiedAt($now);
+
         $article->setImage($image);
 
         $this->manager->persist($article);

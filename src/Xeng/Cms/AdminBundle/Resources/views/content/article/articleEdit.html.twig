@@ -14,6 +14,10 @@
                 <a href="{{ path('xeng.admin.content.article.edit.images',{'nodeId': article.id}) }}"
                    aria-expanded="false">Images</a>
             </li>
+            <li class="{{ currentTab=='category'?'active':'' }}">
+                <a href="{{ path('xeng.admin.content.article.edit.category',{'nodeId': article.id}) }}"
+                   aria-expanded="false">Categories</a>
+            </li>
         </ul>
         <div class="tab-content">
             {% block tabcontent %}

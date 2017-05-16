@@ -33,6 +33,12 @@ class ContentNode {
     protected $id;
 
     /**
+     * @var string $caption
+     * @ORM\Column(type="string", length=255)
+     */
+    protected $slug='';
+
+    /**
      * @var DateTime $createdAt
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -115,6 +121,20 @@ class ContentNode {
      */
     public function setOwner($owner) {
         $this->owner = $owner;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug(){
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug($slug) {
+        $this->slug = $slug;
     }
 
 }

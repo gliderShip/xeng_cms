@@ -12,40 +12,51 @@
                 <div class="alert alert-danger" role="alert">{{ error_message }}</div>
             {% endfor %}
         {% endif %}
-        <form role="form" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="_token" value="{{ validationResponse.getStringValue('_token') }}">
-            <input type="hidden" name="submit" value="submit">
-            <div class="box-body">
-                <div class="form-group {{ validationResponse.hasError('title')?'has-error':'' }}">
-                    <label for="title">Title</label>
-                    <input id="title" name="title" type="text" class="form-control"
-                           value="{{ validationResponse.getStringValue('title') }}">
+        <div class="box-body">
+            <form role="form" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="_token" value="{{ validationResponse.getStringValue('_token') }}">
+                <input type="hidden" name="submit" value="submit">
+                    <div class="form-group {{ validationResponse.hasError('title')?'has-error':'' }}">
+                        <label for="title">Title</label>
+                        <input id="title" name="title" type="text" class="form-control"
+                               value="{{ validationResponse.getStringValue('title') }}">
+                    </div>
+                    <div class="form-group {{ validationResponse.hasError('summary')?'has-error':'' }}">
+                        <label for="summary">Summary</label>
+                        <textarea id="summary" name="summary" class="form-control"
+                                  rows="3">{{ validationResponse.getStringValue('summary') }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="image">Primary Image</label>
+                        <input id="image" name="image" type="file" class="form-control">
+                    </div>
+                    <div class="form-group {{ validationResponse.hasError('body')?'has-error':'' }}">
+                        <label for="body">Content</label>
+                        <textarea id="body" name="body"
+                                  class="form-control">{{ validationResponse.getStringValue('body') }}</textarea>
+                    </div>
+                <!-- /.box-body -->
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Save</button>
                 </div>
-                <div class="form-group {{ validationResponse.hasError('summary')?'has-error':'' }}">
-                    <label for="summary">Summary</label>
-                    <textarea id="summary" name="summary" class="form-control"
-                              rows="3">{{ validationResponse.getStringValue('summary') }}</textarea>
-                </div>
-                <div class="form-group">
-                    <label for="image">Primary Image</label>
-                    <input id="image" name="image" type="file" class="form-control">
-                    {% if article.hasImage() %}
-                        <div>
-                            <img src="/media/content/images/{{ article.image.path }}" class="img img-responsive" style="max-width: 400px; max-height: 250px"/>
-                        </div>
-                    {% endif %}
-                </div>
-                <div class="form-group {{ validationResponse.hasError('body')?'has-error':'' }}">
-                    <label for="body">Content</label>
-                    <textarea id="body" name="body"
-                              class="form-control">{{ validationResponse.getStringValue('body') }}</textarea>
-                </div>
-            </div>
-            <!-- /.box-body -->
-            <div class="text-center">
-                <button type="submit" class="btn btn-primary">Save</button>
-            </div>
-        </form>
+            </form>
+            <table class="table-responsive table-bordered table" >
+                <tr>
+                    <th>Image</th>
+                    <th>Path</th>
+                </tr>
+                {% for image in images %}
+                    <tr>
+                        <td>
+                            <img src="/media/content/images/{{image.path}}" class="img img-responsive" style="max-height: 50px">
+                        </td>
+                        <td>
+                            <input value="/media/content/images/{{ image.path }}" style="width: 100%">
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
 
     </div>
 
