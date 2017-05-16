@@ -11,7 +11,7 @@ use Xeng\Cms\CoreBundle\Entity\BaseFile;
  * @author Ermal Mino <ermal.mino@gmail.com>
  *
  * @ORM\Table(name="content_image")
- * @ORM\Entity(repositoryClass="Xeng\Cms\CoreBundle\Repository\Account\ContentImageRepository")
+ * @ORM\Entity(repositoryClass="Xeng\Cms\CoreBundle\Repository\Content\ContentImageRepository")
  */
 class ContentImage extends BaseFile {
 

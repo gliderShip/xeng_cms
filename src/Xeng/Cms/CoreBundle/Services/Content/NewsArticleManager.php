@@ -129,7 +129,7 @@ class NewsArticleManager {
      * @param ContentImage $image
      * @param bool $flush
      */
-    public function setArticleImage(NewsArticle $article,ContentImage $image,$flush=false){
+    public function setArticleImage(NewsArticle $article,$image,$flush=false){
         $article->setImage($image);
 
         $this->manager->persist($article);

@@ -1,6 +1,6 @@
 <?php
 
-// src/Xeng/Cms/AdminBundle/Form/Account/NewsArticleCreateHandler.php
+// src/Xeng/Cms/AdminBundle/Form/Content/NewsArticleCreateHandler.php
 
 namespace Xeng\Cms\AdminBundle\Form\Content;
 

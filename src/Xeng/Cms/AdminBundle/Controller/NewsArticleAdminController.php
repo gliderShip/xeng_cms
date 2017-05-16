@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Xeng\Cms\AdminBundle\Form\Content\ContentImageUploadHandler;
 use Xeng\Cms\AdminBundle\Form\Content\NewsArticleCreateHandler;
 use Xeng\Cms\AdminBundle\Form\Content\NewsArticleEditHandler;
 use Xeng\Cms\CoreBundle\Form\ValidationResponse;
@@ -147,10 +148,11 @@ class NewsArticleAdminController extends Controller {
      * @Route("/article/edit/{nodeId}/images", name="xeng.admin.content.article.edit.images")
      * @Security("is_granted('p[x_core.content.article.update]')")
      *
+     * @param Request $request
      * @param $nodeId
      * @return Response
      */
-    public function articleEditImagesListAction($nodeId) {
+    public function articleEditImagesListAction(Request $request,$nodeId) {
         /** @var NewsArticleManager $articleManager */
         $articleManager = $this->get('xeng.news_article_manager');
         $article=$articleManager->getNewsArticle($nodeId);
@@ -161,12 +163,97 @@ class NewsArticleAdminController extends Controller {
         /** @var ContentImageManager $imageManager */
         $imageManager = $this->get('xeng.content_image_manager');
 
+        /** @var ContentImageUploadHandler $formHandler */
+        $formHandler = new ContentImageUploadHandler($this->container,$request);
+        $formHandler->handle();
+
+        /** @var ValidationResponse $validationResponse */
+        $validationResponse=$formHandler->getValidationResponse();
+
+        if($formHandler->isSubmitted() && $formHandler->isValid()){
+
+            /** @var UploadedFile $uploadedFile */
+            $uploadedFile=$validationResponse->getValue('image');
+            if($uploadedFile){
+                /** @var ContentImageManager $imageManager */
+                $imageManager = $this->get('xeng.content_image_manager');
+                $imageManager->addContentImage($article,$uploadedFile);
+            }
+
+            $this->addFlash(
+                'notice',
+                'Image uploaded successfully!'
+            );
+
+        }
+
         $images=$imageManager->getContentImages($nodeId);
 
         return $this->render('XengCmsAdminBundle::content/article/articleEditImages.html.twig', array(
             'article' => $article,
-            'images' => $images
+            'images' => $images,
+            'validationResponse' => $validationResponse
         ));
     }
 
+    /**
+     * @Route("/article/edit/{nodeId}/images/default/{imageId}", name="xeng.admin.content.article.edit.images.default")
+     * @Security("is_granted('p[x_core.content.article.update]')")
+     *
+     * @param $nodeId
+     * @param $imageId
+     * @return Response
+     */
+    public function articleEditImagesDefaultAction($nodeId,$imageId) {
+        /** @var NewsArticleManager $articleManager */
+        $articleManager = $this->get('xeng.news_article_manager');
+        $article=$articleManager->getNewsArticle($nodeId);
+        if(!$article){
+            throw new NotFoundHttpException();
+        }
+
+        /** @var ContentImageManager $imageManager */
+        $imageManager = $this->get('xeng.content_image_manager');
+        $image=$imageManager->getImage($imageId);
+        if(!$image){
+            throw new NotFoundHttpException();
+        }
+
+        $articleManager->setArticleImage($article,$image,true);
+
+        return $this->redirectToRoute('xeng.admin.content.article.edit.images', array(
+            'nodeId' => $article->getId()
+        ));
+    }
+
+    /**
+     * @Route("/article/edit/{nodeId}/images/delete/{imageId}", name="xeng.admin.content.article.edit.images.delete")
+     * @Security("is_granted('p[x_core.content.article.update]')")
+     *
+     * @param $nodeId
+     * @param $imageId
+     * @return Response
+     */
+    public function articleEditImagesDeleteAction($nodeId,$imageId) {
+        /** @var NewsArticleManager $articleManager */
+        $articleManager = $this->get('xeng.news_article_manager');
+        $article=$articleManager->getNewsArticle($nodeId);
+        if(!$article){
+            throw new NotFoundHttpException();
+        }
+
+        /** @var ContentImageManager $imageManager */
+        $imageManager = $this->get('xeng.content_image_manager');
+        $image=$imageManager->getImage($imageId);
+        if(!$image){
+            throw new NotFoundHttpException();
+        }
+
+        $articleManager->setArticleImage($article,null,true);
+        $imageManager->deleteImage($image);
+
+        return $this->redirectToRoute('xeng.admin.content.article.edit.images', array(
+            'nodeId' => $article->getId()
+        ));
+    }
 }

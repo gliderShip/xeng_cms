@@ -30,8 +30,8 @@
                     <label for="image">Primary Image</label>
                     <input id="image" name="image" type="file" class="form-control">
                     {% if article.hasImage() %}
-                        <div style="max-width: 400px">
-                            <img src="/media/content/images/{{ article.image.path }}" class="img-responsive"/>
+                        <div>
+                            <img src="/media/content/images/{{ article.image.path }}" class="img img-responsive" style="max-width: 400px; max-height: 250px"/>
                         </div>
                     {% endif %}
                 </div>

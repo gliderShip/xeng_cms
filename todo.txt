@@ -1,4 +1,3 @@
-- image list management for article
 - lidhje many to many mes content dhe kategorise
 
 - integro angular ne frontend te adminit per komponente ajax,

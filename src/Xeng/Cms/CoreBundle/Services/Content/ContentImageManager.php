@@ -85,5 +85,14 @@ class ContentImageManager {
         return $image;
     }
 
+    /**
+     * @param ContentImage $image
+     */
+    public function deleteImage($image){
+        $this->filesystem->delete($image->getPath());
+        $this->manager->remove($image);
+        $this->manager->flush();
+    }
+
 
 }
