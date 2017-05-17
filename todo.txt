@@ -1,4 +1,7 @@
+- contact page dhe email @newsetika.al
+- shareable articles on facebook and on other platforms
 
+- search
 
 - integro angular ne frontend te adminit per komponente ajax,
   psh kur kerkon userat per autorin e nje shkrimi.
