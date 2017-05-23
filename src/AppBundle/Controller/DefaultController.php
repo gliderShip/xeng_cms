@@ -16,10 +16,19 @@ class DefaultController extends Controller {
     /**
      * @Route("/", name="homepage")
      */
-    public function indexAction(Request $request)
-    {
+    public function homeAction(Request $request) {
         // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', array(
+        return $this->render('home.html.twig', array(
+            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
+        ));
+    }
+
+    /**
+     * @Route("/article", name="article")
+     */
+    public function articleAction(Request $request) {
+        // replace this example code with whatever you need
+        return $this->render('content/article.html.twig', array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
         ));
     }

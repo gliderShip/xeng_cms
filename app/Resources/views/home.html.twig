@@ -1,0 +1,29 @@
+{% extends 'layout.html.twig' %}
+
+{% block maincontent %}
+    <div class="tdc-content-wrap">
+        {#include block evidenced #}
+        {% include 'blocks/evidenced.html.twig' %}
+        {#===================================#}
+
+        <div class="tdc-row">
+            <div class="td-pb-row" >
+                <div class="td-pb-span8 td-main-content" role="main">
+                    {#include block latest articles #}
+                    {% include 'blocks/latest_articles.html.twig' %}
+                    {#===================================#}
+                </div>
+                <div class="td-pb-span4 td-main-sidebar" role="complementary">
+                    {#include sidebar #}
+                    {% include 'sidebar.html.twig' %}
+                    {#===================================#}
+                </div>
+            </div>
+        </div>
+        {#include block related #}
+        {% include 'blocks/related.html.twig' %}
+        {#===================================#}
+
+    </div>
+{% endblock %}
+

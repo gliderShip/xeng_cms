@@ -1,0 +1,11 @@
+.hidden {
+    display: none;
+}
+
+.td-mobile-main-menu {
+    list-style: none;
+}
+
+.td-mobile-main-menu a{
+    color: white;
+}
