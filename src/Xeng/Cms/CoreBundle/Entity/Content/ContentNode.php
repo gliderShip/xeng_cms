@@ -33,7 +33,7 @@ class ContentNode {
     protected $id;
 
     /**
-     * @var string $caption
+     * @var string $slug
      * @ORM\Column(type="string", length=255)
      */
     protected $slug='';

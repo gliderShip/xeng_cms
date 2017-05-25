@@ -83,6 +83,19 @@ class ContentManager {
     }
 
     /**
+     * @param integer $nodeId
+     * @return array
+     */
+    public function getContentCategories($nodeId){
+        /** @var ContentCategoryRepository $repository */
+        $repository = $this->manager->getRepository('XengCmsCoreBundle:Content\ContentCategory');
+
+        $contentCategories = $repository->getContentCategories($nodeId);
+
+        return $contentCategories;
+    }
+
+    /**
      * @param array $contentCategories
      */
     public function deleteContentCategories($contentCategories){

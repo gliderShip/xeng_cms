@@ -46,6 +46,17 @@ class NewsArticleManager {
     }
 
     /**
+     * @param string $slug
+     * @return NewsArticle
+     */
+    public function getNewsArticleBySlug($slug){
+        /** @var NewsArticleRepository $repository */
+        $repository = $this->manager->getRepository('XengCmsCoreBundle:Content\NewsArticle');
+        return $repository->getNewsArticleBySlug($slug);
+    }
+
+
+    /**
      * @param int $currentPage
      * @param int $pageSize
      * @return PaginatedResult

@@ -1,51 +1,55 @@
 {% extends 'content/content.html.twig' %}
+{% set content = article %}
+{% block title %}{{ article.title }}{% endblock %}
 {% block content %}
     <div class="td-ss-main-content">
         <div class="clearfix"></div>
-        {#include sidebar #}
-        {% include 'content/breadcrumbs.html.twig' %}
-        {#===================================#}
-
         <article class="post type-post status-publish format-standard has-post-thumbnail hentry">
             <div class="td-post-header">
                 <ul class="td-category">
+                    {% for category in categories %}
                     <li class="entry-category">
-                        <a href="#">Lifestyle</a>
+                        <a href="#">{{ category.label }}</a>
                     </li>
-                    <li class="entry-category">
-                        <a href="#">Beauty today</a>
-                    </li>
+                    {% endfor %}
                 </ul>
                 <header class="td-post-title">
-                    <h1 class="entry-title">Beauties You Should Follow for Great Inspiration</h1>
+                    <h1 class="entry-title">{{ article.title }}</h1>
                     <div class="td-module-meta-info">
-                        <div class="td-post-author-name">
+                        <!--div class="td-post-author-name">
                             <div class="td-author-by">By</div>
                             <a href="https://demo.tagdiv.com/ionmag/author/admin/">Sarah Queen</a>
                             <div class="td-author-line"> - </div>
-                        </div>
-                    <span class="td-post-date">
-                        <time class="entry-date updated td-module-date" datetime="2016-08-09T10:46:12+00:00">August 9, 2016</time>
-                    </span>
-                        <div class="td-post-views-wrap">
+                        </div-->
+                        <span class="td-post-date">
+                            <time class="entry-date updated td-module-date"
+                                  datetime="{{ article.modifiedAt | date}}">{{ article.modifiedAt | date}}</time>
+                        </span>
+                        <!--div class="td-post-views-wrap">
                             <div class="td-post-views">
                                 <i class="td-icon-views"></i><span class="td-nr-views-15">1040</span>
                             </div>
                             <span class="td-post-views-text">views</span>
-                        </div>
+                        </div-->
                     </div>
                 </header>
             </div>
-            {#include sidebar #}
+            {#include content share #}
             {% include 'content/share.html.twig' %}
             {#===================================#}
             <div class="td-post-content">
-                {#include sidebar #}
-                {% include 'content/post_content.html.twig' %}
-                {#===================================#}
+                {% if article.hasImage() %}
+                <!-- featured post image -->
+                <div class="td-post-featured-image">
+                    <a href="#">
+                        <img src="/media/content/images/{{ article.image.path }}" style="max-width: 640px">
+                    </a>
+                </div>
+                {% endif %}
+                {{ article.body | raw }}
             </div>
             <footer>
-                {#include sidebar #}
+                {#include content share #}
                 {% include 'content/share.html.twig' %}
                 {#===================================#}
             </footer>

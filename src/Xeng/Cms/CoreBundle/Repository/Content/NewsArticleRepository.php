@@ -37,4 +37,18 @@ class NewsArticleRepository extends EntityRepository {
         return $qb->getQuery()->getOneOrNullResult();
     }
 
+    /**
+     * @param $slug
+     * @return NewsArticle
+     */
+    public function getNewsArticleBySlug($slug){
+        $qb=$this->getEntityManager()->createQueryBuilder();
+        $qb->select('na');
+        $qb->from('XengCmsCoreBundle:Content\NewsArticle','na');
+        $qb->where('na.slug = :slug');
+        $qb->setParameter('slug', $slug);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
 }
