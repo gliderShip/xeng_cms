@@ -2,16 +2,11 @@
 
 {% block maincontent %}
     <div class="tdc-content-wrap">
-        {#include block evidenced #}
-        {{ render(controller('AppBundle:Blocks:evidenced')) }}
-        {#===================================#}
-
         <div class="tdc-row">
             <div class="td-pb-row" >
                 <div class="td-pb-span8 td-main-content" role="main">
-                    {#include block latest articles #}
-                    {{ render(controller('AppBundle:Blocks:latestArticles')) }}
-                    {#===================================#}
+                    {% block content %}
+                    {% endblock %}
                 </div>
                 <div class="td-pb-span4 td-main-sidebar" role="complementary">
                     {#include sidebar #}
@@ -20,10 +15,5 @@
                 </div>
             </div>
         </div>
-        {#include block related #}
-        {#{ render(controller('AppBundle:Blocks:related')) }#}
-        {#===================================#}
-
     </div>
 {% endblock %}
-
