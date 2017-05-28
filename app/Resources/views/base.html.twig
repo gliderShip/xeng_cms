@@ -4,9 +4,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>News Etika - {% block title %}Kreu{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% if content is defined  %}
-        <meta property="og:title" content="{{ content.title }}">
-    {% endif %}
+    {% block facebookmetadata %}
+    {% endblock %}
+    {% block twittermetadata %}
+    {% endblock %}
+
     {% block stylesheets %}
         <link rel="stylesheet" href="/css/google-fonts.css" type="text/css" media="all">
         <link rel="stylesheet" href="/css/style.css" type="text/css" media="all">
@@ -23,6 +25,8 @@
     <script type="text/javascript" src="/js/lib/jquery-1.12.4.js"></script>
     <script type="text/javascript" src="/js/app.js"></script>
 {% endblock %}
-
+{#include analytics #}
+{% include 'analytics.html.twig' %}
+{#===================================#}
 </body>
 </html>

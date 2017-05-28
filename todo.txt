@@ -1,12 +1,9 @@
-open twitter and youtube account, and google plus
+- follow block, twitter, facebook, G plus
+
 
 - get 3 evidenced articles block
 - get kryesore articles block
 - get latest articles block
-- integrate google analytics
-- shareable articles on facebook and on other platforms
-- follow block, twitter, facebook, G plus
-
 
 
 - search
