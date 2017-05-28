@@ -1,5 +1,3 @@
-- follow block, twitter, facebook, G plus
-
 
 - get 3 evidenced articles block
 - get kryesore articles block
