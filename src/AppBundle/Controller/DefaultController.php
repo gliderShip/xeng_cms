@@ -16,15 +16,6 @@ use Xeng\Cms\CoreBundle\Services\Content\NewsArticleManager;
  *
  */
 class DefaultController extends Controller {
-    /**
-     * @Route("/", name="homepage")
-     */
-    public function homeAction(Request $request) {
-        // replace this example code with whatever you need
-        return $this->render('home.html.twig', array(
-            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
-        ));
-    }
 
     /**
      * @Route("/article/{slug}", name="article")
@@ -48,4 +39,33 @@ class DefaultController extends Controller {
             'categories' => $categories
         ));
     }
+
+
+    /**
+     * @Route("/", name="homepage")
+     */
+    public function homeAction() {
+        // replace this example code with whatever you need
+        return $this->render('home.html.twig', array(
+            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
+        ));
+    }
+
+    /**
+     * @Route("/about", name="about")
+     */
+    public function aboutAction() {
+        // replace this example code with whatever you need
+        return $this->render('pages/about.html.twig', array());
+    }
+
+    /**
+     * @Route("/contact", name="contact")
+     */
+    public function contactAction() {
+        // replace this example code with whatever you need
+        return $this->render('pages/contact.html.twig', array());
+    }
+
 }
+

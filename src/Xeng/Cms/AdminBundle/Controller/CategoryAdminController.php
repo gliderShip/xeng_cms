@@ -62,7 +62,8 @@ class CategoryAdminController extends Controller {
         if($formHandler->isSubmitted() && $formHandler->isValid()){
             $categoryManager->createCategory(
                 $validationResponse->getValue('name'),
-                $validationResponse->getValue('label')
+                $validationResponse->getValue('label'),
+                $validationResponse->getBooleanValue('hidden')
             );
 
             $this->addFlash(
@@ -106,7 +107,8 @@ class CategoryAdminController extends Controller {
         if($formHandler->isSubmitted() && $formHandler->isValid()){
             $categoryManager->updateCategory($categoryId,
                 $validationResponse->getValue('name'),
-                $validationResponse->getValue('label')
+                $validationResponse->getValue('label'),
+                $validationResponse->getBooleanValue('hidden')
             );
 
             $this->addFlash(

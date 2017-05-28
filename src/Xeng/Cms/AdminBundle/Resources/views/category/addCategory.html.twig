@@ -30,6 +30,12 @@
                     <input id="label" name="label" type="text" class="form-control"
                            value="{{ validationResponse.getStringValue('label') }}">
                 </div>
+                <div class="checkbox">
+                    <label for="hidden">
+                        <input id="hidden" name="hidden" type="checkbox"
+                                {{ validationResponse.getBooleanValue('hidden')?'checked':''}}>Hidden
+                    </label>
+                </div>
             </div>
             <!-- /.box-body -->
             <div class="box-footer text-center">

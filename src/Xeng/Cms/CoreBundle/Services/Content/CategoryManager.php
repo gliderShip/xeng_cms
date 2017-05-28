@@ -62,13 +62,15 @@ class CategoryManager {
     /**
      * @param string $name
      * @param string $label
-    */
-    public function createCategory($name,$label){
+     * @param $hidden
+     */
+    public function createCategory($name,$label,$hidden){
         /** @var Category $category */
         $category = new Category();
 
         $category->setName($name);
         $category->setLabel($label);
+        $category->setHidden($hidden);
 
         $this->manager->persist($category);
         $this->manager->flush();
@@ -78,8 +80,9 @@ class CategoryManager {
      * @param integer $categoryId
      * @param string $name
      * @param string $label
+     * @param $hidden
      */
-    public function updateCategory($categoryId,$name,$label){
+    public function updateCategory($categoryId,$name,$label,$hidden){
         /** @var CategoryRepository $repository */
         $repository = $this->manager->getRepository('XengCmsCoreBundle:Content\Category');
         /** @var Category $category */
@@ -87,6 +90,7 @@ class CategoryManager {
 
         $category->setName($name);
         $category->setLabel($label);
+        $category->setHidden($hidden);
 
         $this->manager->persist($category);
         $this->manager->flush();

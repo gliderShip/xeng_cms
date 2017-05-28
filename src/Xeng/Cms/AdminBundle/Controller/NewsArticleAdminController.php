@@ -122,7 +122,8 @@ class NewsArticleAdminController extends Controller {
                 $article,
                 $validationResponse->getStringValue('title'),
                 $validationResponse->getStringValue('summary'),
-                $validationResponse->getStringValue('body')
+                $validationResponse->getStringValue('body'),
+                $validationResponse->getValue('status')
             );
 
             /** @var UploadedFile $uploadedFile */

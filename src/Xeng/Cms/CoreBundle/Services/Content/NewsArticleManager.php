@@ -111,14 +111,19 @@ class NewsArticleManager {
      * @param string $title
      * @param string $summary
      * @param string $body
+     * @param int $status
      * @return NewsArticle
      */
-    public function updateArticle(NewsArticle $article,$title,$summary,$body){
+    public function updateArticle(NewsArticle $article,$title,$summary,$body,$status){
         $now=new DateTime('now');
 
         $article->setModifiedAt($now);
         $article->setTitle($title);
         $article->setSlug(util::slugify($title));
+        $article->setStatus($status);
+        if($status==2){
+            $article->setPublishedAt($now);
+        }
 
         if($summary!==null){
             $article->setSummary($summary);

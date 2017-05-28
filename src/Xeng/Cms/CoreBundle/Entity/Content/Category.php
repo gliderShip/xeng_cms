@@ -34,6 +34,12 @@ class Category {
     private $label;
 
     /**
+     * @var boolean
+     * @ORM\Column(type="boolean")
+     */
+    private $hidden=false;
+
+    /**
      * @return int
      */
     public function getId(){
@@ -73,6 +79,22 @@ class Category {
      */
     public function setLabel($label){
         $this->label = $label;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHidden()
+    {
+        return $this->hidden;
+    }
+
+    /**
+     * @param bool $hidden
+     */
+    public function setHidden($hidden)
+    {
+        $this->hidden = $hidden;
     }
 
 }

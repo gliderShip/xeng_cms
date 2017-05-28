@@ -39,16 +39,19 @@ class CategoryEditHandler extends FormHandler {
 
         $name=$this->createParamValidationResult('name');
         $label=$this->createParamValidationResult('label');
+        $this->createParamValidationResult('hidden');
 
         if(!$this->isSubmitted()){
             $this->validationResponse->setValue('name',$this->category->getName());
             $this->validationResponse->setValue('label',$this->category->getLabel());
+            $this->validationResponse->setValue('hidden',$this->category->isHidden());
+
             return;
         }
 
         $nameValidator=v::allOf(
             $this->notEmpty,
-            v::alnum()
+            v::alnum('-_')
         );
         if(!$nameValidator->validate($name->getValue())){
             $this->addError($name,'Role name not valid, must me alphanumeric');

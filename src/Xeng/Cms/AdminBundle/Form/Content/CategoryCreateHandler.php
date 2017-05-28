@@ -27,10 +27,11 @@ class CategoryCreateHandler extends FormHandler {
         }
         $name=$this->createParamValidationResult('name');
         $label=$this->createParamValidationResult('label');
+        $this->createParamValidationResult('hidden');
 
         $nameValidator=v::allOf(
             $this->notEmpty,
-            v::alnum()
+            v::alnum('-_')
         );
         if(!$nameValidator->validate($name->getValue())){
             $this->addError($name,'Name not valid, must be alphanumeric');

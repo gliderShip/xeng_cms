@@ -40,11 +40,13 @@ class NewsArticleEditHandler extends FormHandler {
         $this->createParamValidationResult('summary');
         $this->createParamValidationResult('body');
         $image=$this->createFileParamValidationResult('image');
+        $this->createParamValidationResult('status');
 
         if(!$this->isSubmitted()){
             $this->validationResponse->setValue('title',$this->article->getTitle());
             $this->validationResponse->setValue('summary',$this->article->getSummary());
             $this->validationResponse->setValue('body',$this->article->getBody());
+            $this->validationResponse->setValue('status',$this->article->getStatus());
             return;
         }
 
