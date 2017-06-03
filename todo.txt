@@ -1,2 +1,3 @@
 
- - delete article (recursively delete also images)
+- order by date on recent, evidenced and main article list
+- delete article (recursively delete also images)

@@ -46,6 +46,7 @@ class NewsArticleRepository extends EntityRepository {
         $qb->select('na');
         $qb->from('XengCmsCoreBundle:Content\NewsArticle','na');
         $qb->where('na.slug = :slug');
+        $qb->andWhere('na.status = 2');
         $qb->setParameter('slug', $slug);
 
         return $qb->getQuery()->getOneOrNullResult();

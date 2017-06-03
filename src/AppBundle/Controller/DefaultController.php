@@ -18,11 +18,20 @@ class DefaultController extends Controller {
 
     /**
      * @Route("/article/{slug}", name="article")
+     * @param Request $request
+     * @param $slug
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function articleAction(Request $request,$slug) {
         /** @var NewsArticleManager $articleManager */
         $articleManager = $this->get('xeng.news_article_manager');
-        $article=$articleManager->getNewsArticleBySlug($slug);
+        $article=null;
+        if(is_numeric($slug)){
+            $article=$articleManager->getNewsArticle($slug);
+        } else {
+            $article=$articleManager->getNewsArticleBySlug($slug);
+        }
+
         if(!$article){
             throw new NotFoundHttpException();
         }

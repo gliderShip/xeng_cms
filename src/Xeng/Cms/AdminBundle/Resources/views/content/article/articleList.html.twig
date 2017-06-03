@@ -33,7 +33,7 @@
                     <td>{{ article.modifiedAt | date }}</td>
                     <td>{{ article.createdAt | date }}</td>
                     <td>
-                        <a href="{{ path('article',{'slug':article.slug}) }}">
+                        <a href="{{ path('article',{'slug':article.id}) }}">
                             {{ article.title }}
                         </a>
                     </td>
