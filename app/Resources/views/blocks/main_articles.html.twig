@@ -5,44 +5,42 @@
         {%  for article in pager.results %}
         <div class="td_module_5 td_module_wrap td-animation-stack">
             <div class="td-module-image td-module-image-float">
-                <div class="td-module-thumb"><a
-                        href="#"
-                        rel="bookmark"
-                        title="Swimming the Crystal Waters of the Great Alps">
+                <div class="td-module-thumb">
+                    <a href="{{ path('article',{'slug':article.slug}) }}"
+                       rel="bookmark" title="{{ article.title }}">
                         <img width="260" height="195"
                              class="entry-thumb td-animation-stack-type0-2"
-                             src="/images/shutterstock_299666636-260x195.jpg"
-                             title="Swimming the Crystal Waters of the Great Alps"></a>
+                             src="/media/content/images/{{ article.image.path }}"
+                             title="{{ article.title }}">
+                    </a>
                 </div>
             </div>
             <div class="td-item-details td-category-small">
-                <a href="#" class="td-post-category">Travel</a>
-
-                <h3 class="entry-title td-module-title"><a
-                        href="#"
-                        rel="bookmark" title="Swimming the Crystal Waters of the Great Alps">Swimming
-                        the Crystal Waters of the Great Alps</a></h3>
+                {% for category in article.categories %}
+                    {% if not category.hidden %}
+                        <a href="#" class="td-post-category">{{ category.label }}</a>
+                    {% endif %}
+                {% endfor %}
+                <h3 class="entry-title td-module-title">
+                    <a href="{{ path('article',{'slug':article.slug}) }}"
+                       rel="bookmark" title="{{ article.title }}">
+                        {{ article.title }}
+                    </a>
+                </h3>
 
                 <div class="td-module-meta-info">
-                                        <span class="td-post-date"><time class="entry-date updated td-module-date"
-                                                                         datetime="2016-08-09T10:46:56+00:00">August 9,
-                                                2016
-                                            </time></span>
-
-                    <div class="td-module-comments"><a
-                            href="#">0</a>
-                    </div>
+                    <span class="td-post-date">
+                        <time class="entry-date updated td-module-date"
+                              datetime="{{ article.publishedAt | date}}">{{ article.publishedAt | date}}</time>
+                    </span>
                 </div>
-                <div class="td-excerpt">
-                    What's possible in a week? If you dedicated seven days to the achievement of one
-                    goal, how ambitious could you make this goal? These...
-                </div>
+                <div class="td-excerpt">{{ article.summary }}</div>
             </div>
             <div class="clearfix"></div>
         </div>
         {% endfor %}
     </div>
-    <div class="page-nav td-pb-padding-side"><span class="current">1</span><a
+    <!--div-- class="page-nav td-pb-padding-side"><span class="current">1</span><a
             href="#" class="page" title="2">2</a><a
             href="#" class="page" title="3">3</a><span
             class="extend">...</span><a href="#" class="last"
@@ -51,6 +49,6 @@
                 class="td-icon-menu-right"></i></a><span class="pages">Page 1 of 11</span>
 
         <div class="clearfix"></div>
-    </div>
+    </div-->
     <div class="clearfix"></div>
 </div>

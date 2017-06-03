@@ -5,7 +5,7 @@
     {#===================================#}
 
     {#include block latest articles #}
-    {% include 'blocks/most_recent.html.twig' %}
+    {{ render(controller('AppBundle:Blocks:mostRecent')) }}
     {#===================================#}
 
     {#include block latest articles #}

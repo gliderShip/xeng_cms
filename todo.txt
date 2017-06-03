@@ -1,7 +1,2 @@
 
-- get kryesore articles block
-- get latest articles block
-
-
- - trim slug to omit trailing '-'
  - delete article (recursively delete also images)

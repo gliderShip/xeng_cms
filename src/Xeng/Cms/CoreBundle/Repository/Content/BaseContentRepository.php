@@ -61,14 +61,29 @@ class BaseContentRepository extends EntityRepository {
      */
     public function getBaseContentByIdsQuery($nodeIds){
         $qb=$this->getEntityManager()->createQueryBuilder();
-        $qb->select('bc,ci');
+        $qb->select('bc,ci,cat');
         $qb->from('XengCmsCoreBundle:Content\BaseContent','bc');
         $qb->innerJoin('bc.image', 'ci');
+        $qb->innerJoin('bc.categories', 'cat');
         $qb->where('bc.status = 2');
         $qb->andWhere($qb->expr()->in('bc.id', '?1'));
         $qb->setParameter('1', $nodeIds);
 
         return $qb->getQuery();
+    }
+
+    /**
+     * @param $limit
+     * @return array
+     */
+    public function getBaseContentListLatest($limit){
+        $qb=$this->getEntityManager()->createQueryBuilder();
+        $qb->select('bc');
+        $qb->from('XengCmsCoreBundle:Content\BaseContent','bc');
+        $qb->where('bc.status = 2');
+        $qb->setMaxResults($limit);
+
+        return $qb->getQuery()->getArrayResult();
     }
 
 }

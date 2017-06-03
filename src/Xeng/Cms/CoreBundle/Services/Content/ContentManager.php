@@ -195,5 +195,18 @@ class ContentManager {
 
     }
 
+    /**
+     * @param int $limit
+     * @return array
+     */
+    public function getLatestBaseContentList($limit=7){
+
+        /** @var BaseContentRepository $baseContentRepository */
+        $baseContentRepository = $this->manager->getRepository('XengCmsCoreBundle:Content\BaseContent');
+
+        return $baseContentRepository->getBaseContentListLatest($limit);
+
+    }
+
 
 }

@@ -86,7 +86,7 @@ class NewsArticleManager {
         $article->setModifiedAt($now);
         $article->setOwner($owner);
         $article->setTitle($title);
-        $article->setSlug(util::slugify($title));
+        $article->setSlug(trim(util::slugify($title),'-'));
 
         if($summary!==null){
             $article->setSummary($summary);
@@ -119,7 +119,8 @@ class NewsArticleManager {
 
         $article->setModifiedAt($now);
         $article->setTitle($title);
-        $article->setSlug(util::slugify($title));
+        $article->setSlug(trim(util::slugify($title),'-'));
+
         $article->setStatus($status);
         if($status==2 && $article->getStatus()!=2){
             $article->setPublishedAt($now);

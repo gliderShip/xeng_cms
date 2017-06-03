@@ -35,6 +35,15 @@ class BlocksController extends Controller {
         ));
     }
 
+    public function mostRecentAction() {
+        /** @var ContentManager $contentManager */
+        $contentManager=$this->get('xeng.content_manager');
+        $recent=$contentManager->getLatestBaseContentList(7);
+        return $this->render('blocks/most_recent.html.twig', array(
+            'recent' => $recent
+        ));
+    }
+
 
     public function relatedAction() {
 
@@ -46,13 +55,6 @@ class BlocksController extends Controller {
     public function followSocialAction() {
 
         return $this->render('blocks/follow_social.html.twig', array(
-
-        ));
-    }
-
-    public function mostRecentAction() {
-
-        return $this->render('blocks/most_recent.html.twig', array(
 
         ));
     }
