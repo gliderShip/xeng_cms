@@ -4,6 +4,7 @@
 namespace Xeng\Cms\CoreBundle\Entity\Content;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Xeng\Cms\CoreBundle\Entity\Auth\XUser;
 
@@ -22,6 +23,10 @@ class ContentNode {
     const TYPE_NODE = 'node';
     const TYPE_BASE = 'base';
     const TYPE_ARTICLE = 'article';
+
+    const S_DRAFT = 0;
+    const S_PENDING = 1;
+    const S_PUBLISHED = 2;
 
     /**
      * @var int $id
@@ -59,6 +64,34 @@ class ContentNode {
      */
     protected $modifiedAt;
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Category")
+     * @ORM\JoinTable(
+     *  name="content_category",
+     *  joinColumns={
+     *      @ORM\JoinColumn(name="node_id", referencedColumnName="id")
+     *  }
+     * )
+     */
+    protected $categories;
+
+    /**
+     * @var int $status
+     * @ORM\Column(type="integer")
+     */
+    protected $status=0;
+
+    /**
+     * @var DateTime $publishedAt
+     * @ORM\Column(name="published_at", type="datetime", nullable=true)
+     */
+    protected $publishedAt=null;
+
+    public function __construct(){
+        $this->categories = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -135,6 +168,48 @@ class ContentNode {
      */
     public function setSlug($slug) {
         $this->slug = $slug;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getCategories(){
+        return $this->categories;
+    }
+
+    /**
+     * @param ArrayCollection $categories
+     */
+    public function setCategories($categories){
+        $this->categories = $categories;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatus(){
+        return $this->status;
+    }
+
+    /**
+     * @param int $status
+     */
+    public function setStatus($status){
+        $this->status = $status;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getPublishedAt(){
+        return $this->publishedAt;
+    }
+
+    /**
+     * @param DateTime $publishedAt
+     */
+    public function setPublishedAt($publishedAt){
+        $this->publishedAt = $publishedAt;
     }
 
 }

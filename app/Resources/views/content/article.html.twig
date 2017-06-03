@@ -33,9 +33,9 @@
             <div class="td-post-header">
                 <ul class="td-category">
                     {% for category in categories %}
-                        {% if not category.category.hidden%}
+                        {% if not category.hidden%}
                     <li class="entry-category">
-                        <a href="#">{{ category.category.label }}</a>
+                        <a href="#">{{ category.label }}</a>
                     </li>
                         {% endif %}
                     {% endfor %}

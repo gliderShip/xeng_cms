@@ -4,20 +4,17 @@
 
 namespace Xeng\Cms\CoreBundle\Services\Content;
 
-use DateTime;
 use Doctrine\Common\Persistence\ObjectManager;
-use utilphp\util;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Xeng\Cms\CoreBundle\Doctrine\PaginatedResult;
 use Xeng\Cms\CoreBundle\Doctrine\PaginatorUtil;
-use Xeng\Cms\CoreBundle\Entity\Auth\XUser;
 use Xeng\Cms\CoreBundle\Entity\Content\Category;
 use Xeng\Cms\CoreBundle\Entity\Content\ContentCategory;
-use Xeng\Cms\CoreBundle\Entity\Content\ContentImage;
 use Xeng\Cms\CoreBundle\Entity\Content\ContentNode;
-use Xeng\Cms\CoreBundle\Entity\Content\NewsArticle;
+use Xeng\Cms\CoreBundle\Repository\Content\BaseContentRepository;
+use Xeng\Cms\CoreBundle\Repository\Content\CategoryRepository;
 use Xeng\Cms\CoreBundle\Repository\Content\ContentCategoryRepository;
 use Xeng\Cms\CoreBundle\Repository\Content\ContentNodeRepository;
-use Xeng\Cms\CoreBundle\Repository\Content\NewsArticleRepository;
 
 /**
  * @author Ermal Mino <ermal.mino@gmail.com>
@@ -125,4 +122,78 @@ class ContentManager {
 
         $this->manager->flush();
     }
+
+    /**
+     * @param string $categoryName
+     * @param int $limit
+     * @return array
+     * @throws NotFoundHttpException
+     */
+    public function findContentByCategory($categoryName, $limit){
+
+        /** @var CategoryRepository $repository */
+        $repository = $this->manager->getRepository('XengCmsCoreBundle:Content\Category');
+        /** @var Category $category */
+        $category = $repository->getCategoryByName($categoryName);
+
+        if(!$category){
+            throw new NotFoundHttpException();
+        }
+
+        //get all content node ids that have this category
+        /** @var ContentCategoryRepository $contentCategoryRepository */
+        $contentCategoryRepository = $this->manager->getRepository('XengCmsCoreBundle:Content\ContentCategory');
+
+        $contentIds = $contentCategoryRepository->getCategoryContentIds($category->getId());
+        $ids=array();
+        foreach ($contentIds as $contentId){
+            $ids[]=$contentId[1];
+        }
+
+        /** @var BaseContentRepository $baseContentRepository */
+        $baseContentRepository = $this->manager->getRepository('XengCmsCoreBundle:Content\BaseContent');
+
+        $contents=$baseContentRepository->getBaseContentByIds($ids,$limit);
+        return $contents;
+
+    }
+
+    /**
+     * @param string $categoryName
+     * @param int $currentPage
+     * @param int $pageSize
+     * @return PaginatedResult
+     * @throws NotFoundHttpException
+     */
+    public function findContentByCategoryPaginated($categoryName,$currentPage = 1, $pageSize = 30){
+
+        /** @var CategoryRepository $repository */
+        $repository = $this->manager->getRepository('XengCmsCoreBundle:Content\Category');
+        /** @var Category $category */
+        $category = $repository->getCategoryByName($categoryName);
+
+        if(!$category){
+            throw new NotFoundHttpException();
+        }
+
+        //get all content node ids that have this category
+        /** @var ContentCategoryRepository $contentCategoryRepository */
+        $contentCategoryRepository = $this->manager->getRepository('XengCmsCoreBundle:Content\ContentCategory');
+
+        $contentIds = $contentCategoryRepository->getCategoryContentIds($category->getId());
+        $ids=array();
+        foreach ($contentIds as $contentId){
+            $ids[]=$contentId[1];
+        }
+
+        /** @var BaseContentRepository $baseContentRepository */
+        $baseContentRepository = $this->manager->getRepository('XengCmsCoreBundle:Content\BaseContent');
+
+       /** @var PaginatorUtil $paginator */
+        $paginator = new PaginatorUtil($baseContentRepository->getBaseContentByIdsQuery($ids),$currentPage,$pageSize);
+        return $paginator->getPaginatedResult();
+
+    }
+
+
 }

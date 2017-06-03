@@ -12,14 +12,16 @@ use Xeng\Cms\CoreBundle\Entity\Content\ContentNode;
  * @author Ermal Mino <ermal.mino@gmail.com>
  *
  */
-class ContentNodeRepository extends EntityRepository {
+class ContentNodeRepository extends EntityRepository
+{
     /**
      * @return Query
      */
-    public function getAllNodesQuery(){
-        $qb=$this->getEntityManager()->createQueryBuilder();
+    public function getAllNodesQuery()
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('cn');
-        $qb->from('XengCmsCoreBundle:Content\ContentNode','cn');
+        $qb->from('XengCmsCoreBundle:Content\ContentNode', 'cn');
         return $qb->getQuery();
     }
 
@@ -27,10 +29,11 @@ class ContentNodeRepository extends EntityRepository {
      * @param $nodeId
      * @return ContentNode
      */
-    public function getNode($nodeId){
-        $qb=$this->getEntityManager()->createQueryBuilder();
+    public function getNode($nodeId)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('cn');
-        $qb->from('XengCmsCoreBundle:Content\ContentNode','cn');
+        $qb->from('XengCmsCoreBundle:Content\ContentNode', 'cn');
         $qb->where('cn.id = :nodeId');
         $qb->setParameter('nodeId', $nodeId);
 

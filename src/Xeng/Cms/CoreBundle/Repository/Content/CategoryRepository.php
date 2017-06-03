@@ -39,6 +39,20 @@ class CategoryRepository extends EntityRepository {
 
     /**
      * @param $name
+     * @return Category
+     */
+    public function getCategoryByName($name){
+        $qb=$this->getEntityManager()->createQueryBuilder();
+        $qb->select('c');
+        $qb->from('XengCmsCoreBundle:Content\Category','c');
+        $qb->where('c.name = :name');
+        $qb->setParameter('name', $name);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * @param $name
      * @return bool
      */
     public function categoryNameExists($name){

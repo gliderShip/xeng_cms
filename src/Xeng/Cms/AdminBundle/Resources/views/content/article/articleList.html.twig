@@ -32,7 +32,11 @@
                 <tr>
                     <td>{{ article.modifiedAt | date }}</td>
                     <td>{{ article.createdAt | date }}</td>
-                    <td>{{ article.title }}</td>
+                    <td>
+                        <a href="{{ path('article',{'slug':article.slug}) }}">
+                            {{ article.title }}
+                        </a>
+                    </td>
                     <td>{{ article.summary }}</td>
                     <td>{{ article.status }}</td>
                     <td>{{ article.owner.fullName }}</td>

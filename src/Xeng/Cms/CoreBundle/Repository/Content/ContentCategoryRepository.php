@@ -27,4 +27,19 @@ class ContentCategoryRepository extends EntityRepository {
         return $query->getResult();
     }
 
+    /**
+     * @param int $categoryId
+     * @return array
+     */
+    public function getCategoryContentIds($categoryId){
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('IDENTITY(cc.node)');
+        $qb->from('XengCmsCoreBundle:Content\ContentCategory', 'cc');
+        $qb->andWhere('cc.category = :categoryId');
+        $qb->setParameter('categoryId',$categoryId);
+
+        $query = $qb->getQuery();
+        return $query->getArrayResult();
+    }
+
 }

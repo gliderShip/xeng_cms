@@ -3,7 +3,6 @@
 
 namespace Xeng\Cms\CoreBundle\Entity\Content;
 
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Xeng\Cms\CoreBundle\Entity\Auth\XUser;
 
@@ -16,9 +15,6 @@ use Xeng\Cms\CoreBundle\Entity\Auth\XUser;
  * @ORM\Entity(repositoryClass="Xeng\Cms\CoreBundle\Repository\Content\BaseContentRepository")
  */
 class BaseContent extends ContentNode {
-    const S_DRAFT = 0;
-    const S_PENDING = 1;
-    const S_PUBLISHED = 2;
 
     /**
      * @var string $title
@@ -34,23 +30,11 @@ class BaseContent extends ContentNode {
     protected $image=null;
 
     /**
-     * @var int $status
-     * @ORM\Column(type="integer")
-     */
-    protected $status=0;
-
-    /**
      * @var XUser $author
      * @ORM\ManyToOne(targetEntity="Xeng\Cms\CoreBundle\Entity\Auth\XUser")
      * @ORM\JoinColumn(name="author", referencedColumnName="id")
      */
     protected $author;
-
-    /**
-     * @var DateTime $publishedAt
-     * @ORM\Column(name="published_at", type="datetime", nullable=true)
-     */
-    protected $publishedAt=null;
 
     /**
      * @return boolean
@@ -102,38 +86,12 @@ class BaseContent extends ContentNode {
     }
 
     /**
-     * @return DateTime
-     */
-    public function getPublishedAt(){
-        return $this->publishedAt;
-    }
-
-    /**
-     * @param DateTime $publishedAt
-     */
-    public function setPublishedAt($publishedAt){
-        $this->publishedAt = $publishedAt;
-    }
-
-    /**
      * @return string
      */
     public function getType(){
         return self::TYPE_BASE;
     }
 
-    /**
-     * @return int
-     */
-    public function getStatus(){
-        return $this->status;
-    }
 
-    /**
-     * @param int $status
-     */
-    public function setStatus($status){
-        $this->status = $status;
-    }
 
 }

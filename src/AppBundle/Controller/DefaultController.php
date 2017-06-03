@@ -8,7 +8,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Xeng\Cms\CoreBundle\Services\Content\ContentManager;
 use Xeng\Cms\CoreBundle\Services\Content\NewsArticleManager;
 
 /**
@@ -28,15 +27,10 @@ class DefaultController extends Controller {
             throw new NotFoundHttpException();
         }
 
-        /** @var ContentManager $contentManager */
-        $contentManager = $this->get('xeng.content_manager');
-
-        $categories=$contentManager->getContentCategories($article->getId());
-
         // replace this example code with whatever you need
         return $this->render('content/article.html.twig', array(
             'article' => $article,
-            'categories' => $categories
+            'categories' => $article->getCategories()
         ));
     }
 

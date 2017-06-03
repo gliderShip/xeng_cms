@@ -23,6 +23,7 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Label</th>
+                    <th>Hidden</th>
                     <th>Actions</th>
                 </tr>
                 {% for category in pager.results %}
@@ -30,6 +31,7 @@
                     <td>{{ category.id }}</td>
                     <td>{{ category.name }}</td>
                     <td>{{ category.label }}</td>
+                    <td>{{ category.hidden?'Yes':'No'}}</td>
                     <td>
                         {% if is_granted('p[x_core.category.update]') %}
                         <a href="{{ path('xeng.admin.category.edit',{'categoryId': category.id}) }}"

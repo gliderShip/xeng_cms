@@ -5,6 +5,7 @@
 namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Xeng\Cms\CoreBundle\Services\Content\ContentManager;
 
 /**
  * @author Ermal Mino <ermal.mino@gmail.com>
@@ -14,10 +15,26 @@ class BlocksController extends Controller {
 
     public function evidencedAction() {
 
-        return $this->render('blocks/evidenced.html.twig', array(
+        /** @var ContentManager $contentManager */
+        $contentManager=$this->get('xeng.content_manager');
 
+        $evidenced=$contentManager->findContentByCategory('evidenced',3);
+
+        return $this->render('blocks/evidenced.html.twig', array(
+            'evidenced'=>$evidenced
         ));
     }
+
+    public function mainArticlesAction($currentPage=1,$pageSize=30) {
+        /** @var ContentManager $contentManager */
+        $contentManager=$this->get('xeng.content_manager');
+
+        $pager=$contentManager->findContentByCategoryPaginated('kryesore',$currentPage,$pageSize);
+        return $this->render('blocks/main_articles.html.twig', array(
+            'pager' => $pager
+        ));
+    }
+
 
     public function relatedAction() {
 
@@ -29,13 +46,6 @@ class BlocksController extends Controller {
     public function followSocialAction() {
 
         return $this->render('blocks/follow_social.html.twig', array(
-
-        ));
-    }
-
-    public function latestArticlesAction() {
-
-        return $this->render('blocks/latest_articles.html.twig', array(
 
         ));
     }

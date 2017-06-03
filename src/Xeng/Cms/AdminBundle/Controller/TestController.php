@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Xeng\Cms\CoreBundle\Services\Content\ContentManager;
 
 /**
  * @author Ermal Mino <ermal.mino@gmail.com>
@@ -21,11 +22,14 @@ class TestController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function indexAction(Request $request)
-    {
+    public function indexAction(Request $request){
+        /** @var ContentManager $contentManager */
+        $contentManager = $this->get('xeng.content_manager');
+        $result = $contentManager->findContentByCategory('opinion');
+
         // replace this example code with whatever you need
         return $this->render('XengCmsAdminBundle::test.html.twig', array(
-            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
+            'result' => $result
         ));
     }
 }

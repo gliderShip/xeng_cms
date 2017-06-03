@@ -1,10 +1,7 @@
 
-- get 3 evidenced articles block
 - get kryesore articles block
 - get latest articles block
 
 
-- search
-
-- integro angular ne frontend te adminit per komponente ajax,
-  psh kur kerkon userat per autorin e nje shkrimi.
+ - trim slug to omit trailing '-'
+ - delete article (recursively delete also images)
