@@ -121,10 +121,10 @@ class NewsArticleManager {
         $article->setTitle($title);
         $article->setSlug(trim(util::slugify($title),'-'));
 
-        $article->setStatus($status);
         if($status==2 && $article->getStatus()!=2){
             $article->setPublishedAt($now);
         }
+        $article->setStatus($status);
 
         if($summary!==null){
             $article->setSummary($summary);

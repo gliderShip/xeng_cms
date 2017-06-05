@@ -1,3 +1,4 @@
 
-- order by date on recent, evidenced and main article list
+- youtube videos embed into article
 - delete article (recursively delete also images)
+- slug must not change once published

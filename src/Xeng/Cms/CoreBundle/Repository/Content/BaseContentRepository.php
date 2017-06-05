@@ -49,6 +49,7 @@ class BaseContentRepository extends EntityRepository {
         $qb->innerJoin('bc.image', 'ci');
         $qb->where('bc.status = 2');
         $qb->andWhere($qb->expr()->in('bc.id', '?1'));
+        $qb->orderBy('bc.publishedAt', 'DESC');
         $qb->setParameter('1', $nodeIds);
         $qb->setMaxResults($limit);
 
@@ -67,6 +68,7 @@ class BaseContentRepository extends EntityRepository {
         $qb->innerJoin('bc.categories', 'cat');
         $qb->where('bc.status = 2');
         $qb->andWhere($qb->expr()->in('bc.id', '?1'));
+        $qb->orderBy('bc.publishedAt', 'DESC');
         $qb->setParameter('1', $nodeIds);
 
         return $qb->getQuery();
@@ -81,6 +83,7 @@ class BaseContentRepository extends EntityRepository {
         $qb->select('bc');
         $qb->from('XengCmsCoreBundle:Content\BaseContent','bc');
         $qb->where('bc.status = 2');
+        $qb->orderBy('bc.publishedAt', 'DESC');
         $qb->setMaxResults($limit);
 
         return $qb->getQuery()->getArrayResult();
