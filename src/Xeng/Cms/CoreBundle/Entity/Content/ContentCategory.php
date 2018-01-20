@@ -23,7 +23,7 @@ class ContentCategory {
 
     /**
      * @var ContentNode $node
-     * @ORM\ManyToOne(targetEntity="ContentNode")
+     * @ORM\ManyToOne(targetEntity="ContentNode", inversedBy = "contentCategories")
      */
     private $node;
 

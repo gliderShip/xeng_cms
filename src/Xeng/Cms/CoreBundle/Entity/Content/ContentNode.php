@@ -1,5 +1,4 @@
 <?php
-// src/Xeng/Cms/CoreBundle/Entity/Content/ContentNode.php
 
 namespace Xeng\Cms\CoreBundle\Entity\Content;
 
@@ -67,15 +66,13 @@ class ContentNode {
     /**
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Category")
-     * @ORM\JoinTable(
-     *  name="content_category",
-     *  joinColumns={
-     *      @ORM\JoinColumn(name="node_id", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="ContentCategory", mappedBy = "node")
+     *
+     * @ORM\JoinColumn(name="node_id", referencedColumnName="id")
      *  }
      * )
      */
-    protected $categories;
+    protected $contentCategories;
 
     /**
      * @var int $status
@@ -171,20 +168,6 @@ class ContentNode {
     }
 
     /**
-     * @return ArrayCollection
-     */
-    public function getCategories(){
-        return $this->categories;
-    }
-
-    /**
-     * @param ArrayCollection $categories
-     */
-    public function setCategories($categories){
-        $this->categories = $categories;
-    }
-
-    /**
      * @return int
      */
     public function getStatus(){
@@ -210,6 +193,22 @@ class ContentNode {
      */
     public function setPublishedAt($publishedAt){
         $this->publishedAt = $publishedAt;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getContentCategories()
+    {
+        return $this->contentCategories;
+    }
+
+    /**
+     * @param ArrayCollection $contentCategories
+     */
+    public function setContentCategories($contentCategories)
+    {
+        $this->contentCategories = $contentCategories;
     }
 
 }

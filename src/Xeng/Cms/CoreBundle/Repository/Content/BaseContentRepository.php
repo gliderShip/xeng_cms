@@ -65,7 +65,7 @@ class BaseContentRepository extends EntityRepository {
         $qb->select('bc,ci,cat');
         $qb->from('XengCmsCoreBundle:Content\BaseContent','bc');
         $qb->innerJoin('bc.image', 'ci');
-        $qb->innerJoin('bc.categories', 'cat');
+        $qb->innerJoin('bc.contentCategories', 'cat');
         $qb->where('bc.status = 2');
         $qb->andWhere($qb->expr()->in('bc.id', '?1'));
         $qb->orderBy('bc.publishedAt', 'DESC');

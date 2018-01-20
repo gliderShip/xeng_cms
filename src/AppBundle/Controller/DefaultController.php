@@ -39,7 +39,7 @@ class DefaultController extends Controller {
         // replace this example code with whatever you need
         return $this->render('content/article.html.twig', array(
             'article' => $article,
-            'categories' => $article->getCategories()
+            'contentCategories' => $article->getContentCategories()
         ));
     }
 

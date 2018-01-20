@@ -16,9 +16,9 @@
                 </div>
             </div>
             <div class="td-item-details td-category-small">
-                {% for category in article.categories %}
-                    {% if not category.hidden %}
-                        <a href="#" class="td-post-category">{{ category.label }}</a>
+                {% for contentCategory in article.contentCategories %}
+                    {% if not contentCategory.category.hidden %}
+                        <a href="#" class="td-post-category">{{ contentCategory.category.label }}</a>
                     {% endif %}
                 {% endfor %}
                 <h3 class="entry-title td-module-title">
