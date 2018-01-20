@@ -1,6 +1,8 @@
 
 - eliminate FOSUserBundle
 
+- rename public_html back to www
+
 - upgrade to 3.4
 
 - adapt services for 3.4
