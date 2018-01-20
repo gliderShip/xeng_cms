@@ -1,4 +1,12 @@
 
-- youtube videos embed into article
-- delete article (recursively delete also images)
-- slug must not change once published
+- move everything inside one bundle
+
+- eliminate FOSUserBundle
+
+- upgrade to 3.4
+
+- adapt services for 3.4
+
+- change directory structure for 4.0
+
+- upgrade to 4.0
