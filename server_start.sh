@@ -1,3 +1,3 @@
 #!/bin/bash
 
-php app/console server:start --docroot=/var/www/xeng_cms/public_html
+php app/console server:start --docroot=/home/ermal/dev/xeng_cms/public_html
