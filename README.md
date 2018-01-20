@@ -1,29 +1,16 @@
-# README #
+Follow these steps
+==================
 
-This README would normally document whatever steps are necessary to get your application up and running.
+- Import the xeng_cms_dump.sql file into the local mysql database
 
-### What is this repository for? ###
+- Clone the project from bitbucket
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+- composer install inside the project root
 
-### How do I get set up? ###
+- download media.zip archive and extract it under public_html
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+- use start script to start the server (check the path inside, you might need to change it)
 
-### Contribution guidelines ###
+- open site on localhost:8000 or localhost:8000/admin
 
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+- login as superdamin/superadmin
