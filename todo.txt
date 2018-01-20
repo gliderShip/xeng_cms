@@ -1,6 +1,4 @@
 
-- move everything inside one bundle
-
 - eliminate FOSUserBundle
 
 - upgrade to 3.4

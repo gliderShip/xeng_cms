@@ -1,0 +1,20 @@
+<div class="td-ss-main-sidebar" style="width: auto; position: static; top: auto; bottom: auto;">
+    <div class="clearfix"></div>
+    {#include block latest articles #}
+    {% include 'site/blocks/follow_social.html.twig' %}
+    {#===================================#}
+
+    {#include block latest articles #}
+    {{ render(controller('AppBundle:Site/Blocks:mostRecent')) }}
+    {#===================================#}
+
+    {#include block latest articles #}
+    {#% include 'site/blocks/reklama.html.twig' %}
+    {#===================================#}
+
+    {#include block latest articles #}
+    {#% include 'site/blocks/popular.html.twig' %}
+    {#===================================#}
+
+    <div class="clearfix"></div>
+</div>

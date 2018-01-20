@@ -1,10 +1,3 @@
-xeng_cms_core_import:
-  resource: "@XengCmsCoreBundle/Resources/config/routing.yml"
-
-xeng_cms_admin_import:
-  resource: "@XengCmsAdminBundle/Resources/config/routing.yml"
-  prefix: /admin
-
 app:
   resource: '@AppBundle/Controller/'
   type: annotation

@@ -1,0 +1,19 @@
+{% extends 'site/layout.html.twig' %}
+{% block title %}Kontakt{% endblock %}
+
+{% block maincontent %}
+    <div class="tdc-content-wrap">
+        <div class="tdc-row">
+            <div class="td-pb-row" >
+                <div class="td-pb-span8 td-main-content" role="main">
+                    Email: <a href="mailto:admin@newsetika.al">admin@newsetika.al</a>
+                </div>
+                <div class="td-pb-span4 td-main-sidebar" role="complementary">
+                    {#include sidebar #}
+                    {% include 'site/sidebar.html.twig' %}
+                    {#===================================#}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

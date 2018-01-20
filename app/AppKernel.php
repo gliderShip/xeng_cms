@@ -17,8 +17,6 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 
             new FOS\UserBundle\FOSUserBundle(),
-            new Xeng\Cms\CoreBundle\XengCmsCoreBundle(),
-            new Xeng\Cms\AdminBundle\XengCmsAdminBundle(),
             new AppBundle\AppBundle(),
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle()
 

@@ -1,3 +1,0 @@
-xeng_cms_core:
-    resource: '@XengCmsCoreBundle/Controller/'
-    type: annotation

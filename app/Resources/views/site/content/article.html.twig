@@ -1,0 +1,110 @@
+{% extends 'site/content/content.html.twig' %}
+
+{% block title %}{{ article.title }}{% endblock %}
+{% set url = 'http://newsetika.al' ~ path('article',{'slug':article.slug}) %}
+{% set title = article.title %}
+
+{% block facebookmetadata %}
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="sq_AL">
+
+    <meta property="og:url" content="{{ url }}">
+    <meta property="og:title" content="{{ article.title }}">
+    <meta property="og:description" content="{{ article.summary }}">
+    {% if article.hasImage() %}
+        <meta property="og:image" content="http://newsetika.al/media/content/images/{{ article.image.path }}">
+    {% endif %}
+{% endblock %}
+{% block twittermetadata %}
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="{{ article.summary }}">
+    <meta name="twitter:site" content="@newsetikaal">
+    <meta name="twitter:title" content="{{ article.title }}">
+    <meta name="twitter:description" content="{{ article.summary }}">
+    <meta name="twitter:creator" content="@newsetikaal">
+    {% if article.hasImage() %}
+        <meta property="twitter:image" content="http://newsetika.al/media/content/images/{{ article.image.path }}">
+    {% endif %}
+{% endblock %}
+{% block content %}
+    <div class="td-ss-main-content">
+        <div class="clearfix"></div>
+        <article class="post type-post status-publish format-standard has-post-thumbnail hentry">
+            <div class="td-post-header">
+                <ul class="td-category">
+                    {% for contentCategory in contentCategories %}
+                        {% if not contentCategory.category.hidden %}
+                    <li class="entry-category">
+                        <a href="#">{{ contentCategory.category.label }}</a>
+                    </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                <header class="td-post-title">
+                    <h1 class="entry-title">{{ article.title }}</h1>
+                    <div class="td-module-meta-info">
+                        <!--div class="td-post-author-name">
+                            <div class="td-author-by">By</div>
+                            <a href="https://demo.tagdiv.com/ionmag/author/admin/">Sarah Queen</a>
+                            <div class="td-author-line"> - </div>
+                        </div-->
+                        <span class="td-post-date">
+                            <time class="entry-date updated td-module-date"
+                                  datetime="{{ article.publishedAt | date}}">{{ article.publishedAt | date}}</time>
+                        </span>
+                        <!--div class="td-post-views-wrap">
+                            <div class="td-post-views">
+                                <i class="td-icon-views"></i><span class="td-nr-views-15">1040</span>
+                            </div>
+                            <span class="td-post-views-text">views</span>
+                        </div-->
+                    </div>
+                </header>
+            </div>
+            {#include content share #}
+            {% include 'site/content/share.html.twig' %}
+            {#===================================#}
+            <div class="td-post-content">
+                {% if article.hasImage() %}
+                <!-- featured post image -->
+                <div class="td-post-featured-image">
+                    <a href="#">
+                        <img src="/media/content/images/{{ article.image.path }}" style="max-width: 640px">
+                    </a>
+                </div>
+                {% endif %}
+                {{ article.body | raw }}
+            </div>
+            <footer>
+                {#include content share #}
+                {% include 'site/content/share.html.twig' %}
+                {#===================================#}
+            </footer>
+        </article>
+        <div class="clearfix"></div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function() {
+            $('.td-social-twitter').click(function(event) {
+                var width  = 575,
+                    height = 400,
+                    left   = ($(window).width()  - width)  / 2,
+                    top    = ($(window).height() - height) / 2,
+                    url    = this.href,
+                    opts   = 'status=1' +
+                        ',width='  + width  +
+                        ',height=' + height +
+                        ',top='    + top    +
+                        ',left='   + left;
+
+                window.open(url, 'twitter', opts);
+
+                return false;
+            });
+        });
+
+    </script>
+{% endblock %}

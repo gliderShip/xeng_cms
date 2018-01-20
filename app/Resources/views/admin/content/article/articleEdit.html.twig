@@ -1,0 +1,33 @@
+{% extends 'admin/layout.html.twig' %}
+{% trans_default_domain 'admin' %}
+{% set page_title = 'xeng.admin.page.title.content.article.edit' | trans ~ ': ' ~ article.title %}
+
+{% block content %}
+
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+            <li class="{{ currentTab=='general'?'active':'' }}">
+                <a href="{{ path('xeng.admin.content.article.edit',{'nodeId': article.id}) }}"
+                   aria-expanded="false">General</a>
+            </li>
+            <li class="{{ currentTab=='images'?'active':'' }}">
+                <a href="{{ path('xeng.admin.content.article.edit.images',{'nodeId': article.id}) }}"
+                   aria-expanded="false">Images</a>
+            </li>
+            <li class="{{ currentTab=='category'?'active':'' }}">
+                <a href="{{ path('xeng.admin.content.article.edit.category',{'nodeId': article.id}) }}"
+                   aria-expanded="false">Categories</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            {% block tabcontent %}
+            {% endblock %}
+        </div>
+        <!-- /.tab-content -->
+    </div>
+
+{% endblock %}
+
+
+
+

@@ -1,9 +1,49 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/service_container.html
 parameters:
-    #parameter_name: value
+  #parameter_name: value
 
 services:
-    #service_name:
-    #    class: XengCmsCoreBundle\Directory\ClassName
-    #    arguments: ['@another_service_name', 'plain_value', '%parameter_name%']
+  xeng.permission_manager:
+    class: AppBundle\Services\Auth\PermissionManager
+  xeng.user_manager:
+    class: AppBundle\Services\Auth\XUserManager
+    arguments:
+      - "@doctrine.orm.entity_manager"
+      - "@fos_user.user_manager"
+      - "@security.encoder_factory"
+  xeng.role_manager:
+    class: AppBundle\Services\Auth\XRoleManager
+    arguments:
+      - "@doctrine.orm.entity_manager"
+  xeng.security.permission_voter:
+    class: AppBundle\Security\Voter\PermissionVoter
+    arguments:
+      - "@xeng.user_manager"
+    tags:
+      - { name: security.voter }
+    public: false
+  xeng.account.profile_manager:
+    class: AppBundle\Services\Account\ProfileManager
+    arguments:
+      - "@doctrine.orm.entity_manager"
+      - "@gaufrette.profile_image_filesystem"
+  xeng.category_manager:
+    class: AppBundle\Services\Content\CategoryManager
+    arguments:
+      - "@doctrine.orm.entity_manager"
+  xeng.content_image_manager:
+    class: AppBundle\Services\Content\ContentImageManager
+    arguments:
+      - "@doctrine.orm.entity_manager"
+      - "@gaufrette.content_image_filesystem"
+  xeng.content_manager:
+    class: AppBundle\Services\Content\ContentManager
+    arguments:
+      - "@doctrine.orm.entity_manager"
+      - "@xeng.content_image_manager"
+  xeng.news_article_manager:
+    class: AppBundle\Services\Content\NewsArticleManager
+    arguments:
+      - "@doctrine.orm.entity_manager"
+      - "@xeng.content_image_manager"

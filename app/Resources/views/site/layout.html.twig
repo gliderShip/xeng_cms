@@ -1,0 +1,25 @@
+{% extends 'site/base.html.twig' %}
+
+{% block body %}
+
+    <div>
+        <div class="td-header-wrap td-header-style-1">
+            {#include header#}
+            {% include 'site/header.html.twig' %}
+            {#===================================#}
+
+            {#include menu #}
+            {% include 'site/mainmenu.html.twig' %}
+            {#===================================#}
+
+        </div>
+        <div class="td-main-content-wrap td-main-page-wrap td-container-wrap">
+            {% block maincontent %}
+            {% endblock %}
+        </div>
+        {# include footer #}
+        {% include 'site/footer.html.twig' %}
+        {#===================================#}
+    </div>
+
+{% endblock %}

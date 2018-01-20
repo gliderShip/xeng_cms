@@ -1,0 +1,37 @@
+{% extends 'admin/layout.html.twig' %}
+{% trans_default_domain 'admin' %}
+{% set page_title = 'xeng.admin.page.title.user.edit' | trans ~ ': ' ~ user.username %}
+
+{% block content %}
+
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+            <li class="{{ currentTab=='general'?'active':'' }}">
+                <a href="{{ path('xeng.admin.user.edit',{'userId': user.id}) }}"
+                   aria-expanded="false">General</a>
+            </li>
+            {% if is_granted('p[x_core.user.profile.update]') %}
+                <li class="{{ currentTab=='profile'?'active':'' }}">
+                    <a href="{{ path('xeng.admin.user.edit.profile',{'userId': user.id}) }}"
+                       aria-expanded="false">Profile</a>
+                </li>
+            {% endif %}
+            {% if is_granted('p[x_core.user.roles_update]') %}
+            <li class="{{ currentTab=='roles'?'active':'' }}">
+                <a href="{{ path('xeng.admin.user.edit.roles',{'userId': user.id}) }}"
+                   aria-expanded="false">Roles</a>
+            </li>
+            {% endif %}
+        </ul>
+        <div class="tab-content">
+            {% block tabcontent %}
+            {% endblock %}
+        </div>
+        <!-- /.tab-content -->
+    </div>
+
+{% endblock %}
+
+
+
+

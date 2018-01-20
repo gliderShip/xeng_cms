@@ -1,0 +1,29 @@
+{% extends 'site/layout.html.twig' %}
+
+{% block maincontent %}
+    <div class="tdc-content-wrap">
+        {#include block evidenced #}
+        {{ render(controller('AppBundle:Site/Blocks:evidenced')) }}
+        {#===================================#}
+
+        <div class="tdc-row">
+            <div class="td-pb-row" >
+                <div class="td-pb-span8 td-main-content" role="main">
+                    {#include block main articles #}
+                    {{ render(controller('AppBundle:Site/Blocks:mainArticles')) }}
+                    {#===================================#}
+                </div>
+                <div class="td-pb-span4 td-main-sidebar" role="complementary">
+                    {#include sidebar #}
+                    {% include 'site/sidebar.html.twig' %}
+                    {#===================================#}
+                </div>
+            </div>
+        </div>
+        {#include block related #}
+        {#{ render(controller('AppBundle:Site/Blocks:related')) }#}
+        {#===================================#}
+
+    </div>
+{% endblock %}
+
