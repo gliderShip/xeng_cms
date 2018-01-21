@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use Doctrine\ORM\NonUniqueResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -14,7 +15,6 @@ use AppBundle\Form\Admin\Auth\UserCreateHandler;
 use AppBundle\Form\Admin\Auth\UserEditHandler;
 use AppBundle\Form\Admin\Auth\UserRolesEditHandler;
 use AppBundle\Entity\Account\Profile;
-use AppBundle\Form\Base\ValidationResponse;
 use AppBundle\Services\Account\ProfileManager;
 use AppBundle\Services\Auth\XRoleManager;
 use AppBundle\Services\Auth\XUserManager;
@@ -31,13 +31,11 @@ class UserAdminController extends Controller {
      * @Route("/users/{currentPage}", name="xeng.admin.users.page")
      * @Security("is_granted('p[x_core.user.list]')")
      *
+     * @param XUserManager $xUserManager
      * @param int $currentPage
      * @return Response
      */
-    public function usersAction($currentPage=1) {
-        /** @var XUserManager $xUserManager */
-        $xUserManager = $this->get('xeng.user_manager');
-
+    public function usersAction(XUserManager $xUserManager, $currentPage=1) {
         $pager=$xUserManager->getAllUsers($currentPage,20);
 
         return $this->render('admin/user/users.html.twig', array(
@@ -50,18 +48,13 @@ class UserAdminController extends Controller {
      * @Security("is_granted('p[x_core.user.create]')")
      *
      * @param Request $request
+     * @param XUserManager $xUserManager
      * @return Response
      */
-    public function createUserAction(Request $request) {
-
-        /** @var XUserManager $xUserManager */
-        $xUserManager = $this->get('xeng.user_manager');
-
-        /** @var UserCreateHandler $formHandler */
+    public function createUserAction(Request $request, XUserManager $xUserManager) {
         $formHandler = new UserCreateHandler($this->container,$request);
         $formHandler->handle();
 
-        /** @var ValidationResponse $validationResponse */
         $validationResponse=$formHandler->getValidationResponse();
 
         if($formHandler->isSubmitted() && $formHandler->isValid()){
@@ -91,23 +84,19 @@ class UserAdminController extends Controller {
      *
      * @param Request $request
      * @param $userId
+     * @param XUserManager $xUserManager
      * @return Response
      */
-    public function editUserAction(Request $request,$userId) {
-
-        /** @var XUserManager $xUserManager */
-        $xUserManager = $this->get('xeng.user_manager');
-
+    public function editUserAction(Request $request,$userId, XUserManager $xUserManager) {
         $user=$xUserManager->getUser($userId);
+
         if(!$user){
             throw new NotFoundHttpException();
         }
 
-        /** @var UserEditHandler $formHandler */
         $formHandler = new UserEditHandler($this->container,$request,$user);
         $formHandler->handle();
 
-        /** @var ValidationResponse $validationResponse */
         $validationResponse=$formHandler->getValidationResponse();
 
         if($formHandler->isSubmitted() && $formHandler->isValid()){
@@ -140,25 +129,24 @@ class UserAdminController extends Controller {
      *
      * @param Request $request
      * @param $userId
+     * @param XUserManager $xUserManager
+     * @param XRoleManager $xRoleManager
      * @return Response
      */
-    public function editUserRolesAction(Request $request,$userId) {
-
-        /** @var XUserManager $xUserManager */
-        $xUserManager = $this->get('xeng.user_manager');
+    public function editUserRolesAction(Request $request, $userId,
+                                        XUserManager $xUserManager,
+                                        XRoleManager $xRoleManager) {
         $user=$xUserManager->getUser($userId);
+
         if(!$user){
             throw new NotFoundHttpException();
         }
-        /** @var XRoleManager $xRoleManager */
-        $xRoleManager = $this->get('xeng.role_manager');
+
         $roles=$xRoleManager->getAllRoles()->getResults();
 
-        /** @var UserRolesEditHandler $formHandler */
         $formHandler = new UserRolesEditHandler($this->container,$request,$user,$roles);
         $formHandler->handle();
 
-        /** @var ValidationResponse $validationResponse */
         $validationResponse=$formHandler->getValidationResponse();
 
         if($formHandler->isSubmitted() && $formHandler->isValid()){
@@ -183,21 +171,20 @@ class UserAdminController extends Controller {
      *
      * @param Request $request
      * @param int $userId
+     * @param XUserManager $xUserManager
+     * @param ProfileManager $profileManager
      * @return Response
+     * @throws NonUniqueResultException
      */
-    public function editUserProfileAction(Request $request,$userId) {
-
-        /** @var XUserManager $xUserManager */
-        $xUserManager = $this->get('xeng.user_manager');
+    public function editUserProfileAction(Request $request, $userId,
+                                          XUserManager $xUserManager,
+                                          ProfileManager $profileManager) {
         $user=$xUserManager->getUser($userId);
+
         if(!$user){
             throw new NotFoundHttpException();
         }
 
-
-        /** @var ProfileManager $profileManager */
-        $profileManager = $this->get('xeng.account.profile_manager');
-        /** @var Profile $profile */
         $profile=$profileManager->getProfileByUser($userId);
         $newProfile=false;
         if(!$profile){
@@ -205,11 +192,9 @@ class UserAdminController extends Controller {
             $newProfile=true;
         }
 
-        /** @var UserProfileEditHandler $formHandler */
         $formHandler = new UserProfileEditHandler($this->container,$request,$profile);
         $formHandler->handle();
 
-        /** @var ValidationResponse $validationResponse */
         $validationResponse=$formHandler->getValidationResponse();
 
         if($formHandler->isSubmitted() && $formHandler->isValid()){

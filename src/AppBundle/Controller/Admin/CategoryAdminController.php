@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use AppBundle\Form\Admin\Content\CategoryCreateHandler;
 use AppBundle\Form\Admin\Content\CategoryEditHandler;
-use AppBundle\Form\Base\ValidationResponse;
 use AppBundle\Services\Content\CategoryManager;
 
 /**
@@ -26,12 +25,10 @@ class CategoryAdminController extends Controller {
      * @Security("is_granted('p[x_core.category.list]')")
      *
      * @param int $currentPage
+     * @param CategoryManager $categoryManager
      * @return Response
      */
-    public function categoriesAction($currentPage=1) {
-        /** @var CategoryManager $categoryManager */
-        $categoryManager = $this->get('xeng.category_manager');
-
+    public function categoriesAction($currentPage=1, CategoryManager $categoryManager) {
         $pager=$categoryManager->getAllCategories($currentPage,20);
 
         return $this->render('admin/category/categories.html.twig', array(
@@ -44,18 +41,14 @@ class CategoryAdminController extends Controller {
      * @Security("is_granted('p[x_core.category.create]')")
      *
      * @param Request $request
+     * @param CategoryManager $categoryManager
      * @return Response
      */
-    public function createCategoryAction(Request $request) {
+    public function createCategoryAction(Request $request, CategoryManager $categoryManager) {
 
-        /** @var CategoryManager $categoryManager */
-        $categoryManager = $this->get('xeng.category_manager');
-
-        /** @var CategoryCreateHandler $formHandler */
         $formHandler = new CategoryCreateHandler($this->container,$request);
         $formHandler->handle();
 
-        /** @var ValidationResponse $validationResponse */
         $validationResponse=$formHandler->getValidationResponse();
 
         if($formHandler->isSubmitted() && $formHandler->isValid()){
@@ -84,23 +77,19 @@ class CategoryAdminController extends Controller {
      *
      * @param Request $request
      * @param $categoryId
+     * @param CategoryManager $categoryManager
      * @return Response
      */
-    public function editCategoryAction(Request $request,$categoryId) {
-
-        /** @var CategoryManager $categoryManager */
-        $categoryManager = $this->get('xeng.category_manager');
-
+    public function editCategoryAction(Request $request,$categoryId, CategoryManager $categoryManager) {
         $category=$categoryManager->getCategory($categoryId);
+
         if(!$category){
             throw new NotFoundHttpException();
         }
 
-        /** @var CategoryEditHandler $formHandler */
         $formHandler = new CategoryEditHandler($this->container,$request,$category);
         $formHandler->handle();
 
-        /** @var ValidationResponse $validationResponse */
         $validationResponse=$formHandler->getValidationResponse();
 
         if($formHandler->isSubmitted() && $formHandler->isValid()){

@@ -1,8 +1,4 @@
 
-- upgrade to 3.4
-
-- adapt services for 3.4
-
 - change directory structure for 4.0
 
 - upgrade to 4.0

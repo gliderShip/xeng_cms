@@ -13,7 +13,6 @@ use AppBundle\Form\Admin\Content\ContentCategoryEditHandler;
 use AppBundle\Form\Admin\Content\ContentImageUploadHandler;
 use AppBundle\Form\Admin\Content\NewsArticleCreateHandler;
 use AppBundle\Form\Admin\Content\NewsArticleEditHandler;
-use AppBundle\Form\Base\ValidationResponse;
 use AppBundle\Services\Content\CategoryManager;
 use AppBundle\Services\Content\ContentImageManager;
 use AppBundle\Services\Content\ContentManager;
@@ -31,13 +30,11 @@ class NewsArticleAdminController extends Controller {
      * @Route("/article/list/{currentPage}", name="xeng.admin.content.article.list.page")
      * @Security("is_granted('p[x_core.content.article.list]')")
      *
+     * @param NewsArticleManager $articleManager
      * @param int $currentPage
      * @return Response
      */
-    public function articleListAction($currentPage=1) {
-        /** @var NewsArticleManager $articleManager */
-        $articleManager = $this->get('xeng.news_article_manager');
-
+    public function articleListAction(NewsArticleManager $articleManager, $currentPage=1) {
         $pager=$articleManager->getAllNewsArticle($currentPage,20);
 
         return $this->render('admin/content/article/articleList.html.twig', array(
@@ -50,18 +47,14 @@ class NewsArticleAdminController extends Controller {
      * @Security("is_granted('p[x_core.content.article.create]')")
      *
      * @param Request $request
+     * @param NewsArticleManager $articleManager
      * @return Response
      */
-    public function createArticleAction(Request $request) {
-        /** @var NewsArticleManager $articleManager */
-        $articleManager = $this->get('xeng.news_article_manager');
+    public function createArticleAction(Request $request, NewsArticleManager $articleManager) {
 
-
-        /** @var NewsArticleCreateHandler $formHandler */
         $formHandler = new NewsArticleCreateHandler($this->container,$request);
         $formHandler->handle();
 
-        /** @var ValidationResponse $validationResponse */
         $validationResponse=$formHandler->getValidationResponse();
 
         if($formHandler->isSubmitted() && $formHandler->isValid()){
@@ -93,24 +86,20 @@ class NewsArticleAdminController extends Controller {
      *
      * @param Request $request
      * @param $nodeId
+     * @param NewsArticleManager $articleManager
+     * @param ContentImageManager $imageManager
      * @return Response
      */
-    public function editArticleGeneralAction(Request $request,$nodeId) {
-        /** @var NewsArticleManager $articleManager */
-        $articleManager = $this->get('xeng.news_article_manager');
+    public function editArticleGeneralAction(Request $request, $nodeId, NewsArticleManager $articleManager, ContentImageManager $imageManager) {
         $article=$articleManager->getNewsArticle($nodeId);
+
         if(!$article){
             throw new NotFoundHttpException();
         }
 
-        /** @var ContentImageManager $imageManager */
-        $imageManager = $this->get('xeng.content_image_manager');
-
-        /** @var NewsArticleEditHandler $formHandler */
         $formHandler = new NewsArticleEditHandler($this->container,$request,$article);
         $formHandler->handle();
 
-        /** @var ValidationResponse $validationResponse */
         $validationResponse=$formHandler->getValidationResponse();
 
         if($formHandler->isSubmitted() && $formHandler->isValid()){
@@ -156,24 +145,20 @@ class NewsArticleAdminController extends Controller {
      *
      * @param Request $request
      * @param $nodeId
+     * @param NewsArticleManager $articleManager
+     * @param ContentImageManager $imageManager
      * @return Response
      */
-    public function articleEditImagesListAction(Request $request,$nodeId) {
-        /** @var NewsArticleManager $articleManager */
-        $articleManager = $this->get('xeng.news_article_manager');
+    public function articleEditImagesListAction(Request $request, $nodeId, NewsArticleManager $articleManager, ContentImageManager $imageManager) {
         $article=$articleManager->getNewsArticle($nodeId);
+
         if(!$article){
             throw new NotFoundHttpException();
         }
 
-        /** @var ContentImageManager $imageManager */
-        $imageManager = $this->get('xeng.content_image_manager');
-
-        /** @var ContentImageUploadHandler $formHandler */
         $formHandler = new ContentImageUploadHandler($this->container,$request);
         $formHandler->handle();
 
-        /** @var ValidationResponse $validationResponse */
         $validationResponse=$formHandler->getValidationResponse();
 
         if($formHandler->isSubmitted() && $formHandler->isValid()){
@@ -181,8 +166,6 @@ class NewsArticleAdminController extends Controller {
             /** @var UploadedFile $uploadedFile */
             $uploadedFile=$validationResponse->getValue('image');
             if($uploadedFile){
-                /** @var ContentImageManager $imageManager */
-                $imageManager = $this->get('xeng.content_image_manager');
                 $imageManager->addContentImage($article,$uploadedFile);
             }
 
@@ -208,18 +191,17 @@ class NewsArticleAdminController extends Controller {
      *
      * @param $nodeId
      * @param $imageId
+     * @param NewsArticleManager $articleManager
+     * @param ContentImageManager $imageManager
      * @return Response
      */
-    public function articleEditImagesDefaultAction($nodeId,$imageId) {
-        /** @var NewsArticleManager $articleManager */
-        $articleManager = $this->get('xeng.news_article_manager');
+    public function articleEditImagesDefaultAction($nodeId, $imageId, NewsArticleManager $articleManager, ContentImageManager $imageManager) {
         $article=$articleManager->getNewsArticle($nodeId);
+
         if(!$article){
             throw new NotFoundHttpException();
         }
 
-        /** @var ContentImageManager $imageManager */
-        $imageManager = $this->get('xeng.content_image_manager');
         $image=$imageManager->getImage($imageId);
         if(!$image){
             throw new NotFoundHttpException();
@@ -238,19 +220,19 @@ class NewsArticleAdminController extends Controller {
      *
      * @param $nodeId
      * @param $imageId
+     * @param NewsArticleManager $articleManager
+     * @param ContentImageManager $imageManager
      * @return Response
      */
-    public function articleEditImagesDeleteAction($nodeId,$imageId) {
-        /** @var NewsArticleManager $articleManager */
-        $articleManager = $this->get('xeng.news_article_manager');
+    public function articleEditImagesDeleteAction($nodeId, $imageId, NewsArticleManager $articleManager, ContentImageManager $imageManager) {
         $article=$articleManager->getNewsArticle($nodeId);
+
         if(!$article){
             throw new NotFoundHttpException();
         }
 
-        /** @var ContentImageManager $imageManager */
-        $imageManager = $this->get('xeng.content_image_manager');
         $image=$imageManager->getImage($imageId);
+
         if(!$image){
             throw new NotFoundHttpException();
         }
@@ -269,29 +251,27 @@ class NewsArticleAdminController extends Controller {
      *
      * @param Request $request
      * @param $nodeId
+     * @param NewsArticleManager $articleManager
+     * @param CategoryManager $categoryManager
+     * @param ContentManager $contentManager
      * @return Response
      */
-    public function editArticleCategoryAction(Request $request,$nodeId) {
-        /** @var NewsArticleManager $articleManager */
-        $articleManager = $this->get('xeng.news_article_manager');
+    public function editArticleCategoryAction(Request $request, $nodeId,
+                                              NewsArticleManager $articleManager,
+                                              CategoryManager $categoryManager,
+                                              ContentManager $contentManager) {
         $article=$articleManager->getNewsArticle($nodeId);
+
         if(!$article){
             throw new NotFoundHttpException();
         }
 
-        /** @var CategoryManager $categoryManager */
-        $categoryManager = $this->get('xeng.category_manager');
         $categories=$categoryManager->getAllCategories()->getResults();
 
-        /** @var ContentCategoryEditHandler $formHandler */
         $formHandler = new ContentCategoryEditHandler($this->container,$request,$article,$categories);
         $formHandler->handle();
 
-        /** @var ValidationResponse $validationResponse */
         $validationResponse=$formHandler->getValidationResponse();
-
-        /** @var ContentManager $contentManager */
-        $contentManager = $this->get('xeng.content_manager');
 
         if($formHandler->isSubmitted() && $formHandler->isValid()){
             $contentManager->deleteContentCategories($formHandler->getToBeDeleted());
@@ -301,7 +281,6 @@ class NewsArticleAdminController extends Controller {
                 'Article categories updated successfully!'
             );
         }
-
 
         return $this->render('admin/content/article/articleEditCategories.html.twig', array(
             'article' => $article,

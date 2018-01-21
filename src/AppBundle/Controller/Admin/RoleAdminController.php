@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use Doctrine\ORM\NonUniqueResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -11,7 +12,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use AppBundle\Form\Admin\Auth\RoleCreateHandler;
 use AppBundle\Form\Admin\Auth\RoleEditHandler;
 use AppBundle\Form\Admin\Auth\RolePermissionsEditHandler;
-use AppBundle\Form\Base\ValidationResponse;
 use AppBundle\Services\Auth\PermissionManager;
 use AppBundle\Services\Auth\XRoleManager;
 
@@ -27,13 +27,11 @@ class RoleAdminController extends Controller {
      * @Route("/roles/{currentPage}", name="xeng.admin.roles.page")
      * @Security("is_granted('p[x_core.role.list]')")
      *
+     * @param XRoleManager $xRoleManager
      * @param int $currentPage
      * @return Response
      */
-    public function rolesAction($currentPage=1) {
-        /** @var XRoleManager $xRoleManager */
-        $xRoleManager = $this->get('xeng.role_manager');
-
+    public function rolesAction(XRoleManager $xRoleManager, $currentPage=1) {
         $pager=$xRoleManager->getAllRoles($currentPage,20);
 
         return $this->render('admin/role/roles.html.twig', array(
@@ -46,18 +44,14 @@ class RoleAdminController extends Controller {
      * @Security("is_granted('p[x_core.role.create]')")
      *
      * @param Request $request
+     * @param XRoleManager $xRoleManager
      * @return Response
      */
-    public function createRoleAction(Request $request) {
+    public function createRoleAction(Request $request, XRoleManager $xRoleManager) {
 
-        /** @var XRoleManager $xRoleManager */
-        $xRoleManager = $this->get('xeng.role_manager');
-
-        /** @var RoleCreateHandler $formHandler */
         $formHandler = new RoleCreateHandler($this->container,$request);
         $formHandler->handle();
 
-        /** @var ValidationResponse $validationResponse */
         $validationResponse=$formHandler->getValidationResponse();
 
         if($formHandler->isSubmitted() && $formHandler->isValid()){
@@ -85,23 +79,20 @@ class RoleAdminController extends Controller {
      *
      * @param Request $request
      * @param $roleId
+     * @param XRoleManager $xRoleManager
      * @return Response
+     * @throws NonUniqueResultException
      */
-    public function editRoleAction(Request $request,$roleId) {
-
-        /** @var XRoleManager $xRoleManager */
-        $xRoleManager = $this->get('xeng.role_manager');
-
+    public function editRoleAction(Request $request, $roleId, XRoleManager $xRoleManager) {
         $role=$xRoleManager->getRole($roleId);
+
         if(!$role){
             throw new NotFoundHttpException();
         }
 
-        /** @var RoleEditHandler $formHandler */
         $formHandler = new RoleEditHandler($this->container,$request,$role);
         $formHandler->handle();
 
-        /** @var ValidationResponse $validationResponse */
         $validationResponse=$formHandler->getValidationResponse();
 
         if($formHandler->isSubmitted() && $formHandler->isValid()){
@@ -129,28 +120,25 @@ class RoleAdminController extends Controller {
      *
      * @param Request $request
      * @param $roleId
+     * @param XRoleManager $xRoleManager
+     * @param PermissionManager $permissionManager
      * @return Response
+     * @throws NonUniqueResultException
      */
-    public function editRolePermissionsAction(Request $request,$roleId) {
-        /** @var XRoleManager $xRoleManager */
-        $xRoleManager = $this->get('xeng.role_manager');
-
+    public function editRolePermissionsAction(Request $request, $roleId,
+                                              XRoleManager $xRoleManager,
+                                              PermissionManager $permissionManager) {
         $role=$xRoleManager->getRole($roleId);
+
         if(!$role){
             throw new NotFoundHttpException();
         }
 
-        /** @var PermissionManager $permissionManager */
-        $permissionManager = $this->get('xeng.permission_manager');
-
         $permissionModules = $permissionManager->getModules();
 
-
-        /** @var RolePermissionsEditHandler $formHandler */
         $formHandler = new RolePermissionsEditHandler($this->container,$request,$role);
         $formHandler->handle();
 
-        /** @var ValidationResponse $validationResponse */
         $validationResponse=$formHandler->getValidationResponse();
 
         if($formHandler->isSubmitted() && $formHandler->isValid()){

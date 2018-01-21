@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Site;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Services\Content\ContentManager;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author Ermal Mino <ermal.mino@gmail.com>
@@ -11,11 +12,12 @@ use AppBundle\Services\Content\ContentManager;
  */
 class BlocksController extends Controller {
 
-    public function evidencedAction() {
 
-        /** @var ContentManager $contentManager */
-        $contentManager=$this->get('xeng.content_manager');
-
+    /**
+     * @param ContentManager $contentManager
+     * @return Response
+     */
+    public function evidencedAction(ContentManager $contentManager) {
         $evidenced=$contentManager->findContentByCategory('evidenced',3);
 
         return $this->render('site/blocks/evidenced.html.twig', array(
@@ -23,20 +25,27 @@ class BlocksController extends Controller {
         ));
     }
 
-    public function mainArticlesAction($currentPage=1,$pageSize=30) {
-        /** @var ContentManager $contentManager */
-        $contentManager=$this->get('xeng.content_manager');
-
+    /**
+     * @param ContentManager $contentManager
+     * @param int $currentPage
+     * @param int $pageSize
+     * @return Response
+     */
+    public function mainArticlesAction(ContentManager $contentManager,$currentPage=1,$pageSize=30) {
         $pager=$contentManager->findContentByCategoryPaginated('kryesore',$currentPage,$pageSize);
+
         return $this->render('site/blocks/main_articles.html.twig', array(
             'pager' => $pager
         ));
     }
 
-    public function mostRecentAction() {
-        /** @var ContentManager $contentManager */
-        $contentManager=$this->get('xeng.content_manager');
+    /**
+     * @param ContentManager $contentManager
+     * @return Response
+     */
+    public function mostRecentAction(ContentManager $contentManager) {
         $recent=$contentManager->getLatestBaseContentList(7);
+
         return $this->render('site/blocks/most_recent.html.twig', array(
             'recent' => $recent
         ));

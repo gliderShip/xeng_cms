@@ -17,12 +17,12 @@ class HomeController extends Controller {
     /**
      * @Route("/article/{slug}", name="article")
      * @param $slug
+     * @param NewsArticleManager $articleManager
      * @return Response
      */
-    public function articleAction($slug) {
-        /** @var NewsArticleManager $articleManager */
-        $articleManager = $this->get('xeng.news_article_manager');
+    public function articleAction($slug, NewsArticleManager $articleManager) {
         $article=null;
+
         if(is_numeric($slug)){
             $article=$articleManager->getNewsArticle($slug);
         } else {
@@ -44,9 +44,7 @@ class HomeController extends Controller {
      * @Route("/", name="homepage")
      */
     public function homeAction() {
-        return $this->render('site/home.html.twig', array(
-            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
-        ));
+        return $this->render('site/home.html.twig', array());
     }
 
     /**

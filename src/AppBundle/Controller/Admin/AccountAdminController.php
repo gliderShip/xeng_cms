@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Admin;
 
+use Doctrine\ORM\NonUniqueResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -12,7 +13,6 @@ use AppBundle\Form\Admin\Account\AccountUserEditHandler;
 use AppBundle\Form\Admin\Account\UserProfileEditHandler;
 use AppBundle\Entity\Account\Profile;
 use AppBundle\Entity\Auth\XUser;
-use AppBundle\Form\Base\ValidationResponse;
 use AppBundle\Services\Account\ProfileManager;
 use AppBundle\Services\Auth\XUserManager;
 
@@ -36,20 +36,16 @@ class AccountAdminController extends Controller {
      * @Route("/account/user", name="xeng.admin.account.user")
      *
      * @param Request $request
+     * @param XUserManager $xUserManager
      * @return Response
      */
-    public function accountUserAction(Request $request) {
-        /** @var XUserManager $xUserManager */
-        $xUserManager = $this->get('xeng.user_manager');
-
+    public function accountUserAction(Request $request, XUserManager $xUserManager) {
         /** @var XUser $user */
-        $user=$this->get('security.context')->getToken()->getUser();
+        $user=$this->getUser();
 
-        /** @var AccountUserEditHandler $formHandler */
         $formHandler = new AccountUserEditHandler($this->container,$request,$user);
         $formHandler->handle();
 
-        /** @var ValidationResponse $validationResponse */
         $validationResponse=$formHandler->getValidationResponse();
 
         if($formHandler->isSubmitted() && $formHandler->isValid()){
@@ -80,16 +76,14 @@ class AccountAdminController extends Controller {
      * @Route("/account/profile", name="xeng.admin.account.profile")
      *
      * @param Request $request
+     * @param ProfileManager $profileManager
      * @return Response
+     * @throws NonUniqueResultException
      */
-    public function editUserProfileAction(Request $request) {
-
+    public function editUserProfileAction(Request $request, ProfileManager $profileManager) {
         /** @var XUser $user */
-        $user=$this->get('security.context')->getToken()->getUser();
+        $user=$this->getUser();
 
-        /** @var ProfileManager $profileManager */
-        $profileManager = $this->get('xeng.account.profile_manager');
-        /** @var Profile $profile */
         $profile=$profileManager->getProfileByUser($user->getId());
         $newProfile=false;
         if(!$profile){
@@ -97,11 +91,9 @@ class AccountAdminController extends Controller {
             $newProfile=true;
         }
 
-        /** @var UserProfileEditHandler $formHandler */
         $formHandler = new UserProfileEditHandler($this->container,$request,$profile);
         $formHandler->handle();
 
-        /** @var ValidationResponse $validationResponse */
         $validationResponse=$formHandler->getValidationResponse();
 
         if($formHandler->isSubmitted() && $formHandler->isValid()){
