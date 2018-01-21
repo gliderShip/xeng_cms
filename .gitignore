@@ -12,7 +12,5 @@
 .idea/
 /web/media/
 /web/bundles/
-/public_html/media/
-/public_html/bundles/
 /*.zip
 /dist

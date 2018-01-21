@@ -70,11 +70,11 @@ knp_gaufrette:
     adapters:
         profile_image:
             local:
-                directory: "%kernel.root_dir%/../%web_dir%/media/profile/images"
+                directory: "%kernel.root_dir%/../web/media/profile/images"
                 create: true
         content_image:
             local:
-                directory: "%kernel.root_dir%/../%web_dir%/media/content/images"
+                directory: "%kernel.root_dir%/../web/media/content/images"
                 create: true
     filesystems:
         profile_image:

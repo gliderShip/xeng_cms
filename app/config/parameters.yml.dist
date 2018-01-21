@@ -1,5 +1,4 @@
 parameters:
-    web_dir: public_html
     database_host: 127.0.0.1
     database_port: ~
     database_name: xeng_cms

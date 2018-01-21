@@ -7,7 +7,7 @@ Follow these steps
 
 - composer install inside the project root
 
-- download media.zip archive and extract it under public_html
+- download media.zip archive and extract it under web
 
 - use start script to start the server (check the path inside, you might need to change it)
 
