@@ -29,3 +29,4 @@ security:
                 target: /
                 invalidate_session: true
             anonymous: true
+            logout_on_user_change: true
