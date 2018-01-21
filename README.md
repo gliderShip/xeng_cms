@@ -9,8 +9,10 @@ Follow these steps
 
 - download media.zip archive and extract it under web
 
-- use start script to start the server (check the path inside, you might need to change it)
+- update doctrine schema with --force option
+
+- use command "php bin/console app:user:password" to change superadmin password
 
 - open site on localhost:8000 or localhost:8000/admin
 
-- login as superdamin/superadmin
+- login as superdamin
