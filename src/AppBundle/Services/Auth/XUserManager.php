@@ -3,10 +3,8 @@
 namespace AppBundle\Services\Auth;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\QueryException;
-use FOS\UserBundle\Model\UserManagerInterface;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use AppBundle\Doctrine\PaginatedResult;
 use AppBundle\Doctrine\PaginatorUtil;
 use AppBundle\Entity\Auth\XRole;
@@ -16,35 +14,30 @@ use AppBundle\Entity\Auth\XUserRole;
 use AppBundle\Repository\Auth\XRolePermissionRepository;
 use AppBundle\Repository\Auth\XUserRepository;
 use AppBundle\Repository\Auth\XUserRoleRepository;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @author Ermal Mino <ermal.mino@gmail.com>
  *
  */
 class XUserManager {
-    /** @var UserManagerInterface $userManager*/
-    private $userManager;
 
     /** @var ObjectManager $manager */
     private $manager;
 
-    /** @var EncoderFactoryInterface $encoderFactory*/
-    private $encoderFactory;
-
+    /** @var UserPasswordEncoderInterface $encoder */
+    private $encoder;
 
     /**
      * @param ObjectManager $manager
-     * @param UserManagerInterface $userManager
-     * @param EncoderFactoryInterface $encoderFactory
+     * @param UserPasswordEncoderInterface $encoder
      */
     public function __construct(
         ObjectManager $manager,
-        UserManagerInterface $userManager,
-        EncoderFactoryInterface $encoderFactory
+        UserPasswordEncoderInterface $encoder
     ) {
         $this->manager = $manager;
-        $this->userManager = $userManager;
-        $this->encoderFactory = $encoderFactory;
+        $this->encoder = $encoder;
     }
 
     /**
@@ -53,8 +46,21 @@ class XUserManager {
      */
     public function getUser($userId){
         /** @var XUser $user */
-        $user = $this->userManager->findUserBy(['id'=>$userId]);
+        $user = $this->manager->find('AppBundle:Auth\XUser', $userId);
+
         return $user;
+    }
+
+    /**
+     * @param string $username
+     * @return XUser
+     * @throws NonUniqueResultException
+     */
+    public function getByUsername($username){
+        /** @var XUserRepository $repository */
+        $repository = $this->manager->getRepository('AppBundle:Auth\XUser');
+
+        return $repository->getByUsername($username);
     }
 
     /**
@@ -65,6 +71,7 @@ class XUserManager {
     public function usernameExists($username){
         /** @var XUserRepository $repository */
         $repository = $this->manager->getRepository('AppBundle:Auth\XUser');
+
         return $repository->usernameExists($username);
     }
 
@@ -76,6 +83,7 @@ class XUserManager {
     public function emailExists($email){
         /** @var XUserRepository $repository */
         $repository = $this->manager->getRepository('AppBundle:Auth\XUser');
+
         return $repository->emailExists($email);
     }
 
@@ -98,17 +106,33 @@ class XUserManager {
      * @param string $email
      * @param string $password
      * @param boolean $enabled
+     * @return XUser
      */
     public function createUser($username,$email,$password,$enabled){
-        /** @var XUser $user */
-        $user = $this->userManager->createUser();
 
+        $user = new XUser();
         $user->setUsername($username);
         $user->setEmail($email);
-        $user->setPlainPassword($password);
+        $user->setPassword($this->encoder->encodePassword($user,$password));
+        $user->setRoles(array(XUser::ROLE_DEFAULT));
         $user->setEnabled($enabled);
 
-        $this->userManager->updateUser($user);
+        $this->manager->persist($user);
+        $this->manager->flush();
+
+        return $user;
+    }
+
+    /**
+     * @param XUser $user
+     * @return XUser
+     */
+    public function saveUser(XUSer $user){
+
+        $this->manager->persist($user);
+        $this->manager->flush();
+
+        return $user;
     }
 
     /**
@@ -119,16 +143,34 @@ class XUserManager {
      * @param string $password
      */
     public function updateUser($userId,$username,$email,$enabled,$password=null){
-        /** @var XUser $user */
-        $user = $this->userManager->findUserBy(['id'=>$userId]);
+
+        $user = $this->getUser($userId);
 
         $user->setUsername($username);
         $user->setEmail($email);
         $user->setEnabled($enabled);
+
         if($password){
-            $user->setPlainPassword($password);
+            $user->setPassword($this->encoder->encodePassword($user,$password));
         }
-        $this->userManager->updateUser($user);
+
+        $this->manager->persist($user);
+        $this->manager->flush();
+    }
+
+    /**
+     * @param string $userId
+     * @param string $password
+     */
+    public function changePassword($userId,$password){
+        /** @var XUser $user */
+        $user = $this->getUser($userId);
+
+        if(!is_null($password)){
+            $user->setPassword($this->encoder->encodePassword($user,$password));
+        }
+
+        $this->saveUser($user);
     }
 
     /**
@@ -214,13 +256,9 @@ class XUserManager {
      * @return boolean
      */
     public function isPasswordValid(XUser $user,$password){
-        /** @var PasswordEncoderInterface $encoder */
-        $encoder=$this->encoderFactory->getEncoder($user);
-        return $encoder->isPasswordValid(
-            $user->getPassword(),
-            $password,
-            $user->getSalt()
+        return $this->encoder->isPasswordValid(
+            $user,
+            $password
         );
-
     }
 }

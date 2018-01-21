@@ -57,6 +57,20 @@ class XUserRepository extends EntityRepository {
     }
 
     /**
+     * @param $username
+     * @return XUser
+     * @throws NonUniqueResultException
+     */
+    public function getByUsername($username){
+        $qb=$this->getEntityManager()->createQueryBuilder();
+        $qb->select('u');
+        $qb->from('AppBundle:Auth\XUser','u');
+        $qb->where('u.username = :username');
+        $qb->setParameter('username', $username);
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
      * @param $email
      * @return bool
      * @throws QueryException

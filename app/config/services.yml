@@ -10,8 +10,7 @@ services:
     class: AppBundle\Services\Auth\XUserManager
     arguments:
       - "@doctrine.orm.entity_manager"
-      - "@fos_user.user_manager"
-      - "@security.encoder_factory"
+      - "@security.password_encoder"
   xeng.role_manager:
     class: AppBundle\Services\Auth\XRoleManager
     arguments:
