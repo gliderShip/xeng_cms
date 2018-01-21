@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Content\Category;
 use AppBundle\Entity\Content\ContentNode;
 use AppBundle\Form\Base\FormHandler;
-use AppBundle\Form\Base\ParamValidationResult;
 use AppBundle\Services\Content\ContentManager;
 
 /**
@@ -28,14 +27,20 @@ class ContentCategoryEditHandler extends FormHandler {
     /** @var array $toBeAdded */
     protected $toBeAdded;
 
+    /** @var ContentManager $contentManager */
+    protected $contentManager;
+
     /**
      * @param ContainerInterface $container
      * @param Request $request
      * @param ContentNode $node
      * @param array $categories
+     * @param ContentManager $contentManager
      */
-    public function __construct(ContainerInterface $container, Request $request, ContentNode $node, $categories) {
+    public function __construct(ContainerInterface $container, Request $request, ContentNode $node, $categories, ContentManager $contentManager) {
         parent::__construct($container,$request);
+
+        $this->contentManager = $contentManager;
         $this->node=$node;
         $this->categories=$categories;
         $this->toBeAdded=array();
@@ -49,17 +54,13 @@ class ContentCategoryEditHandler extends FormHandler {
     public function handle(){
         parent::handle();
 
-        /** @var ContentManager $contentManager */
-        $contentManager = $this->container->get('xeng.content_manager');
-        /** @var array $contentCategoryMap */
-        $contentCategoryMap=$contentManager->getContentCategoryMap($this->node->getId());
+        $contentCategoryMap=$this->contentManager->getContentCategoryMap($this->node->getId());
 
         if($this->isSubmitted()){
             /** @var Category $category */
             foreach($this->categories as $category){
                 $key='category_'.$category->getId();
 
-                /** @var ParamValidationResult $param */
                 $param=$this->createParamValidationResult($key);
 
                 $alreadyExists=array_key_exists($key,$contentCategoryMap);

@@ -268,7 +268,7 @@ class NewsArticleAdminController extends Controller {
 
         $categories=$categoryManager->getAllCategories()->getResults();
 
-        $formHandler = new ContentCategoryEditHandler($this->container,$request,$article,$categories);
+        $formHandler = new ContentCategoryEditHandler($this->container, $request, $article, $categories, $contentManager);
         $formHandler->handle();
 
         $validationResponse=$formHandler->getValidationResponse();
