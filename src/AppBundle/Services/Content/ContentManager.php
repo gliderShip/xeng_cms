@@ -3,7 +3,7 @@
 namespace AppBundle\Services\Content;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use AppBundle\Exception\CategoryNotFoundException;
 use AppBundle\Doctrine\PaginatedResult;
 use AppBundle\Doctrine\PaginatorUtil;
 use AppBundle\Entity\Content\Category;
@@ -125,7 +125,7 @@ class ContentManager {
      * @param string $categoryName
      * @param int $limit
      * @return array
-     * @throws NotFoundHttpException
+     * @throws CategoryNotFoundException
      */
     public function findContentByCategory($categoryName, $limit){
 
@@ -135,7 +135,7 @@ class ContentManager {
         $category = $repository->getCategoryByName($categoryName);
 
         if(!$category){
-            throw new NotFoundHttpException();
+            throw new CategoryNotFoundException($categoryName);
         }
 
         //get all content node ids that have this category
@@ -161,7 +161,7 @@ class ContentManager {
      * @param int $currentPage
      * @param int $pageSize
      * @return PaginatedResult
-     * @throws NotFoundHttpException
+     * @throws CategoryNotFoundException
      */
     public function findContentByCategoryPaginated($categoryName,$currentPage = 1, $pageSize = 30){
 
@@ -171,7 +171,7 @@ class ContentManager {
         $category = $repository->getCategoryByName($categoryName);
 
         if(!$category){
-            throw new NotFoundHttpException();
+            throw new CategoryNotFoundException($categoryName);
         }
 
         //get all content node ids that have this category
