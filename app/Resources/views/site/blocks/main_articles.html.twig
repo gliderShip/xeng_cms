@@ -2,43 +2,45 @@
     <div class="clearfix"></div>
     <div class="td-block-title-wrap"><h4 class="block-title"><span>Kryesore</span></h4></div>
     <div class="td-modules-container td-module-number5 td-module-with-sidebar">
-        {%  for article in pager.results %}
-        <div class="td_module_5 td_module_wrap td-animation-stack">
-            <div class="td-module-image td-module-image-float">
-                <div class="td-module-thumb">
-                    <a href="{{ path('article',{'slug':article.slug}) }}"
-                       rel="bookmark" title="{{ article.title }}">
-                        <img width="260" height="195"
-                             class="entry-thumb td-animation-stack-type0-2"
-                             src="/media/content/images/{{ article.image.path }}"
-                             title="{{ article.title }}">
-                    </a>
+        {% if pager.results is defined %}
+            {%  for article in pager.results %}
+            <div class="td_module_5 td_module_wrap td-animation-stack">
+                <div class="td-module-image td-module-image-float">
+                    <div class="td-module-thumb">
+                        <a href="{{ path('article',{'slug':article.slug}) }}"
+                           rel="bookmark" title="{{ article.title }}">
+                            <img width="260" height="195"
+                                 class="entry-thumb td-animation-stack-type0-2"
+                                 src="/media/content/images/{{ article.image.path }}"
+                                 title="{{ article.title }}">
+                        </a>
+                    </div>
                 </div>
-            </div>
-            <div class="td-item-details td-category-small">
-                {% for contentCategory in article.contentCategories %}
-                    {% if not contentCategory.category.hidden %}
-                        <a href="#" class="td-post-category">{{ contentCategory.category.label }}</a>
-                    {% endif %}
-                {% endfor %}
-                <h3 class="entry-title td-module-title">
-                    <a href="{{ path('article',{'slug':article.slug}) }}"
-                       rel="bookmark" title="{{ article.title }}">
-                        {{ article.title }}
-                    </a>
-                </h3>
+                <div class="td-item-details td-category-small">
+                    {% for contentCategory in article.contentCategories %}
+                        {% if not contentCategory.category.hidden %}
+                            <a href="#" class="td-post-category">{{ contentCategory.category.label }}</a>
+                        {% endif %}
+                    {% endfor %}
+                    <h3 class="entry-title td-module-title">
+                        <a href="{{ path('article',{'slug':article.slug}) }}"
+                           rel="bookmark" title="{{ article.title }}">
+                            {{ article.title }}
+                        </a>
+                    </h3>
 
-                <div class="td-module-meta-info">
-                    <span class="td-post-date">
-                        <time class="entry-date updated td-module-date"
-                              datetime="{{ article.publishedAt | date}}">{{ article.publishedAt | date}}</time>
-                    </span>
+                    <div class="td-module-meta-info">
+                        <span class="td-post-date">
+                            <time class="entry-date updated td-module-date"
+                                  datetime="{{ article.publishedAt | date}}">{{ article.publishedAt | date}}</time>
+                        </span>
+                    </div>
+                    <div class="td-excerpt">{{ article.summary }}</div>
                 </div>
-                <div class="td-excerpt">{{ article.summary }}</div>
+                <div class="clearfix"></div>
             </div>
-            <div class="clearfix"></div>
-        </div>
-        {% endfor %}
+            {% endfor %}
+        {% endif %}
     </div>
     <!--div-- class="page-nav td-pb-padding-side"><span class="current">1</span><a
             href="#" class="page" title="2">2</a><a
